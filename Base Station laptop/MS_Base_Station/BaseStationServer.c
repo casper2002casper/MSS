@@ -69,37 +69,37 @@ int main(int argc , char *argv[])
      
     //Receive a message from client
     while(read_size> 0 ){
-	char client_message[2000]={0};
-	read_size = recv(client_sock , client_message , 2000 , 0);
+		char client_message[2000]={0};
+		read_size = recv(client_sock , client_message , 2000 , 0);
         //Send the message back to client
-	printf("Received data: %s\n", client_message);
-	//puts(client_message);
-	char msg[2000-5]={0};
-	for(int i=5; i<(strlen(client_message)); i++){
-		msg[i-5]=client_message[i];
-	}
-	//printf("msg: %s \n", msg);
-	char reply_message[20]={0};
-        if(writeToFile(FILENAME,msg) == 1){
-	  printf("Data saved in: %s\n", FILENAME); 
-	  reply_message[0]=client_message[0];
-	  reply_message[1]=client_message[1];
-	  reply_message[2]=client_message[2];
-	  for(int i=0; i<sizeof(SAVED); i++){
-            reply_message[i+3]=SAVED[i];
-	  }       
-	}else{
-	  printf("ERROR: data NOT saved!\n");
-	  reply_message[0]=client_message[0];
-	  reply_message[1]=client_message[1];
-	  reply_message[2]=client_message[2];
-	  for(int i=0; i<sizeof(NOTSAVED); i++){
-            reply_message[i+3]=NOTSAVED[i];
-	  }          
-        }
-        printf("reply msg: %s \n", reply_message);
-        write(client_sock , reply_message , strlen(reply_message));
-
+		printf("Received data: %s\n", client_message);
+		//puts(client_message);
+		char msg[2000-5]={0};
+		for(int i=5; i<(strlen(client_message)); i++){
+			msg[i-5]=client_message[i];
+		}
+		//printf("msg: %s \n", msg);
+		char reply_message[20]={0};
+    	if(writeToFile(FILENAME,msg) == 1){
+	  		printf("Data saved in: %s\n", FILENAME); 
+	  		reply_message[0]=client_message[0];
+	  		reply_message[1]=client_message[1];
+	  		reply_message[2]=client_message[2];
+	  		for(int i=0; i<sizeof(SAVED); i++){
+            	reply_message[i+3]=SAVED[i];
+	  		}       
+		}
+		else{
+	  		printf("ERROR: data NOT saved!\n");
+	  		reply_message[0]=client_message[0];
+	  		reply_message[1]=client_message[1];
+	  		reply_message[2]=client_message[2];
+	  		for(int i=0; i<sizeof(NOTSAVED); i++){
+            	reply_message[i+3]=NOTSAVED[i];
+	  		}          
+    	}
+    	printf("reply msg: %s \n", reply_message);
+    	write(client_sock , reply_message , strlen(reply_message));
     }
      
     if(read_size == 0){
