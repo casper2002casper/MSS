@@ -53,6 +53,8 @@ using namespace std;
 #define RF_FREQUENCY  868.00
 #define RF_GATEWAY_ID 1 
 #define RF_NODE_ID    10
+#define SETRXTIME 1
+#define SENDSPEED 1000
 
 //Define csv filename with measurement data:
 #define FILENAME "/media/mss/MSS_USB/measurements/measurement.csv"
@@ -192,8 +194,8 @@ int main (int argc, const char* argv[] )
 		//Begin the main body of code
 		while (!force_exit) {
 
-			// Send every 5 seconds
-			if ( millis() - last_millis > 1000 ) {
+			// Send certain amount of seconds
+			if ( millis() - last_millis > SENDSPEED ) {
 				last_millis = millis();
 
 				#ifdef RF_LED_PIN
@@ -255,13 +257,13 @@ int main (int argc, const char* argv[] )
 						uint8_t buf[RH_RF95_MAX_MESSAGE_LEN];
 						rf95.setModeRx(); 
 						printf(":::Receiving\n");
-						sleep(1);
+						sleep(SETRXTIME);
 						
 						if (rf95.waitAvailableTimeout(1000)) { 
 							// Should be a reply message for us now 
 
 							if (rf95.recv(buf, &len)) {
-								//Check if send number and receibed number are equal	
+								//Check if send number and received number are equal	
 								if (buf[0]==packet_nr_send[0] && buf[1]==packet_nr_send[1] && buf[2]==packet_nr_send[2]){
 									if (buf[3]=='n'){
 										printf("\tNumber compare completed but data is NOT saved!\n");

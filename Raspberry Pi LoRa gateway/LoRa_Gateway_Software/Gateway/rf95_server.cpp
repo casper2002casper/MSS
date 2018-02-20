@@ -25,7 +25,7 @@
 #include <RH_RF95.h>
 
 //TCP/IP defines:
-#define BASE_STATION_IP_ADDRESS "192.168.2.81" //LoRa Gateway: "192.168.2.80" //"192.168.0.22" //"127.0.0.1" //"192.168.0.102" 
+#define BASE_STATION_IP_ADDRESS "192.168.0.9" //LoRa Gateway: "192.168.2.80" //"192.168.0.22" //"127.0.0.1" //"192.168.0.102" 
 #define PORT 8080
 #define MESSAGE_LENGTH 1000
 #define SERVER_REPLY_LENGTH 2000
@@ -212,16 +212,16 @@ int main (int argc, const char* argv[] )
 							char message[len]={0};
 							for(int x=0; x<len-1; x++){
 								message[x] = buf[x];
-							//check if the chars are valid:
-							if(message[x] <48 || message[x]>59){ //0123456789:;
-								if(!(message[x]==46 || message[x]==32 || message[x]==45)){ //. space -
-									//message error
-									cout<<"X: "<<x<<"Ascii value: "<<message[x]<<endl;
-									message_valid = false;
-									break;
+								//check if the chars are valid:
+								if(message[x] <48 || message[x]>59){ //0123456789:;
+									if(!(message[x]==46 || message[x]==32 || message[x]==45)){ //. space -
+										//message error
+										cout<<"X: "<<x<<"Ascii value: "<<message[x]<<endl;
+										message_valid = false;
+										break;
+									}
 								}
-							}
-						}	
+							}	
 						if(message_valid){	
 							cout<<"\ntcp ip message: "<<message<<endl;
 							//Send data to base station
@@ -241,7 +241,6 @@ int main (int argc, const char* argv[] )
 							for(int x=0; x<strlen(server_reply);x++){
 								loraReply[x] = server_reply[x];
 							}
-
 
 							rf95.send(loraReply,sizeof(loraReply));
 							rf95.waitPacketSent();
