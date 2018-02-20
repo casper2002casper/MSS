@@ -1,60 +1,60 @@
-	// rf95_server.cpp
-	//
-	// Example program showing how to use RH_RF95 on Raspberry Pi
-	// Uses the bcm2835 library to access the GPIO pins to drive the RFM95 module
-	// Requires bcm2835 library to be already installed
-	// http://www.airspayce.com/mikem/bcm2835/
-	// Use the Makefile in this directory:
-	// cd example/raspi/rf95
-	// make
-	// sudo ./rf95_server
-	//
-	// Contributed by Charles-Henri Hallard based on sample RH_NRF24 by Mike Poublon
-	//------
-	#include <string.h>    //strlen
-	#include <sys/socket.h>    //socket
-	#include <arpa/inet.h> //inet_addr
-	#include <iostream>
+// rf95_server.cpp
+//
+// Example program showing how to use RH_RF95 on Raspberry Pi
+// Uses the bcm2835 library to access the GPIO pins to drive the RFM95 module
+// Requires bcm2835 library to be already installed
+// http://www.airspayce.com/mikem/bcm2835/
+// Use the Makefile in this directory:
+// cd example/raspi/rf95
+// make
+// sudo ./rf95_server
+//
+// Contributed by Charles-Henri Hallard based on sample RH_NRF24 by Mike Poublon
+//------
+#include <string.h>    //strlen
+#include <sys/socket.h>    //socket
+#include <arpa/inet.h> //inet_addr
+#include <iostream>
 
-	#include <bcm2835.h>
-	#include <stdio.h>
-	#include <signal.h>
-	#include <unistd.h>
+#include <bcm2835.h>
+#include <stdio.h>
+#include <signal.h>
+#include <unistd.h>
 
-	#include <RH_RF69.h>
-	#include <RH_RF95.h>
+#include <RH_RF69.h>
+#include <RH_RF95.h>
 
-	//TCP/IP defines:
-	#define BASE_STATION_IP_ADDRESS "192.168.2.81" //LoRa Gateway: "192.168.2.80" //"192.168.0.22" //"127.0.0.1" //"192.168.0.102" 
-	#define PORT 8080
-	#define MESSAGE_LENGTH 1000
-	#define SERVER_REPLY_LENGTH 2000
-	#define SOCKET_ERROR -1
+//TCP/IP defines:
+#define BASE_STATION_IP_ADDRESS "192.168.2.81" //LoRa Gateway: "192.168.2.80" //"192.168.0.22" //"127.0.0.1" //"192.168.0.102" 
+#define PORT 8080
+#define MESSAGE_LENGTH 1000
+#define SERVER_REPLY_LENGTH 2000
+#define SOCKET_ERROR -1
 
 using namespace std;
 
-	// define hardware used change to fit your need
-	// Uncomment the board you have, if not listed 
-	// uncommment custom board and set wiring tin custom section
+// define hardware used change to fit your need
+// Uncomment the board you have, if not listed 
+// uncommment custom board and set wiring tin custom section
 
-	// Dragino Raspberry PI hat
-	// see https://github.com/dragino/Lora
-	#define BOARD_DRAGINO_PIHAT
+// Dragino Raspberry PI hat
+// see https://github.com/dragino/Lora
+#define BOARD_DRAGINO_PIHAT
 
-	// Now we include RasPi_Boards.h so this will expose defined 
-	// constants with CS/IRQ/RESET/on board LED pins definition
-	#include "RadioHead/examples/raspi/RasPiBoards.h"
+// Now we include RasPi_Boards.h so this will expose defined 
+// constants with CS/IRQ/RESET/on board LED pins definition
+#include "RadioHead/examples/raspi/RasPiBoards.h"
 
-	// Our RFM95 Configuration 
-	#define RF_FREQUENCY  868.00
-	#define RF_NODE_ID    1	  //lora gateway 	
-	#define RF_GATEWAY_ID 10  //agv lora 
+// Our RFM95 Configuration 
+#define RF_FREQUENCY  868.00
+#define RF_NODE_ID    1	  //lora gateway 	
+#define RF_GATEWAY_ID 10  //agv lora 
 
-	// Create an instance of a driver
+// Create an instance of a driver
 RH_RF95 rf95(RF_CS_PIN, RF_IRQ_PIN);
-	//RH_RF95 rf95(RF_CS_PIN);
+//RH_RF95 rf95(RF_CS_PIN);
 
-	//Flag for Ctrl-C
+//Flag for Ctrl-C
 volatile sig_atomic_t force_exit = false;
 
 void sig_handler(int sig)
@@ -71,9 +71,11 @@ int main (int argc, const char* argv[] )
 	    char /*message[MESSAGE_LENGTH] ,*/ server_reply[SERVER_REPLY_LENGTH];    
 	    //Create socket
 	sock = socket(AF_INET , SOCK_STREAM , 0);
+	
 	if (sock == SOCKET_ERROR){
 		cout<<"Could not create socket"<<endl;
 	}
+	
 	cout<<"Socket created"<<endl;    
 	server.sin_addr.s_addr = inet_addr(BASE_STATION_IP_ADDRESS);
 	server.sin_family = AF_INET;
@@ -84,8 +86,6 @@ int main (int argc, const char* argv[] )
 		sleep(10);
 	}    
 	puts("Connected\n");    
-
-
 
 	unsigned long led_blink = 0;
 
@@ -281,9 +281,9 @@ int main (int argc, const char* argv[] )
 	}
 }
 
-	#ifdef RF_LED_PIN
+#ifdef RF_LED_PIN
 digitalWrite(RF_LED_PIN, LOW );
-	#endif
+#endif
 close(sock);
 printf( "\n%s Ending\n", __BASEFILE__ );
 bcm2835_close();
