@@ -28,7 +28,7 @@ ENABLE_POWEROFF = 0x00
 ENABLE_AEN = 0x02
 ENABLE_AIEN = 0x10
 CONTROL_RESET = 0x80
-LUX_DF = 408.0
+LUX_DF = 735.0 #408.
 LUX_COEFB = 1.64  # CH0 coefficient
 LUX_COEFC = 0.59  # CH1 coefficient A
 LUX_COEFD = 0.86  # CH2 coefficient B
@@ -120,10 +120,10 @@ class Tsl2591(object):
             atime = 100.
 
         case_gain = {
-            GAIN_LOW: 1.,
+            GAIN_LOW: 1.03, #1.0
             GAIN_MED: 25.,
-            GAIN_HIGH: 428.,
-            GAIN_MAX: 9876.,
+            GAIN_HIGH: 425., #428
+            GAIN_MAX: 7850., #9876., 
             }
 
         if self.gain in case_gain.keys():
