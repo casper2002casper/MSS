@@ -5,3 +5,4 @@ float32 temp
 float32 relativeHum
 float32 lightInt
 float64 par
+float32 CO2level

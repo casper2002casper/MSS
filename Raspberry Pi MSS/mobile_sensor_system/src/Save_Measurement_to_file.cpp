@@ -33,7 +33,7 @@ void measurementDataCallback(const mobile_sensor_system::measurementData::ConstP
   relativeHum = msg->relativeHum;
   lightInt = msg->lightInt; oss<<dateTime<<SEP<<x<<SEP<<y<<SEP<<z<<SEP<<vx<<SEP<<vy<<SEP<<vz<<SEP<<temp<<SEP<<relativeHum<<SEP<<lightInt<<endl;*/
   
-oss<<msg->dateTime<<SEP<<(double)msg->position[0]<<SEP<<(double)msg->position[1]<<SEP<<(double)msg->position[2]<<SEP<<(double)msg->velocity[0]<<SEP<<(double)msg->velocity[1]<<SEP<<(double)msg->velocity[2]<<SEP<<(float)msg->temp<<SEP<<(float)msg->relativeHum<<SEP<<(float)msg->lightInt<<SEP<<(double)msg->par<<endl;
+oss<<msg->dateTime<<SEP<<(double)msg->position[0]<<SEP<<(double)msg->position[1]<<SEP<<(double)msg->position[2]<<SEP<<(double)msg->velocity[0]<<SEP<<(double)msg->velocity[1]<<SEP<<(double)msg->velocity[2]<<SEP<<(float)msg->temp<<SEP<<(float)msg->relativeHum<<SEP<<(float)msg->lightInt<<SEP<<(double)msg->par<<SEP<<(float)msg->CO2level<<endl;
   tempString = oss.str();
   ofstream myfile (FILENAME, ios::out |ios::app );
   if (myfile.is_open())

@@ -5,22 +5,24 @@
 #include <mobile_sensor_system/currentTime.h>
 #include <mobile_sensor_system/lightIntensity.h>
 #include <mobile_sensor_system/par.h>
+#include <mobile_sensor_system/CO2.h>
 #include <geometry_msgs/PoseWithCovarianceStamped.h> //agv topic: 'amcl_pose'
 #include <geometry_msgs/Twist.h> //agv topic: 'cmd_vel'
 #define SEPARATION_SYMBOL ";"
 #define SEP SEPARATION_SYMBOL
 #define RATE 0.5
 ros::Publisher measurement_Data_pub;
-bool timeReceived=false, temperatureReceived = false,relativeHumidityReceived=false, lightIntensityReceived =false, agvPositionReceived=false, agvVelocityReceived=false, parReceived=false;;
+bool timeReceived=false, temperatureReceived = false,relativeHumidityReceived=false, lightIntensityReceived =false, CO2Received = false, agvPositionReceived=false, agvVelocityReceived=false, parReceived=false;;
 mobile_sensor_system::measurementData measurementData;
 
 void checkMeasurementDataMessage(){
-	if(timeReceived && temperatureReceived && relativeHumidityReceived && lightIntensityReceived && parReceived){// && agvPositionReceived && agvVelocityReceived){
+	if(timeReceived && temperatureReceived && relativeHumidityReceived && lightIntensityReceived && parReceived && CO2Received){// && agvPositionReceived && agvVelocityReceived){
 	  timeReceived=false;
 	  temperatureReceived = false;
 	  relativeHumidityReceived=false;
 	  lightIntensityReceived =false;
 	  parReceived = false;
+    CO2Received = false;
 	  agvPositionReceived=false;
 	  agvVelocityReceived=false;
 	  measurement_Data_pub.publish(measurementData);
@@ -77,6 +79,12 @@ void parCallback(const mobile_sensor_system::par::ConstPtr& msg){
   checkMeasurementDataMessage();
 }
 
+void CO2Callback(const mobile_sensor_system::CO2::ConstPtr& msg){
+  measurementData.CO2level = msg->CO2level;
+  CO2Received = true;
+  checkMeasurementDataMessage();
+}
+
 int main(int argc, char** argv){
   ros::init(argc, argv, "Link_Data_Node");
   ros::NodeHandle n;
@@ -95,6 +103,7 @@ int main(int argc, char** argv){
   ros::Subscriber relative_Humidity_sub = n.subscribe("relativeHumidity", 1000, relativeHumidityCallback);
   ros::Subscriber light_Intensity_sub = n.subscribe("lightIntensity", 1000, lightIntensityCallback);
   ros::Subscriber par_sub = n.subscribe("par", 1000, parCallback);
+  ros::Subscriber CO2_sub = n.subscribe("CO2", 1000, CO2Callback);
   ros::Subscriber agv_Pos_sub = n.subscribe("amcl_pose", 1000, agvPositionCallback);
   ros::Subscriber agv_Vel_sub = n.subscribe("cmd_vel", 1000, agvVelocityCallback);
   ros::spin();

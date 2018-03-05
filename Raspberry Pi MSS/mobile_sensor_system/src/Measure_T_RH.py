@@ -15,10 +15,10 @@ def main():
 	temperature_value = temperature()
 	rh_value = relativeHumidity()
 	# Get I2C bus
-	#sht_bus = smbus.SMBus(1) #=> uncomment this to use the sensor
+	sht_bus = smbus.SMBus(1) #=> uncomment this to use the sensor
 	while not rospy.is_shutdown():	
 		#uncomment the following lines of code to use the sensor:
-		'''		
+				
 		# SHT25 address, 0x40(64)
 		# Send temperature measurement command
 		#		0xF3(243)	NO HOLD master
@@ -52,10 +52,10 @@ def main():
 		# Convert the data
 		humidity = data0 * 256 + data1
 		humidity = -6 + ((humidity * 125.0) / 65536.0)	
-		'''
-		temperature_value.temp =25.3# round(cTemp,2)  #=> uncomment this to use the sensor
+		
+		temperature_value.temp =round(cTemp,2)  #=> uncomment this to use the sensor
 		temperature_pub.publish(temperature_value)
-		rh_value.relativeHum = 68.5#round(humidity,2) #=> uncomment this to use the sensor
+		rh_value.relativeHum = round(humidity,2) #=> uncomment this to use the sensor
 		relative_humidity_pub.publish(rh_value)
 		loop_rate.sleep()
 	

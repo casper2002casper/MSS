@@ -56,12 +56,12 @@ def main():
 
 		value = (float(raw_adc) * 5  /(32768))
 		# Output data to screen
-		#print "Digital Value of Analog Input : %d " %raw_adc
-		#print "Data0 = " data[0]
-		#print "Data1 = " data[1]
-		#print "output in volts is: %.4f" %value
+		print "Digital Value of Analog Input : %d " %raw_adc
+		print "Data0 = " data[0]
+		print "Data1 = " data[1]
+		print "output in volts is: %.4f" %value
 		PAR = value *500
-		#print "output in umol/m^2/s^2 = %.4f" %PAR
+		print "output in umol/m^2/s^2 = %.4f" %PAR
 
 		par_value.par = round(PAR,1)
 		par_pub.publish(par_value)
