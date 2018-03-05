@@ -203,14 +203,17 @@ int main (int argc, const char* argv[] )
 					int8_t rssi  = rf95.lastRssi();
 
 					if (rf95.recv(buf, &len)) {
-						printf("Packet[%02d] #%d => #%d %ddB: ", len, from, to, rssi);
+						printf("LoRa:: ");
+						if(buf[0] == '0') printf("AGV Data: ");
+						if(buf[0] == '1') printf("AGV Reply: ");
+						//printf("Packet[%02d] #%d => #%d %ddB: ", len, from, to, rssi);
 						printbuffer(buf, len);
 						if(from == RF_GATEWAY_ID){
 							bool message_valid = true;
 						//char message[sizeof(buf)];
 						//for(int x=0; x<sizeof(buf); x++){
 							char message[len]={0};
-							for(int x=0; x<len-1; x++){
+							for(int x=0; x<len; x++){
 								message[x] = buf[x];
 								//check if the chars are valid:
 								if(message[x] <48 || message[x]>59){ //0123456789:;
@@ -222,70 +225,72 @@ int main (int argc, const char* argv[] )
 									}
 								}
 							}	
-						if(message_valid){	
-							cout<<"\ntcp ip message: "<<message<<endl;
-							//Send data to base station
-							if( send(sock , message , strlen(message) , 0) < 0){
-								cout<<"Send failed"<<endl;
-								return 1;
-							}
+							if(message_valid){	
+								//cout<<"\ntcp ip message: "<<message<<endl;
+								//Send data to base station
+								if( send(sock , message , strlen(message) , 0) < 0){
+									cout<<"Send failed"<<endl;
+									return 1;
+								}
+								for(int i =0; i<sizeof(buf);i++){
+									buf[i]=0;
+								}
 
-							//Receive a reply from the base station server
-							if( recv(sock , server_reply , SERVER_REPLY_LENGTH , 0) < 0){
-								cout<<"recv failed"<<endl;
-								break;
-							}
-
-							cout<<"Server reply: "<<server_reply<<endl;
-							uint8_t loraReply[strlen(server_reply)];
-							for(int x=0; x<strlen(server_reply);x++){
-								loraReply[x] = server_reply[x];
-							}
-
-							rf95.send(loraReply,sizeof(loraReply));
-							rf95.waitPacketSent();
-							printf("Data has been send to %d \n",RF_GATEWAY_ID);
-
-							rf95.setModeRx();
-							for(int i =0; i<sizeof(buf);i++){
-								buf[i]=0;
+							}else{
+								cout<<"Message NOT valid!!"<<endl;
 							}
 						}else{
-							cout<<"Message NOT valid!!"<<endl;
+							cout<<"Drop received data: Data is not from the AGV."<<endl; 
 						}
-					}else{
-						cout<<"Drop received data: Data is not from the AGV."<<endl; 
+					} else {
+						Serial.print("receive failed");
 					}
-				} else {
-					Serial.print("receive failed");
+					printf("\n");
 				}
-				printf("\n");
+
+			#ifdef RF_IRQ_PIN
+			}
+			#endif
+			if(recv(sock , server_reply , SERVER_REPLY_LENGTH , MSG_DONTWAIT) > 0){
+				//Receive a reply from the base station server
+				printf("TCP:: ");
+				if(server_reply[0] == '2')cout<<"Basestation Data: "<<server_reply<<endl;
+				if(server_reply[0] == '3')cout<<"Basestation Reply: "<<server_reply<<endl;
+				uint8_t loraReply[strlen(server_reply)];
+				for(int x=0; x<strlen(server_reply);x++){
+					loraReply[x] = server_reply[x];
+				}
+
+				rf95.send(loraReply,sizeof(loraReply));
+				rf95.waitPacketSent();
+				//printf("Data has been send to %d \n",RF_GATEWAY_ID);
+
+				rf95.setModeRx();
+				for(int i =0; i<sizeof(server_reply);i++){
+					server_reply[i]=0;
+				}
 			}
 
-	#ifdef RF_IRQ_PIN
+			#ifdef RF_LED_PIN
+		      // Led blink timer expiration ?
+			if (led_blink && millis()-led_blink>200) {
+				led_blink = 0;
+				digitalWrite(RF_LED_PIN, LOW);
+			}
+			#endif
+		      // Let OS doing other tasks
+		      // For timed critical appliation you can reduce or delete
+		      // this delay, but this will charge CPU usage, take care and monitor
+			bcm2835_delay(5);
 		}
-	#endif
+	}
 
 	#ifdef RF_LED_PIN
-	      // Led blink timer expiration ?
-		if (led_blink && millis()-led_blink>200) {
-			led_blink = 0;
-			digitalWrite(RF_LED_PIN, LOW);
-		}
+	digitalWrite(RF_LED_PIN, LOW );
 	#endif
-	      // Let OS doing other tasks
-	      // For timed critical appliation you can reduce or delete
-	      // this delay, but this will charge CPU usage, take care and monitor
-		bcm2835_delay(5);
-	}
-}
-
-#ifdef RF_LED_PIN
-digitalWrite(RF_LED_PIN, LOW );
-#endif
-close(sock);
-printf( "\n%s Ending\n", __BASEFILE__ );
-bcm2835_close();
-return 0;
+	close(sock);
+	printf( "\n%s Ending\n", __BASEFILE__ );
+	bcm2835_close();
+	return 0;
 }
 
