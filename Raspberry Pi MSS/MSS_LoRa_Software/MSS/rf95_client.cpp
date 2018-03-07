@@ -55,11 +55,13 @@ using namespace std;
 #define RF_GATEWAY_ID 1
 #define RF_NODE_ID    10
 
-#define SENDSPEED 2500
+#define SENDSPEED 5000
 #define RECEIVESPEED 1000
 
 #define SEPARATION_SYMBOL ";"
 #define SEP SEPARATION_SYMBOL
+#define RECEIVE true
+#define SEND false
 
 //Define csv filename with measurement data:
 #define FILENAME "/media/mss/MSS_USB2/measurements/measurement.csv"
@@ -77,7 +79,7 @@ volatile sig_atomic_t force_exit = false;
 
 vector <string> buffer;
 int errorCnt = 0;
-
+bool send_receive_state = true;
 
 
 void sig_handler(int sig)
@@ -108,7 +110,7 @@ void save_to_csv(uint8_t incoming_data[], int size_of_array)
 		string tempString;
 		oss<<temp_data<<endl;
 		tempString = oss.str();
-		cout << "\t saving: " << tempString << endl;
+		cout << "\tsaving: " << tempString << endl;
 		ofstream myfile (FILENAME_CSV, ios::out |ios::app );
 		if (myfile.is_open())
 		{ 
@@ -239,7 +241,11 @@ int main (int argc, const char* argv[] )
 		rf95.setHeaderTo(RF_GATEWAY_ID);
 	
 		printf("RF95 node #%d init OK @ %3.2fMHz\n", RF_NODE_ID, RF_FREQUENCY );
-	
+		
+		rf95.setModeRx();
+		sleep(1);
+		send_receive_state = RECEIVE;
+			
 		last_millis = millis();
 	
 		//create string with number of packet
@@ -288,7 +294,13 @@ int main (int argc, const char* argv[] )
 					sprintf(packet_nr_send,"%03d::",csv_send_packet_nr);
 					printf("\n:::Sending:::\n");
 					printf("\tPacket Nr. %c%c%c\n",packet_nr_send[0],packet_nr_send[1],packet_nr_send[2]);
-			                  
+			        
+			        //SENDING TO SERVER
+					if(send_receive_state != SEND){
+						rf95.setModeTx();
+						sleep(1);
+				        send_receive_state = SEND;  
+					}
 					//GET MESSAGE ID
 					sprintf(message_id, "%01d::", 0);
 			
@@ -313,9 +325,6 @@ int main (int argc, const char* argv[] )
 						}
 			    		uint8_t send_length = sizeof(data);
 			
-						//SENDING TO SERVER
-						rf95.setModeTx();
-						sleep(1);
 						printf("\tSending %02d bytes to node #%d => ", send_length, RF_GATEWAY_ID );
 						printbuffer(data, send_length);
 						printf("\n" );
@@ -329,12 +338,14 @@ int main (int argc, const char* argv[] )
 				else{
 					printf("Reached end of file\n");
 				}
-				//RECEIVING
-				printf("\n:::Receiving:::\n");
-				rf95.setModeRx();
-				sleep(1);
 			}
-			
+			//RECEIVING
+			if(send_receive_state != RECEIVE){
+				printf("\n:::Receiving:::\n");
+				send_receive_state = SEND;
+			}
+			rf95.setModeRx();
+			sleep(1);
 			
 			printf("\tsearching for command.....");	
 			if (rf95.waitAvailableTimeout(RECEIVESPEED)) {
@@ -427,7 +438,6 @@ int main (int argc, const char* argv[] )
 			else{
 				printf("\tno command received\n");
 			}
-			bcm2835_delay(100);
 		}
 	
 	#ifdef RF_LED_PIN
