@@ -15,20 +15,23 @@
 using namespace std;
 using namespace mobile_sensor_system;
 
-float32 parser[20](string data){
-	float32 array[20];
-	string buffer[15];
+float32* parser(string input){//Parses csv data to float32 array
+	//data[3] = ";";
+	static float32 array[20];
 	int counter = 0;
-	for (x=0;x<data.length();x++){
-		if(csv_data[x] == ';'){
-			array[counter] = strtof((buffer).c_str(),0);
-			counter++;
-			buffer.clear();
-		}
-		else buffer[buffer.length] = csv_data[x];
+	string data = input.substr(5,input.length());
+	printf("%s\n",data.c_str());
+	string delimiter = ";";
+	string token;
+	size_t pos = 0;
+	while ((pos = data.find(delimiter)) != std::string::npos) {
+	    token = data.substr(0, pos);
+	    array[counter] = stof(token);
+	    counter++;
+	    data.erase(0, pos + delimiter.length());
 	}
-	if(!buffer.empty())array[counter] = strtof((buffer).c_str(),0);
 	return(array);
+}
 
 int main(int argc, char **argv)
 {
@@ -46,10 +49,11 @@ int main(int argc, char **argv)
 		string csv_data;
 		getline(ip,csv_data,'\n');
 		if(!csv_data.empty()){
-			float32 parsed = parser(csv_data);
-			switch(csv_data[5]){
-				case('0')://Action command
+			float32* parsed = parser(csv_data);
+			switch((int) parsed[0]){
+				case(0)://Action command
 					mobile_sensor_system::action_command action_commando;
+					action_command.metingDoen = (bool)parsed[1];
 					action_command.afstand = parsed[2];
 					action_command.rijsnelheid = parsed[3];
 					action_command.meetsnelheid = parsed[4];
@@ -58,10 +62,24 @@ int main(int argc, char **argv)
 					action_command.deacceleratie = parsed[7];
 					action_pub.publish(action_commando);
 					break;	
-				case('1'):
+
+				case(1)://Start command
 					mobile_sensor_system::start_command start_commando;
-					action_command.afstand = parsed[1];
-					action_pub.publish(start_commando);
+					start_command.opwarmtijd = parsed[1];
+					start_pub.publish(start_commando);
+					break;
+				case(2)://Stop command
+					mobile_sensor_system::stop_command stop_commando;
+					stop_pub.publish(stop_commando);
+					break;
+				case(3)://Pause command
+					mobile_sensor_system::pause_command pause_commando;
+					pause_command.autoResume = parsed[1];
+					pause_pub.publish(pause_commando);
+					break;
+				case(4)://Resume command
+					mobile_sensor_system::resume_command resume_commando;
+					resume_pub.publish(resume_commando);
 					break;
 	
 			}			
