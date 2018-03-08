@@ -9,8 +9,8 @@
 #include <mobile_sensor_system/stop_command.h>
 #include <mobile_sensor_system/pause_command.h>
 #include <mobile_sensor_system/resume_command.h>
-#define FILENAME "/media/mss/MSS_USB2/commands/commands.csv"
-#define FILENAME_TEMP "/media/mss/MSS_USB2/commands/commands_temp.csv"
+#define FILENAME "/media/mss/MSS_USB2/commands/instant_commands.csv"
+#define FILENAME_TEMP "/media/mss/MSS_USB2/commands/instant_commands_temp.csv"
 
 using namespace std;
 using namespace mobile_sensor_system;
@@ -90,6 +90,8 @@ int main(int argc, char **argv)
 		    		ip_temp<<buf_to_temp_data<<endl;
 			}
 			ip_temp.close();
+			ip.close();
+			rename(FILENAME_TEMP,FILENAME);
 		}
 	}
 	ip.close();

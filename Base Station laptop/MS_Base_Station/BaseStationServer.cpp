@@ -38,7 +38,7 @@ int getNum(char array[]){
 int main(int argc , char *argv[])
 {
     int socket_desc , client_sock , c , read_size=1,lastRecievedDataPacketNum = -1,lastRecievedReplyPacketNum = -1,packet_nr =0;
-    _Bool commandPending = 0;
+    bool commandPending = 0;
     char packet_nr_send[3];
     char command[200] = {'2',':',':'};
     struct sockaddr_in server , client;
