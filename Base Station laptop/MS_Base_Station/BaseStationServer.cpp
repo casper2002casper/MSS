@@ -6,6 +6,8 @@
 #include<sys/socket.h>
 #include<arpa/inet.h> //inet_addr
 #include<unistd.h>    //write
+
+
 #define FILENAME "BaseStationMeasurementData.csv"
 #define SAVED "saved"
 #define NOTSAVED "not saved" 
@@ -37,7 +39,7 @@ int getNum(char array[]){
 
 int main(int argc , char *argv[])
 {
-    int socket_desc , client_sock , c , read_size=1,lastRecievedDataPacketNum = -1,lastRecievedReplyPacketNum = -1,packet_nr =0;
+    int socket_desc , client_sock , c , read_size=1,lastRecievedDataPacketNum = -1,lastRecievedReplyPacketNum = -1,packet_nr =0,counter=0;
     bool commandPending = 0;
     char packet_nr_send[3];
     char command[200] = {'2',':',':'};
@@ -98,8 +100,9 @@ int main(int argc , char *argv[])
 			int dataOffset = 8;
 			char msg[2000-8]={0};
 			for(int i=dataOffset; i<(strlen(client_message)); i++){
-				if(client_message[i]==':' &&  client_message[i-1]=='1' && i>0){
+				if(client_message[i]==':' && client_message[i-1]==':' && client_message[i-2]=='1' && i>1){
 					msg[i-dataOffset -1] = 0;
+					msg[i-dataOffset -2] = 0;
 					break;
 				}
 				msg[i-dataOffset]=client_message[i];
@@ -133,6 +136,7 @@ int main(int argc , char *argv[])
 			}
 		    	printf("Sending Reply: %s \n", reply_message);
 		    	write(client_sock , reply_message , strlen(reply_message));
+			usleep(50000);
 		}
 		else if(client_message[0] == '1'){//Reply message
 			printf("Received AGV Reply: %s\n", client_message);	
@@ -141,8 +145,8 @@ int main(int argc , char *argv[])
 			
 		}
 	}
-	sleep(1);
-	if(!commandPending){//If command needs to be send
+	
+	if(!commandPending && counter>2){//If command needs to be send
 		sprintf(packet_nr_send,"%03d::",packet_nr);
 		for(int i =0; i<sizeof(command);i++){
 			command[i]=0;
@@ -155,24 +159,34 @@ int main(int argc , char *argv[])
 		command[5] = packet_nr_send[2];
 		command[6] = ':';
 		command[7] = ':';
-		command[8] = '6';
-		for(int i = 0;i<20;i++){
-			command[i+9] = '0' + i;
-		}
+		command[8] = '0';
+		command[9] = ':';
+		command[10] = ':';
+		command[11] = '5';
+		command[12] = ':';
+		command[13] = ':';
+		command[14] = '1';
+		command[15] = ';';
+		command[16] = '2';
+		command[17] = ';';
 		commandPending = 1;
+		counter = 0;
 	}
 
-	if(commandPending){
+	if(commandPending && counter>2){
 		if(packet_nr == lastRecievedReplyPacketNum){
 			commandPending = 0;
 			packet_nr++;
 		}
 		else{
 			write(client_sock , command , strlen(command));
+			usleep(50000);
 			printf("Sending Data: %s \n",command);
-		}	
+		}
+		counter = 0;	
 	}
 	sleep(1);
+	counter++;
 	//printf("Loop");
     }
     puts("Client disconnected");

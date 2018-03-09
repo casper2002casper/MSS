@@ -10,13 +10,31 @@
 #include <mobile_sensor_system/stop_command.h>
 #include <mobile_sensor_system/pause_command.h>
 #include <mobile_sensor_system/resume_command.h>
-#define FILENAME "/media/mss/MSS_USB2/commands/Que_commands.csv"
-#define FILENAME_TEMP "/media/mss/MSS_USB2/commands/Que_commands_temp.csv"
+#define FILENAME "/media/mss/MSS_USB2/commands/Queue_commands.csv"
+#define FILENAME_TEMP "/media/mss/MSS_USB2/commands/Queue_commands_temp.csv"
 ros::Publisher action_pub;
 ros::Publisher start_pub;
 ros::Publisher stop_pub;
 ros::Publisher pause_pub;
 ros::Publisher resume_pub;
+
+float32* parser(string input){//Parses csv data to float32 array
+	//data[3] = ";";
+	static float32 array[20];
+	int counter = 0;
+	string data = input.substr(5,input.length());
+	printf("%s\n",data.c_str());
+	string delimiter = ";";
+	string token;
+	size_t pos = 0;
+	while ((pos = data.find(delimiter)) != std::string::npos) {
+	    token = data.substr(0, pos);
+	    array[counter] = stof(token);
+	    counter++;
+	    data.erase(0, pos + delimiter.length());
+	}
+	return(array);
+}
 
 void QueueTriggerCallback(const mobile_sensor_system::QueueTrigger::ConstPtr& msg){
   	ifstream ip(FILENAME);
