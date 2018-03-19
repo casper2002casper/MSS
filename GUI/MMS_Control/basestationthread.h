@@ -18,7 +18,13 @@ signals:
 
 private:
     int socketDescriptor;
+    int lastRecievedDataPacketNum;
+    int lastRecievedReplyPacketNum;
+
     QString text;
+    int getNum(char array[]);
+    int writeToFile(const char filename[], char text[]);
+
 };
 
 #endif // BASESTATIONTHREAD_H
