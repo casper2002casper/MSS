@@ -34,7 +34,7 @@ class MainWindow : public QMainWindow
     Q_OBJECT
 
 public:
-    void inputData(const char text[]);
+    void inputData(const QString text);
     void enableConnectButton(bool on);
 
     explicit MainWindow(QWidget *parent = 0);

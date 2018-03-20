@@ -30,14 +30,17 @@ MainWindow::MainWindow(QWidget *parent) :
 
     ui->statusbar->addPermanentWidget(ui->projectScout_2);
 
-    if (!bs.listen()) {
+    quint16 port = 8080;
+    const QHostAddress &ip = QHostAddress("192.168.1.10");
+    if (!bs.listen(ip,port)) {
         QMessageBox::critical(this, tr("Threaded Fortune Server"),
                               tr("Unable to start the server: %1.")
                               .arg(bs.errorString()));
         close();
         return;
     }
-
+    qDebug("Port: %d\n",(quint16) port);
+    qDebug("IP: %1\n",ip.toString());
 }
 
 MainWindow::~MainWindow()
@@ -86,8 +89,7 @@ void MainWindow::on_actionPrint_triggered()
 }
 
 
-void MainWindow::inputData(const char text[])
-{
+void MainWindow::inputData(const QString text){
     QListWidgetItem *newItem = new QListWidgetItem;
     newItem->setText(text);
     ui->lastCommandSendList->addItem(newItem);

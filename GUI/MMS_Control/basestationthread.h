@@ -3,6 +3,7 @@
 
 #include <QThread>
 #include <QTcpSocket>
+#include <QTcpServer>
 
 class basestationThread : public QThread
 {
@@ -24,6 +25,8 @@ private:
     QString text;
     int getNum(char array[]);
     int writeToFile(const char filename[], char text[]);
+    void getData();
+    void disconnect();
 
 };
 

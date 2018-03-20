@@ -11,8 +11,7 @@ basestationServer::basestationServer(QObject *parent)
 
 void basestationServer::incomingConnection(qintptr socketDescriptor)
 {
-    MainWindow mw;
-    mw.inputData("te");
+    qDebug("incomingConnection!\n");
 
     basestationThread *thread = new basestationThread(socketDescriptor, this);
     connect(thread, SIGNAL(finished()), thread, SLOT(deleteLater()));

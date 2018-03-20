@@ -552,6 +552,9 @@ debug\moc_basestationthread.cpp: C:\Qt\5.10.1\msvc2015\include\QtCore\QThread \
 		C:\Qt\5.10.1\msvc2015\include\QtCore\qcontiguouscache.h \
 		C:\Qt\5.10.1\msvc2015\include\QtCore\qsharedpointer.h \
 		C:\Qt\5.10.1\msvc2015\include\QtCore\qsharedpointer_impl.h \
+		C:\Qt\5.10.1\msvc2015\include\QtNetwork\QTcpServer \
+		C:\Qt\5.10.1\msvc2015\include\QtNetwork\qtcpserver.h \
+		C:\Qt\5.10.1\msvc2015\include\QtNetwork\qhostaddress.h \
 		basestationthread.h \
 		debug\moc_predefs.h \
 		C:\Qt\5.10.1\msvc2015\bin\moc.exe
@@ -2404,6 +2407,9 @@ debug\basestationthread.obj: basestationthread.cpp basestationthread.h \
 		C:\Qt\5.10.1\msvc2015\include\QtCore\qcontiguouscache.h \
 		C:\Qt\5.10.1\msvc2015\include\QtCore\qsharedpointer.h \
 		C:\Qt\5.10.1\msvc2015\include\QtCore\qsharedpointer_impl.h \
+		C:\Qt\5.10.1\msvc2015\include\QtNetwork\QTcpServer \
+		C:\Qt\5.10.1\msvc2015\include\QtNetwork\qtcpserver.h \
+		C:\Qt\5.10.1\msvc2015\include\QtNetwork\qhostaddress.h \
 		mainwindow.h \
 		C:\Qt\5.10.1\msvc2015\include\QtWidgets\QMainWindow \
 		C:\Qt\5.10.1\msvc2015\include\QtWidgets\qmainwindow.h \
@@ -2454,9 +2460,6 @@ debug\basestationthread.obj: basestationthread.cpp basestationthread.h \
 		C:\Qt\5.10.1\msvc2015\include\QtCore\QtGlobal \
 		basestationserver.h \
 		C:\Qt\5.10.1\msvc2015\include\QtCore\QStringList \
-		C:\Qt\5.10.1\msvc2015\include\QtNetwork\QTcpServer \
-		C:\Qt\5.10.1\msvc2015\include\QtNetwork\qtcpserver.h \
-		C:\Qt\5.10.1\msvc2015\include\QtNetwork\qhostaddress.h \
 		C:\Qt\5.10.1\msvc2015\include\QtNetwork\QtNetwork \
 		C:\Qt\5.10.1\msvc2015\include\QtNetwork\QtNetworkDepends \
 		C:\Qt\5.10.1\msvc2015\include\QtCore\QtCore \
