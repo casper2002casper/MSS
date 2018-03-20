@@ -123,8 +123,32 @@ void basestationThread::run()
         emit error(tcpSocket.error());
         return;}
 
-    tcpSocket.open(QIODevice::ReadWrite);
-    getData();
+
+    tcpSocket.open(QIODevice::WriteOnly);
+    QDataStream out(&tcpSocket);   // we will serialize the data into the file
+    out << (int) 5;
+
+//    int numRead = 0, numReadTotal = 0;
+//    char buffer[50];
+
+//        forever {
+//            numRead  = tcpSocket.read(buffer, 50);
+
+//            // do whatever with array
+
+//            numReadTotal += numRead;
+//            qDebug("GOT REPLY: %d \n",numReadTotal);
+//            if (numRead == 0 && !tcpSocket.waitForReadyRead())
+//                break;
+//        }
+//    tcpSocket.open(QIODevice::ReadOnly);
+//    QDataStream in(&tcpSocket);    // read the data serialized from the file
+//    QString str;
+//    qint32 a;
+//    in >> str >> a;
+//    qDebug("GOT RE: %s \n", qUtf8Printable(str));
+//    qDebug("GOT REPLY: %d \n",a);
+   // getData();
 //    while(true){
 //        qDebug(tcpSocket.readAll());
 //        //getData();
