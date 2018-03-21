@@ -1,0 +1,17 @@
+MMS_Control.pro
+basestationserver.cpp
+basestationserver.h
+basestationthread.cpp
+basestationthread.h
+charts.cpp
+charts.h
+debug/moc_basestationserver.cpp
+debug/moc_basestationthread.cpp
+debug/moc_charts.cpp
+debug/moc_mainwindow.cpp
+debug/moc_predefs.h
+main.cpp
+mainwindow.cpp
+mainwindow.h
+mainwindow.ui
+ui_mainwindow.h
