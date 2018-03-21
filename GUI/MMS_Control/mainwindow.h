@@ -7,6 +7,7 @@
 #include <QWidget>
 
 #include <basestationserver.h>
+#include <basestationthread.h>
 
 QT_BEGIN_NAMESPACE
 class QComboBox;
@@ -34,14 +35,16 @@ class MainWindow : public QMainWindow
     Q_OBJECT
 
 public:
-    void inputData(const QString text);
     void enableConnectButton(bool on);
 
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
 
+signals:
+    void command(int command);
 
 private slots:
+    void inputData(QString message);
     void on_actionShow_last_command_send_triggered(bool checked);
     void on_actionLast_data_recieved_triggered(bool checked);
 

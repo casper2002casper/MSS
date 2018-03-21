@@ -1,6 +1,7 @@
 #include "mainwindow.h"
 #include "charts.h"
 #include "basestationserver.h"
+#include "basestationthread.h"
 #include "ui_mainwindow.h"
 
 #include <QDialog>
@@ -18,6 +19,9 @@ MainWindow::MainWindow(QWidget *parent) :
 
     ui(new Ui::MainWindow)
 {
+    basestationThread bsthread;
+    connect(&bsthread, SIGNAL(newMessage(QString)),this, SLOT(inputData()));
+
     ui->setupUi(this);
  //   ui->lastCommandSendList->hide();
     ui->lastDataRecievedList->hide();
@@ -31,9 +35,9 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->statusbar->addPermanentWidget(ui->projectScout_2);
 
     quint16 port = 8080;
-    const QHostAddress &ip = QHostAddress("192.168.1.9");
+    const QHostAddress &ip = QHostAddress("192.168.1.10");
     if (!bs.listen(ip,port)) {
-        QMessageBox::critical(this, tr("Threaded Fortune Server"),
+        QMessageBox::critical(this, tr("MSS Control Server"),
                               tr("Unable to start the server: %1.")
                               .arg(bs.errorString()));
         close();
@@ -60,22 +64,22 @@ void MainWindow::on_actionLast_data_recieved_triggered(bool checked)
 
 void MainWindow::on_startButton_clicked()
 {
-
+    emit command(1);
 }
 
 void MainWindow::on_stopButton_clicked()
 {
-
+    emit command(2);
 }
 
 void MainWindow::on_pauseButton_clicked()
 {
-
+   emit command(3);
 }
 
 void MainWindow::on_resumeButton_clicked()
 {
-
+    emit command(4);
 }
 
 void MainWindow::on_actionPrint_triggered()
@@ -89,9 +93,9 @@ void MainWindow::on_actionPrint_triggered()
 }
 
 
-void MainWindow::inputData(const QString text){
+void MainWindow::inputData(QString message){
     QListWidgetItem *newItem = new QListWidgetItem;
-    newItem->setText(text);
+    newItem->setText(message);
     ui->lastCommandSendList->addItem(newItem);
 }
 

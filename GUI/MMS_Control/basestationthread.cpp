@@ -10,121 +10,29 @@
 basestationThread::basestationThread(int socketDescriptor, QObject *parent)
     : QThread(parent), socketDescriptor(socketDescriptor), lastRecievedDataPacketNum(-1), lastRecievedReplyPacketNum(-1)
 {
+    MainWindow mw;
     tcpSocket.setSocketDescriptor(socketDescriptor);
     qDebug("Thread created \n");
     connect(&tcpSocket, SIGNAL(readyRead()),this, SLOT(readyRead()));
     connect(&tcpSocket, SIGNAL(disconnected()),this, SLOT(disconnected()));
+    connect(&mw, SIGNAL(command()),this, SLOT(sendCommand()));
 }
-
-int basestationThread::getNum(char array[]){//Convert char array package number to int number
-    int value = 0;
-    int multiplier[3] = {100,10,1};
-    for(int i = 0; i < 3;i++){
-        value += (array[i + 3] - '0') * multiplier[i];
-    }
-    return (value);
-}
-
-int basestationThread::writeToFile(const char filename[], char text[]){ //Write out to excel file
-   //printf("text: %s \n", text);
-   FILE *fp;
-   fp = fopen(filename, "a");
-   if(!fp){
-     fclose(fp);
-     return 0;
-   }else{
-     fprintf(fp, "%s\n",text);
-     //fprintf(fp, "\n");
-     fclose(fp);
-     return 1;
-   }
-}
-
-void basestationThread::getData(){ //Check if data is recieved
-    static int read_size = 1;
-    QTcpSocket tcpSocket;
-    while(true){
-
-        char client_message[2000]={0};
-        tcpSocket.read(client_message, 2000);
-        for(size_t i=0; i<(strlen(client_message)); i++){
-            if(client_message[i]<32){
-                qDebug("False ID: %d\n",(int)client_message[i]);
-                client_message[i] =0;
-            }
-        }
-        if(client_message[0] == '0'){//Data message
-            qDebug("Received AGV Data: %s\n", client_message);
-            //Send the message back to client
-            int dataOffset = 8;
-            char msg[2000-8]={0};
-            for(size_t i=dataOffset; i<(strlen(client_message)); i++){
-                if(client_message[i]==':' && client_message[i-1]==':' && client_message[i-2]=='1' && i>1){
-                    msg[i-dataOffset -1] = 0;
-                    msg[i-dataOffset -2] = 0;
-                    break;
-                }
-                msg[i-dataOffset]=client_message[i];
-            }
-            qDebug("msg: %s \n", msg);
-            char reply_message[20]={'3',':',':'};
-            reply_message[3]=client_message[3];
-            reply_message[4]=client_message[4];
-            reply_message[5]=client_message[5];
-            int packetnum = getNum(reply_message);
-            qDebug("Packet: %d\n",packetnum);
-            if(lastRecievedDataPacketNum != packetnum){
-                    if(writeToFile(FILENAME,msg) == 1){
-                    qDebug("Data saved in: %s\n", FILENAME);
-                    for(int i=0; i<sizeof(SAVED); i++){
-                            reply_message[i+6]=SAVED[i];
-                    }
-                    lastRecievedDataPacketNum = packetnum;
-                }
-                else{
-                    qDebug("ERROR: data NOT saved!\n");
-                    for(int i=0; i<sizeof(NOTSAVED); i++){
-                            reply_message[i+6]=NOTSAVED[i];
-                    }
-                    }
-            }
-            else {
-                for(int i=0; i<sizeof(SAVED); i++){
-                        reply_message[i+6]=SAVED[i];
-                }
-            }
-                qDebug("Sending Reply: %s \n", reply_message);
-               // tcpSocket.write(reply_message , strlen(reply_message));
-            usleep(50000);
-        }
-        else if(client_message[0] == '1'){//Reply message
-            qDebug("Received AGV Reply: %s\n", client_message);
-            lastRecievedReplyPacketNum = getNum(client_message);
-            qDebug("GOT REPLY: %d \n",lastRecievedReplyPacketNum);
-
-        }
-        else {
-            qDebug("niks");
-            usleep(5000);
-        }
-    }
-}
-
 void basestationThread::disconnected(){
-    qDebug("Disconnecting thread \n");
-    //QTcpSocket tcpSocket;
+    qDebug("Connection disconnected \n");
+
     tcpSocket.disconnectFromHost();
     tcpSocket.waitForDisconnected();
 }
 void basestationThread::readyRead(){
-    //QTcpSocket tcpSocket;
+
     char client_message[2000]={0};
     qDebug("read %d\n",tcpSocket.read(client_message, 2000));
     qDebug("Message %s\n",client_message);
+    emit newMessage(QString(client_message));
 }
-
 void basestationThread::run()
 {
+    qDebug("Connection running");
     while(true){
         if(tcpSocket.state() == QAbstractSocket::ConnectedState)
          {
@@ -136,40 +44,33 @@ void basestationThread::run()
         }
     }
 }
-//
-//    if (!tcpSocket.setSocketDescriptor(socketDescriptor)) {
-//        emit error(tcpSocket.error());
-//        return;}
+void basestationThread::sendCommand(){
+        char packet_nr_send[3];
+        char command[200];
+        for(int i =0; i<sizeof(command);i++){
+            command[i]=0;
+        }
+        command[0] = '2';
+        command[1] = ':';
+        command[2] = ':';
+        command[3] = packet_nr_send[0];
+        command[4] = packet_nr_send[1];
+        command[5] = packet_nr_send[2];
+        command[6] = ':';
+        command[7] = ':';
+        command[8] = '0';
+        command[9] = ':';
+        command[10] = ':';
+        command[11] = '5';
+        command[12] = ':';
+        command[13] = ':';
+        command[14] = '1';
+        command[15] = ';';
+        command[16] = '2';
+        command[17] = ';';
 
-
-//    tcpSocket.open(QIODevice::WriteOnly);
-//    QDataStream out(&tcpSocket);   // we will serialize the data into the file
-//    out << (int) 5;
-
-//    int numRead = 0, numReadTotal = 0;
-//    char buffer[50];
-
-//        forever {
-//            numRead  = tcpSocket.read(buffer, 50);
-
-//            // do whatever with array
-
-//            numReadTotal += numRead;
-//            qDebug("GOT REPLY: %d \n",numReadTotal);
-//            if (numRead == 0 && !tcpSocket.waitForReadyRead())
-//                break;
-//        }
-//    tcpSocket.open(QIODevice::ReadOnly);
-//    QDataStream in(&tcpSocket);    // read the data serialized from the file
-//    QString str;
-//    qint32 a;
-//    in >> str >> a;
-//    qDebug("GOT RE: %s \n", qUtf8Printable(str));
-//    qDebug("GOT REPLY: %d \n",a);
-   // getData();
-//    while(true){
-//        qDebug(tcpSocket.readAll());
-//        //getData();
-//        usleep(5000);
-//    }
-
+        qDebug("Writing");
+        tcpSocket.write("2::102::0::0::1;2;3;4;2.5;\n");
+        tcpSocket.flush();
+        tcpSocket.waitForBytesWritten(3000);
+}

@@ -287,6 +287,12 @@ release\moc_mainwindow.cpp: C:\Qt\5.10.1\msvc2015\include\QtWidgets\QMainWindow 
 		C:\Qt\5.10.1\msvc2015\include\QtNetwork\qtnetwork-config.h \
 		C:\Qt\5.10.1\msvc2015\include\QtNetwork\qabstractsocket.h \
 		C:\Qt\5.10.1\msvc2015\include\QtNetwork\qhostaddress.h \
+		basestationthread.h \
+		C:\Qt\5.10.1\msvc2015\include\QtCore\QThread \
+		C:\Qt\5.10.1\msvc2015\include\QtCore\qthread.h \
+		C:\Qt\5.10.1\msvc2015\include\QtNetwork\QTcpSocket \
+		C:\Qt\5.10.1\msvc2015\include\QtNetwork\qtcpsocket.h \
+		mainwindow.h \
 		mainwindow.h \
 		release\moc_predefs.h \
 		C:\Qt\5.10.1\msvc2015\bin\moc.exe
@@ -555,6 +561,57 @@ release\moc_basestationthread.cpp: C:\Qt\5.10.1\msvc2015\include\QtCore\QThread 
 		C:\Qt\5.10.1\msvc2015\include\QtNetwork\QTcpServer \
 		C:\Qt\5.10.1\msvc2015\include\QtNetwork\qtcpserver.h \
 		C:\Qt\5.10.1\msvc2015\include\QtNetwork\qhostaddress.h \
+		mainwindow.h \
+		C:\Qt\5.10.1\msvc2015\include\QtWidgets\QMainWindow \
+		C:\Qt\5.10.1\msvc2015\include\QtWidgets\qmainwindow.h \
+		C:\Qt\5.10.1\msvc2015\include\QtWidgets\qtwidgetsglobal.h \
+		C:\Qt\5.10.1\msvc2015\include\QtGui\qtguiglobal.h \
+		C:\Qt\5.10.1\msvc2015\include\QtGui\qtgui-config.h \
+		C:\Qt\5.10.1\msvc2015\include\QtWidgets\qtwidgets-config.h \
+		C:\Qt\5.10.1\msvc2015\include\QtWidgets\qwidget.h \
+		C:\Qt\5.10.1\msvc2015\include\QtGui\qwindowdefs.h \
+		C:\Qt\5.10.1\msvc2015\include\QtGui\qwindowdefs_win.h \
+		C:\Qt\5.10.1\msvc2015\include\QtCore\qmargins.h \
+		C:\Qt\5.10.1\msvc2015\include\QtGui\qpaintdevice.h \
+		C:\Qt\5.10.1\msvc2015\include\QtCore\qrect.h \
+		C:\Qt\5.10.1\msvc2015\include\QtCore\qsize.h \
+		C:\Qt\5.10.1\msvc2015\include\QtGui\qpalette.h \
+		C:\Qt\5.10.1\msvc2015\include\QtGui\qcolor.h \
+		C:\Qt\5.10.1\msvc2015\include\QtGui\qrgb.h \
+		C:\Qt\5.10.1\msvc2015\include\QtGui\qrgba64.h \
+		C:\Qt\5.10.1\msvc2015\include\QtGui\qbrush.h \
+		C:\Qt\5.10.1\msvc2015\include\QtGui\qmatrix.h \
+		C:\Qt\5.10.1\msvc2015\include\QtGui\qpolygon.h \
+		C:\Qt\5.10.1\msvc2015\include\QtGui\qregion.h \
+		C:\Qt\5.10.1\msvc2015\include\QtCore\qdatastream.h \
+		C:\Qt\5.10.1\msvc2015\include\QtCore\qline.h \
+		C:\Qt\5.10.1\msvc2015\include\QtGui\qtransform.h \
+		C:\Qt\5.10.1\msvc2015\include\QtGui\qpainterpath.h \
+		C:\Qt\5.10.1\msvc2015\include\QtGui\qimage.h \
+		C:\Qt\5.10.1\msvc2015\include\QtGui\qpixelformat.h \
+		C:\Qt\5.10.1\msvc2015\include\QtGui\qpixmap.h \
+		C:\Qt\5.10.1\msvc2015\include\QtGui\qfont.h \
+		C:\Qt\5.10.1\msvc2015\include\QtGui\qfontmetrics.h \
+		C:\Qt\5.10.1\msvc2015\include\QtGui\qfontinfo.h \
+		C:\Qt\5.10.1\msvc2015\include\QtWidgets\qsizepolicy.h \
+		C:\Qt\5.10.1\msvc2015\include\QtGui\qcursor.h \
+		C:\Qt\5.10.1\msvc2015\include\QtGui\qkeysequence.h \
+		C:\Qt\5.10.1\msvc2015\include\QtGui\qevent.h \
+		C:\Qt\5.10.1\msvc2015\include\QtCore\qurl.h \
+		C:\Qt\5.10.1\msvc2015\include\QtCore\qurlquery.h \
+		C:\Qt\5.10.1\msvc2015\include\QtCore\qfile.h \
+		C:\Qt\5.10.1\msvc2015\include\QtCore\qfiledevice.h \
+		C:\Qt\5.10.1\msvc2015\include\QtGui\qvector2d.h \
+		C:\Qt\5.10.1\msvc2015\include\QtGui\qtouchdevice.h \
+		C:\Qt\5.10.1\msvc2015\include\QtWidgets\qtabwidget.h \
+		C:\Qt\5.10.1\msvc2015\include\QtGui\qicon.h \
+		C:\Qt\5.10.1\msvc2015\include\QtWidgets\QWidget \
+		C:\Qt\5.10.1\msvc2015\include\QtCharts\QChartGlobal \
+		C:\Qt\5.10.1\msvc2015\include\QtCharts\qchartglobal.h \
+		C:\Qt\5.10.1\msvc2015\include\QtCore\QtGlobal \
+		basestationserver.h \
+		C:\Qt\5.10.1\msvc2015\include\QtCore\QStringList \
+		basestationthread.h \
 		basestationthread.h \
 		release\moc_predefs.h \
 		C:\Qt\5.10.1\msvc2015\bin\moc.exe
@@ -1247,6 +1304,11 @@ release\main.obj: main.cpp mainwindow.h \
 		C:\Qt\5.10.1\msvc2015\include\QtNetwork\qtnetwork-config.h \
 		C:\Qt\5.10.1\msvc2015\include\QtNetwork\qabstractsocket.h \
 		C:\Qt\5.10.1\msvc2015\include\QtNetwork\qhostaddress.h \
+		basestationthread.h \
+		C:\Qt\5.10.1\msvc2015\include\QtCore\QThread \
+		C:\Qt\5.10.1\msvc2015\include\QtCore\qthread.h \
+		C:\Qt\5.10.1\msvc2015\include\QtNetwork\QTcpSocket \
+		C:\Qt\5.10.1\msvc2015\include\QtNetwork\qtcpsocket.h \
 		C:\Qt\5.10.1\msvc2015\include\QtCore\QtCore \
 		C:\Qt\5.10.1\msvc2015\include\QtCore\QtCoreDepends \
 		C:\Qt\5.10.1\msvc2015\include\QtCore\qabstractanimation.h \
@@ -1348,7 +1410,6 @@ release\main.obj: main.cpp mainwindow.h \
 		C:\Qt\5.10.1\msvc2015\include\QtCore\qtemporaryfile.h \
 		C:\Qt\5.10.1\msvc2015\include\QtCore\qtextboundaryfinder.h \
 		C:\Qt\5.10.1\msvc2015\include\QtCore\qtextcodec.h \
-		C:\Qt\5.10.1\msvc2015\include\QtCore\qthread.h \
 		C:\Qt\5.10.1\msvc2015\include\QtCore\qthreadpool.h \
 		C:\Qt\5.10.1\msvc2015\include\QtCore\qthreadstorage.h \
 		C:\Qt\5.10.1\msvc2015\include\QtCore\qtimeline.h \
@@ -1718,6 +1779,11 @@ release\mainwindow.obj: mainwindow.cpp mainwindow.h \
 		C:\Qt\5.10.1\msvc2015\include\QtNetwork\qtnetwork-config.h \
 		C:\Qt\5.10.1\msvc2015\include\QtNetwork\qabstractsocket.h \
 		C:\Qt\5.10.1\msvc2015\include\QtNetwork\qhostaddress.h \
+		basestationthread.h \
+		C:\Qt\5.10.1\msvc2015\include\QtCore\QThread \
+		C:\Qt\5.10.1\msvc2015\include\QtCore\qthread.h \
+		C:\Qt\5.10.1\msvc2015\include\QtNetwork\QTcpSocket \
+		C:\Qt\5.10.1\msvc2015\include\QtNetwork\qtcpsocket.h \
 		charts.h \
 		ui_mainwindow.h \
 		C:\Qt\5.10.1\msvc2015\include\QtWidgets\QDialog \
@@ -1825,7 +1891,6 @@ release\mainwindow.obj: mainwindow.cpp mainwindow.h \
 		C:\Qt\5.10.1\msvc2015\include\QtCore\qtemporaryfile.h \
 		C:\Qt\5.10.1\msvc2015\include\QtCore\qtextboundaryfinder.h \
 		C:\Qt\5.10.1\msvc2015\include\QtCore\qtextcodec.h \
-		C:\Qt\5.10.1\msvc2015\include\QtCore\qthread.h \
 		C:\Qt\5.10.1\msvc2015\include\QtCore\qthreadpool.h \
 		C:\Qt\5.10.1\msvc2015\include\QtCore\qthreadstorage.h \
 		C:\Qt\5.10.1\msvc2015\include\QtCore\qtimeline.h \
@@ -2173,7 +2238,6 @@ release\mainwindow.obj: mainwindow.cpp mainwindow.h \
 		C:\Qt\5.10.1\msvc2015\include\QtNetwork\QSslConfiguration \
 		C:\Qt\5.10.1\msvc2015\include\QtNetwork\qsslconfiguration.h \
 		C:\Qt\5.10.1\msvc2015\include\QtNetwork\qsslsocket.h \
-		C:\Qt\5.10.1\msvc2015\include\QtNetwork\qtcpsocket.h \
 		C:\Qt\5.10.1\msvc2015\include\QtNetwork\qsslerror.h \
 		C:\Qt\5.10.1\msvc2015\include\QtNetwork\qsslcertificate.h \
 		C:\Qt\5.10.1\msvc2015\include\QtNetwork\qssl.h \

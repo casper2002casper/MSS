@@ -16,7 +16,7 @@ protected:
 
 private:
     int writeToFile(char filename[], char text[]);
-    void sendCommand(int command[]);
+
 
 };
 #endif // BASESTATIONSERVER_H
