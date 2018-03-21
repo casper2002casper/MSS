@@ -9,7 +9,7 @@ basestationServer::basestationServer(QObject *parent)
 
 }
 
-void basestationServer::incomingConnection(qintptr socketDescriptor)
+void basestationServer::incomingConnection(qintptr socketDescriptor)//Start server thread
 {
     qDebug("incomingConnection!\n");
 

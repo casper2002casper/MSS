@@ -31,7 +31,7 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->statusbar->addPermanentWidget(ui->projectScout_2);
 
     quint16 port = 8080;
-    const QHostAddress &ip = QHostAddress("192.168.1.10");
+    const QHostAddress &ip = QHostAddress("192.168.1.9");
     if (!bs.listen(ip,port)) {
         QMessageBox::critical(this, tr("Threaded Fortune Server"),
                               tr("Unable to start the server: %1.")
@@ -40,7 +40,7 @@ MainWindow::MainWindow(QWidget *parent) :
         return;
     }
     qDebug("Port: %d\n",(quint16) port);
-    qDebug("IP: %1\n",ip.toString());
+    qDebug("IP: " + ip.toString().toLatin1());
 }
 
 MainWindow::~MainWindow()

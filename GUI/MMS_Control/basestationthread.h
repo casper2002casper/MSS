@@ -26,8 +26,10 @@ private:
     int getNum(char array[]);
     int writeToFile(const char filename[], char text[]);
     void getData();
-    void disconnect();
 
+private slots:
+     void readyRead();
+     void disconnect();
 };
 
 #endif // BASESTATIONTHREAD_H

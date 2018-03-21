@@ -12,6 +12,7 @@
 #define SAVED "saved"
 #define NOTSAVED "not saved" 
 
+
 int writeToFile(char filename[], char text[]){
    //printf("text: %s \n", text);
    FILE *fp;
@@ -39,7 +40,7 @@ int getNum(char array[]){
 
 int main(int argc , char *argv[])
 {
-    int socket_desc , client_sock , c , read_size=1,lastRecievedDataPacketNum = -1,lastRecievedReplyPacketNum = -1,packet_nr =0,counter=0;
+    int socket_desc , client_sock , c , read_size=1,lastRecievedDataPacketNum = -1,lastRecievedReplyPacketNum = -1,packet_nr =0,counter=35,rotator = 0;
     bool commandPending = 0;
     char packet_nr_send[3];
     char command[200] = {'2',':',':'};
@@ -146,37 +147,30 @@ int main(int argc , char *argv[])
 		}
 	}
 	
-	if(!commandPending && counter>2){//If command needs to be send
+	if(!commandPending && counter>10){//If command needs to be send
 		sprintf(packet_nr_send,"%03d::",packet_nr);
 		for(int i =0; i<sizeof(command);i++){
 			command[i]=0;
 		}
-		command[0] = '2';
-		command[1] = ':';
-		command[2] = ':';
+		char layoutcommand[] = "2::000::0::0::1;2;3;4;2.5;";
+		for(int i =0; i<sizeof(layoutcommand);i++){
+			command[i]=layoutcommand[i];
+		}
 		command[3] = packet_nr_send[0];
  		command[4] = packet_nr_send[1];
 		command[5] = packet_nr_send[2];
-		command[6] = ':';
-		command[7] = ':';
-		command[8] = '0';
-		command[9] = ':';
-		command[10] = ':';
-		command[11] = '5';
-		command[12] = ':';
-		command[13] = ':';
-		command[14] = '1';
-		command[15] = ';';
-		command[16] = '2';
-		command[17] = ';';
+		command[11] = rotator + '0';
+		if(rotator<5)rotator++;
+		else rotator = 0;
+		if(rotator == 2)rotator++;
 		commandPending = 1;
 		counter = 0;
 	}
 
 	if(commandPending && counter>2){
 		if(packet_nr == lastRecievedReplyPacketNum){
-			commandPending = 0;
 			packet_nr++;
+			commandPending = 0;
 		}
 		else{
 			write(client_sock , command , strlen(command));
