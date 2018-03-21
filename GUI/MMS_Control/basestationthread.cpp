@@ -10,6 +10,10 @@
 basestationThread::basestationThread(int socketDescriptor, QObject *parent)
     : QThread(parent), socketDescriptor(socketDescriptor), lastRecievedDataPacketNum(-1), lastRecievedReplyPacketNum(-1)
 {
+    tcpSocket.setSocketDescriptor(socketDescriptor);
+    qDebug("Thread created \n");
+    connect(&tcpSocket, SIGNAL(readyRead()),this, SLOT(readyRead()));
+    connect(&tcpSocket, SIGNAL(disconnected()),this, SLOT(disconnected()));
 }
 
 int basestationThread::getNum(char array[]){//Convert char array package number to int number
@@ -106,15 +110,14 @@ void basestationThread::getData(){ //Check if data is recieved
     }
 }
 
-void basestationThread::disconnect(){
+void basestationThread::disconnected(){
     qDebug("Disconnecting thread \n");
-    QTcpSocket tcpSocket;
+    //QTcpSocket tcpSocket;
     tcpSocket.disconnectFromHost();
     tcpSocket.waitForDisconnected();
 }
 void basestationThread::readyRead(){
-    QTcpSocket tcpSocket;
-    qDebug("Thread created \n");
+    //QTcpSocket tcpSocket;
     char client_message[2000]={0};
     qDebug("read %d\n",tcpSocket.read(client_message, 2000));
     qDebug("Message %s\n",client_message);
@@ -122,20 +125,11 @@ void basestationThread::readyRead(){
 
 void basestationThread::run()
 {
-    QTcpSocket tcpSocket;
-    qDebug("Thread created \n");
-    connect(&tcpSocket, SIGNAL(readyRead()), SLOT(readyRead()));
-    connect(&tcpSocket, SIGNAL(disconnect()), SLOT(disconnect()));
-    if (!tcpSocket.setSocketDescriptor(socketDescriptor)) {
-        emit error(tcpSocket.error());
-        return;
-    }
-
     while(true){
         if(tcpSocket.state() == QAbstractSocket::ConnectedState)
          {
             qDebug("Writing");
-            tcpSocket.write("2::101::0::0::1;2;3;4;2.5;\n");
+            tcpSocket.write("2::102::0::0::1;2;3;4;2.5;\n");
             tcpSocket.flush();
             tcpSocket.waitForBytesWritten(3000);
             QThread::sleep(1);

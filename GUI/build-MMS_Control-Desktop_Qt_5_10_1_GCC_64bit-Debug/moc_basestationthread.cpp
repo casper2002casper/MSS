@@ -22,7 +22,7 @@ QT_WARNING_PUSH
 QT_WARNING_DISABLE_DEPRECATED
 struct qt_meta_stringdata_basestationThread_t {
     QByteArrayData data[7];
-    char stringdata0[82];
+    char stringdata0[84];
 };
 #define QT_MOC_LITERAL(idx, ofs, len) \
     Q_STATIC_BYTE_ARRAY_DATA_HEADER_INITIALIZER_WITH_OFFSET(len, \
@@ -37,12 +37,12 @@ QT_MOC_LITERAL(2, 24, 0), // ""
 QT_MOC_LITERAL(3, 25, 23), // "QTcpSocket::SocketError"
 QT_MOC_LITERAL(4, 49, 11), // "socketError"
 QT_MOC_LITERAL(5, 61, 9), // "readyRead"
-QT_MOC_LITERAL(6, 71, 10) // "disconnect"
+QT_MOC_LITERAL(6, 71, 12) // "disconnected"
 
     },
     "basestationThread\0error\0\0"
     "QTcpSocket::SocketError\0socketError\0"
-    "readyRead\0disconnect"
+    "readyRead\0disconnected"
 };
 #undef QT_MOC_LITERAL
 
@@ -84,7 +84,7 @@ void basestationThread::qt_static_metacall(QObject *_o, QMetaObject::Call _c, in
         switch (_id) {
         case 0: _t->error((*reinterpret_cast< QTcpSocket::SocketError(*)>(_a[1]))); break;
         case 1: _t->readyRead(); break;
-        case 2: _t->disconnect(); break;
+        case 2: _t->disconnected(); break;
         default: ;
         }
     } else if (_c == QMetaObject::IndexOfMethod) {

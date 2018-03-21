@@ -18,6 +18,7 @@ signals:
     void error(QTcpSocket::SocketError socketError);
 
 private:
+    QTcpSocket tcpSocket;
     int socketDescriptor;
     int lastRecievedDataPacketNum;
     int lastRecievedReplyPacketNum;
@@ -29,7 +30,7 @@ private:
 
 private slots:
      void readyRead();
-     void disconnect();
+     void disconnected();
 };
 
 #endif // BASESTATIONTHREAD_H
