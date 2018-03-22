@@ -1,15 +1,3 @@
-// rf95_client.cpp
-//
-// Example program showing how to use RH_RF95 on Raspberry Pi
-// Uses the bcm2835 library to access the GPIO pins to drive the RFM95 module
-// Requires bcm2835 library to be already installed
-// http://www.airspayce.com/mikem/bcm2835/
-// Use the Makefile in this directory:
-// cd example/raspi/rf95
-// make
-// sudo ./rf95_client
-//
-// Contributed by Charles-Henri Hallard based on sample RH_NRF24 by Mike Poublon
 
 #include <bcm2835.h>
 #include <stdio.h>
@@ -24,61 +12,46 @@
 #include <string>
 #include <sstream>
 
-using namespace std;
-// define hardware used change to fit your need
-// Uncomment the board you have, if not listed
-// uncommment custom board and set wiring tin custom section
-
-// LoRasPi board
-// see https://github.com/hallard/LoRasPI
-//define BOARD_LORASPI
-
-// iC880A and LinkLab Lora Gateway Shield (if RF module plugged into)
-// see https://github.com/ch2i/iC880A-Raspberry-PI
-//#define BOARD_IC880A_PLATE
-
-// Raspberri PI Lora Gateway for multiple modules
-// see https://github.com/hallard/RPI-Lora-Gateway
-//#define BOARD_PI_LORA_GATEWAY
-
-
-// Dragino Raspberry PI hat
-// see https://github.com/dragino/Lora
 #define BOARD_DRAGINO_PIHAT
-
-// Now we include RasPi_Boards.h so this will expose defined
-// constants with CS/IRQ/RESET/on board LED pins definition
 #include "RadioHead/examples/raspi/RasPiBoards.h"
+
+using namespace std;
 
 // Our RFM95 Configuration
 #define RF_FREQUENCY  868.00
 #define RF_GATEWAY_ID 1
 #define RF_NODE_ID    10
 
-#define SENDSPEED 5000
-#define RECEIVESPEED 1000
+#define SENDSPEED 1000 
+#define RECEIVESPEED 5
+#define BUFFERSIZE 20
 
 #define SEPARATION_SYMBOL ";"
 #define SEP SEPARATION_SYMBOL
 #define RECEIVE true
 #define SEND false
+#define INSTANT 0
+#define QUEUE 1
+#define CINSTANT '0'
+#define CQUEUE '1'
 
 //Define csv filename with measurement data:
-#define FILENAME "/media/mss/MSS_USB2/measurements/measurement.csv"
-#define FILENAME_TEMP "/media/mss/MSS_USB2/measurements/measurement_temp.csv"
+#define FILENAME "/media/mss/MSS_USB4/measurements/measurement.csv"
+#define FILENAME_TEMP "/media/mss/MSS_USB4/measurements/measurement_temp.csv"
 
-#define FILENAME_CSV "/media/mss/MSS_USB2/commands/commands.csv"
-#define BUFFERSIZE 20
+//Define csv filename with commands:
+#define FILENAME_INSTANT_COMMAND_CSV "/media/mss/MSS_USB4/commands/instant_commands.csv"
+#define FILENAME_QUEUE_COMMAND_CSV "/media/mss/MSS_USB4/commands/Queue_commands.csv"
 
 // Create an instance of a driver
 RH_RF95 rf95(RF_CS_PIN, RF_IRQ_PIN);
-//RH_RF95 rf95(RF_CS_PIN);
 
 //Flag for Ctrl-C
 volatile sig_atomic_t force_exit = false;
 
 vector <string> buffer;
 int errorCnt = 0;
+bool received = false;
 bool send_receive_state = true;
 
 
@@ -87,6 +60,7 @@ void sig_handler(int sig)
   printf("\n%s Break received, exiting!\n", __BASEFILE__);
   force_exit=true;
 }
+
 
 int getNum(uint8_t array[])
 {
@@ -98,20 +72,25 @@ int getNum(uint8_t array[])
 	return(value);
 }
 
-void save_to_csv(uint8_t incoming_data[], int size_of_array)
+
+void save_to_csv(uint8_t incoming_data[], int size_of_array, int message_type)
 {	
 	printf("\tsize data: %d\tdata: %s\n", size_of_array, incoming_data);
-	if (size_of_array > 3){
-		uint8_t temp_data[size_of_array-3];
-		for(int temp=0;temp<size_of_array-3;temp++){
-			temp_data[temp] = incoming_data[temp+3];
+	if (size_of_array > 11){
+		uint8_t temp_data[size_of_array-11];
+		for(int temp=0;temp<size_of_array-11;temp++){
+			temp_data[temp] = incoming_data[temp+11];
 		}
 		std::ostringstream oss;
 		string tempString;
 		oss<<temp_data<<endl;
 		tempString = oss.str();
 		cout << "\tsaving: " << tempString << endl;
-		ofstream myfile (FILENAME_CSV, ios::out |ios::app );
+		ofstream myfile;
+		if (message_type == INSTANT) myfile.open(FILENAME_INSTANT_COMMAND_CSV, ios::out |ios::app);
+		else if(message_type == QUEUE) myfile.open(FILENAME_QUEUE_COMMAND_CSV, ios::out |ios::app);
+		
+		cout << "\tmessage type: " << message_type << endl;
 		if (myfile.is_open())
 		{ 
 			if(errorCnt > 0){
@@ -120,7 +99,7 @@ void save_to_csv(uint8_t incoming_data[], int size_of_array)
 					myfile << buffer[i];		
 				}
 				buffer.clear();
-				errorCnt =0;
+				errorCnt = 0;
 			}
 			myfile << tempString;
 			printf("\tSaving data to csv\n");	
@@ -152,7 +131,6 @@ int main (int argc, const char* argv[] )
 	uint8_t buf[RH_RF95_MAX_MESSAGE_LEN];
 	
 	//create boolean saved to check if packet is saved
-	bool saved = false;
 	int csv_send_packet_nr = 0;
 	int command_received_packet_nr = -1;
 	char message_id[3];
@@ -254,18 +232,7 @@ int main (int argc, const char* argv[] )
 	
 		//remove lines
 		string buf_to_temp_data;
-	
-		// //DEMO TEST!!! FILL RANDOM SENSOR VALUES INTO CSV FILE
-		// ofstream ip_temp(FILENAME);
-		// int x;
-		// char csv_writer[55];
-	
-		// for(x=0;x<1000;x++){
-		// sprintf(csv_writer,"5-10-2017;13:14:00;500.56;1025.76;0.0;1.03;0.5;0.0;19.7;95.3;");
-		// ip_temp<<csv_writer<<endl;
-		// }
-		// ip_temp.close();
-	
+		
 		uint8_t buf[RH_RF95_MAX_MESSAGE_LEN];
 		uint8_t len = sizeof(buf);
 		uint8_t data[6];	
@@ -275,16 +242,20 @@ int main (int argc, const char* argv[] )
 			
 			// Send every amount of seconds
 			if ( millis() - last_millis > SENDSPEED ) {
-				last_millis = millis();
 				
-				//READ CSV
+				//SENDING TO LoRa server
+				last_millis = millis();
+				received = false;
+				if(send_receive_state != SEND){
+			        send_receive_state = SEND;  
+				}
+				
 				//read csv file and convert the string to an uint8_t array
 				//the uint8_t array is send to the server
 				string csv_data;
 			
 				//OPEN CSV FILE
 				ifstream ip(FILENAME);
-				ofstream ip_temp(FILENAME_TEMP);
 				
 				//WHILE CSV HAS NOT REACHED END OF FILE
 				if(ip.good()){
@@ -292,20 +263,13 @@ int main (int argc, const char* argv[] )
 			
 					//GET PACKET NUMBER
 					sprintf(packet_nr_send,"%03d::",csv_send_packet_nr);
-					printf("\n:::Sending:::\n");
-					printf("\tPacket Nr. %c%c%c\n",packet_nr_send[0],packet_nr_send[1],packet_nr_send[2]);
-			        
-			        //SENDING TO SERVER
-					if(send_receive_state != SEND){
-						rf95.setModeTx();
-						sleep(1);
-				        send_receive_state = SEND;  
-					}
+
 					//GET MESSAGE ID
 					sprintf(message_id, "%01d::", 0);
 			
 					//Check if csv line is not empty and if send data is not saved
 					if(!csv_data.empty()){
+						printf("\n:::Sending:::\n");
 						int x;
 						uint8_t data[csv_data.length()+8];
 			
@@ -314,7 +278,7 @@ int main (int argc, const char* argv[] )
 							data[x]=message_id[x];
 						}
 			
-						//Fill first part of buffer with the packet number
+						//Fill second part of buffer with the packet number
 						for (x=0;x<5;x++){
 							data[x+3]=packet_nr_send[x];
 						}
@@ -330,39 +294,37 @@ int main (int argc, const char* argv[] )
 						printf("\n" );
 						rf95.send(data, send_length);
 						rf95.waitPacketSent();
+						rf95.setModeRx();
 					}
-					else{
-						printf("Empty line in CSV File\n");
-					}
-				}
-				else{
-					printf("Reached end of file\n");
 				}
 			}
 			//RECEIVING
-			if(send_receive_state != RECEIVE){
+			if(send_receive_state != RECEIVE) send_receive_state = RECEIVE;
+
+			if (rf95.available()) { 
 				printf("\n:::Receiving:::\n");
-				send_receive_state = SEND;
-			}
-			rf95.setModeRx();
-			sleep(1);
-			
-			printf("\tsearching for command.....");	
-			if (rf95.waitAvailableTimeout(RECEIVESPEED)) {
+				received = true;
+				
 				for(int i=0;i<sizeof(buf);i++){
 					buf[i] = 0;
 				}
 				uint8_t len = sizeof(buf);
 				rf95.recv(buf, &len);
-				printf("\t\treceived command: %c with message: %s\n", buf[0], buf);
+				printf("\treceived command: %c with message: %s\n", buf[0], buf);
 				if(len > 0){
 					if(buf[0] == '2'){
 						
 						int result = getNum(buf);
-						// printf("received packet_nr: %d \t current packet nr: %d", result, command_received_packet_nr);
+						
 						if (result != command_received_packet_nr) {
-							printf("\tsaving command to csv\n");
-							save_to_csv(buf, sizeof(buf));
+							if(buf[8] == CINSTANT){
+								printf("\tsaving instant command to csv\n");
+								save_to_csv(buf, sizeof(buf), INSTANT);
+							}
+							else if(buf[8] == CQUEUE){
+								printf("\tsaving queue command to csv\n");
+								save_to_csv(buf, sizeof(buf), QUEUE);
+							}
 						}
 					    command_received_packet_nr = result;
 					    
@@ -381,13 +343,11 @@ int main (int argc, const char* argv[] )
 						printbuffer(data, send_length);
 						printf("\n" );
 						rf95.send(data, send_length);
+						rf95.waitPacketSent();
+						rf95.setModeRx();
 					}
 				
 					if (buf[0]=='3'){
-						//READ CSV
-						//read csv file and convert the string to an uint8_t array
-						//the uint8_t array is send to the server
-						string csv_data;
 					
 						//OPEN CSV FILE
 						ifstream ip(FILENAME);
@@ -400,7 +360,6 @@ int main (int argc, const char* argv[] )
 						ip.seekg(0, ios::beg);
 						//Check if send number and received number are equal
 						int result = getNum(buf);
-    		// 			printf("result: %d, packet_nr: %d", result, csv_send_packet_nr);
 						if (result == csv_send_packet_nr){
 							if (buf[6]=='n'){
 									printf("\tNumber compare completed but data is NOT saved!\n");
@@ -408,11 +367,11 @@ int main (int argc, const char* argv[] )
 							else if (buf[6]=='s'){
 								printf("\tNumber Compare completed and data saved!\n");
 								printf("\tData will be deleted from CSV file\n");
-								//saved=true;
-	
+
+								getline(ip,buf_to_temp_data,'\n');
 								while(ip.good()){
-					  			getline(ip,buf_to_temp_data,'\n');
-						    	ip_temp<<buf_to_temp_data<<endl;
+						        	getline(ip,buf_to_temp_data,'\n');
+									if(!buf_to_temp_data.empty()) ip_temp<<buf_to_temp_data<<endl;
 								}
 	
 								ip.close();
@@ -422,22 +381,19 @@ int main (int argc, const char* argv[] )
 									printf("\tremove FAILED!\n");
 									perror("\terror\n");
 								}
+								else{
+									//Create new packet number
+									csv_send_packet_nr++;
+									if (csv_send_packet_nr > 999) csv_send_packet_nr = 0;
+								}
 								rename(FILENAME_TEMP,FILENAME);
-	
-								//Create new packet number
-								csv_send_packet_nr++;
-								if (csv_send_packet_nr > 999){ csv_send_packet_nr = 0;}
 							}
 						}
-						else{
-							printf("\tNumber compare completed but packet numbers dont match\n");
-						}
+						else printf("\tNumber compare completed but packet numbers dont match\n");
 					} 
 				}
 			}
-			else{
-				printf("\tno command received\n");
-			}
+			bcm2835_delay(RECEIVESPEED);
 		}
 	
 	#ifdef RF_LED_PIN
