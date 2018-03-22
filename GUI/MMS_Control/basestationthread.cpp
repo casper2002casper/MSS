@@ -10,12 +10,13 @@
 basestationThread::basestationThread(int socketDescriptor, QObject *parent)
     : QThread(parent), socketDescriptor(socketDescriptor), lastRecievedDataPacketNum(-1), lastRecievedReplyPacketNum(-1)
 {
-    MainWindow mw;
     tcpSocket.setSocketDescriptor(socketDescriptor);
     qDebug("Thread created \n");
     connect(&tcpSocket, SIGNAL(readyRead()),this, SLOT(readyRead()));
     connect(&tcpSocket, SIGNAL(disconnected()),this, SLOT(disconnected()));
-    connect(&mw, SIGNAL(command()),this, SLOT(sendCommand()));
+
+    MainWindow mw;
+    connect(&mw, SIGNAL(command(QString)),this, SLOT(sendCommand(QString)));
 }
 void basestationThread::disconnected(){
     qDebug("Connection disconnected \n");
@@ -44,7 +45,7 @@ void basestationThread::run()
         }
     }
 }
-void basestationThread::sendCommand(){
+void basestationThread::sendCommand(QString comm){
         char packet_nr_send[3];
         char command[200];
         for(int i =0; i<sizeof(command);i++){
@@ -70,6 +71,7 @@ void basestationThread::sendCommand(){
         command[17] = ';';
 
         qDebug("Writing");
+        qDebug(comm.toLatin1());
         tcpSocket.write("2::102::0::0::1;2;3;4;2.5;\n");
         tcpSocket.flush();
         tcpSocket.waitForBytesWritten(3000);

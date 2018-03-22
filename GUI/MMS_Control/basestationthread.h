@@ -14,9 +14,10 @@ class basestationThread : public QThread
 public:
     basestationThread() = default;
     basestationThread(int socketDescriptor, QObject *parent);
-
-
     void run() override;
+
+public slots:
+    void sendCommand(QString comm);
 
 signals:
     void error(QTcpSocket::SocketError socketError);
@@ -31,9 +32,8 @@ private:
     QString text;
     int getNum(char array[]);
     int writeToFile(const char filename[], char text[]);
-    void sendCommand();
 
-    void sendCommand(int command);
+
 
 private slots:
      void readyRead();

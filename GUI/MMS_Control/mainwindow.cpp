@@ -20,7 +20,9 @@ MainWindow::MainWindow(QWidget *parent) :
     ui(new Ui::MainWindow)
 {
     basestationThread bsthread;
-    connect(&bsthread, SIGNAL(newMessage(QString)),this, SLOT(inputData()));
+    connect(&bsthread, SIGNAL(newMessage(QString)),this, SLOT(inputData(QString)));
+    //connect(this, SIGNAL(command(QString)),&bsthread, SLOT(sendCommand(QString)));
+   // connect(this, SIGNAL(command(QString)), SLOT(inputData(QString)));
 
     ui->setupUi(this);
  //   ui->lastCommandSendList->hide();
@@ -43,7 +45,7 @@ MainWindow::MainWindow(QWidget *parent) :
         close();
         return;
     }
-    qDebug("Port: %d\n",(quint16) port);
+    qDebug("Port: %d",(quint16) port);
     qDebug("IP: " + ip.toString().toLatin1());
 }
 
@@ -64,22 +66,22 @@ void MainWindow::on_actionLast_data_recieved_triggered(bool checked)
 
 void MainWindow::on_startButton_clicked()
 {
-    emit command(1);
+    emit command(QString("tes"));
 }
 
 void MainWindow::on_stopButton_clicked()
 {
-    emit command(2);
+    //emit command(2);
 }
 
 void MainWindow::on_pauseButton_clicked()
 {
-   emit command(3);
+   //emit command(3);
 }
 
 void MainWindow::on_resumeButton_clicked()
 {
-    emit command(4);
+    //emit command(4);
 }
 
 void MainWindow::on_actionPrint_triggered()

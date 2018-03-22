@@ -34,8 +34,8 @@ static const qt_meta_stringdata_MainWindow_t qt_meta_stringdata_MainWindow = {
 QT_MOC_LITERAL(0, 0, 10), // "MainWindow"
 QT_MOC_LITERAL(1, 11, 7), // "command"
 QT_MOC_LITERAL(2, 19, 0), // ""
-QT_MOC_LITERAL(3, 20, 9), // "inputData"
-QT_MOC_LITERAL(4, 30, 7), // "message"
+QT_MOC_LITERAL(3, 20, 7), // "message"
+QT_MOC_LITERAL(4, 28, 9), // "inputData"
 QT_MOC_LITERAL(5, 38, 41), // "on_actionShow_last_command_se..."
 QT_MOC_LITERAL(6, 80, 7), // "checked"
 QT_MOC_LITERAL(7, 88, 37), // "on_actionLast_data_recieved_t..."
@@ -47,7 +47,7 @@ QT_MOC_LITERAL(12, 218, 24), // "on_actionPrint_triggered"
 QT_MOC_LITERAL(13, 243, 24) // "on_connectButton_clicked"
 
     },
-    "MainWindow\0command\0\0inputData\0message\0"
+    "MainWindow\0command\0\0message\0inputData\0"
     "on_actionShow_last_command_send_triggered\0"
     "checked\0on_actionLast_data_recieved_triggered\0"
     "on_startButton_clicked\0on_stopButton_clicked\0"
@@ -74,7 +74,7 @@ static const uint qt_meta_data_MainWindow[] = {
        1,    1,   64,    2, 0x06 /* Public */,
 
  // slots: name, argc, parameters, tag, flags
-       3,    1,   67,    2, 0x08 /* Private */,
+       4,    1,   67,    2, 0x08 /* Private */,
        5,    1,   70,    2, 0x08 /* Private */,
        7,    1,   73,    2, 0x08 /* Private */,
        8,    0,   76,    2, 0x08 /* Private */,
@@ -85,10 +85,10 @@ static const uint qt_meta_data_MainWindow[] = {
       13,    0,   81,    2, 0x08 /* Private */,
 
  // signals: parameters
-    QMetaType::Void, QMetaType::Int,    1,
+    QMetaType::Void, QMetaType::QString,    3,
 
  // slots: parameters
-    QMetaType::Void, QMetaType::QString,    4,
+    QMetaType::Void, QMetaType::QString,    3,
     QMetaType::Void, QMetaType::Bool,    6,
     QMetaType::Void, QMetaType::Bool,    6,
     QMetaType::Void,
@@ -107,7 +107,7 @@ void MainWindow::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, 
         MainWindow *_t = static_cast<MainWindow *>(_o);
         Q_UNUSED(_t)
         switch (_id) {
-        case 0: _t->command((*reinterpret_cast< int(*)>(_a[1]))); break;
+        case 0: _t->command((*reinterpret_cast< QString(*)>(_a[1]))); break;
         case 1: _t->inputData((*reinterpret_cast< QString(*)>(_a[1]))); break;
         case 2: _t->on_actionShow_last_command_send_triggered((*reinterpret_cast< bool(*)>(_a[1]))); break;
         case 3: _t->on_actionLast_data_recieved_triggered((*reinterpret_cast< bool(*)>(_a[1]))); break;
@@ -122,7 +122,7 @@ void MainWindow::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, 
     } else if (_c == QMetaObject::IndexOfMethod) {
         int *result = reinterpret_cast<int *>(_a[0]);
         {
-            typedef void (MainWindow::*_t)(int );
+            typedef void (MainWindow::*_t)(QString );
             if (*reinterpret_cast<_t *>(_a[1]) == static_cast<_t>(&MainWindow::command)) {
                 *result = 0;
                 return;
@@ -168,7 +168,7 @@ int MainWindow::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
 }
 
 // SIGNAL 0
-void MainWindow::command(int _t1)
+void MainWindow::command(QString _t1)
 {
     void *_a[] = { nullptr, const_cast<void*>(reinterpret_cast<const void*>(&_t1)) };
     QMetaObject::activate(this, &staticMetaObject, 0, _a);

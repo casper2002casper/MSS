@@ -41,7 +41,8 @@ public:
     ~MainWindow();
 
 signals:
-    void command(int command);
+   // void command(int command);
+    void command(QString message);
 
 private slots:
     void inputData(QString message);
