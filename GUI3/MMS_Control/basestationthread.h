@@ -4,35 +4,25 @@
 #include <QThread>
 #include <QTcpSocket>
 #include <QTcpServer>
+#include <QtWidgets>
 
 class basestationThread : public QThread
 {
     Q_OBJECT
 
 public:
-    basestationThread(int socketDescriptor, QObject *parent);
-    //void send(char command[]);
-    //char client_message[2000];
-
+    basestationThread() = default;
+    basestationThread(QTcpSocket *socket, QObject *parent = 0);
+    QString command = "-";
     void run() override;
 
 signals:
     void error(QTcpSocket::SocketError socketError);
 
 private:
-    QTcpSocket tcpSocket;
-    int socketDescriptor;
-    int lastRecievedDataPacketNum;
-    int lastRecievedReplyPacketNum;
 
-    QString text;
-    int getNum(char array[]);
-    int writeToFile(const char filename[], char text[]);
-    void getData();
-
-private slots:
-     void readyRead();
-     void disconnected();
+    QTcpSocket *_socket;
+    QMutex m_mutex;
 };
 
 #endif // BASESTATIONTHREAD_H

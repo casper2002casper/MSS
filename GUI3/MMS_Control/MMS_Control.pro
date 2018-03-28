@@ -30,13 +30,14 @@ SOURCES += \
     charts.cpp \
     main.cpp \
     mainwindow.cpp \
-    basestationserver.cpp
+    basestationserver.cpp \
+    basestationthread.cpp
 
 HEADERS += \
     mainwindow.h \
     charts.h \
-    basestationserver.h
-
+    basestationserver.h \
+    basestationthread.h
 FORMS += \
     mainwindow.ui
 

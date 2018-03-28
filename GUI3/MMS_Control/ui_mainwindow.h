@@ -38,6 +38,7 @@ public:
     QAction *actionShow_last_command_send;
     QAction *actionLast_data_recieved;
     QAction *actionPrint;
+    QAction *actionNew_file;
     QWidget *centralwidget;
     QGridLayout *gridLayout_2;
     QVBoxLayout *verticalLayout;
@@ -93,6 +94,8 @@ public:
         actionLast_data_recieved->setCheckable(true);
         actionPrint = new QAction(MainWindow);
         actionPrint->setObjectName(QStringLiteral("actionPrint"));
+        actionNew_file = new QAction(MainWindow);
+        actionNew_file->setObjectName(QStringLiteral("actionNew_file"));
         centralwidget = new QWidget(MainWindow);
         centralwidget->setObjectName(QStringLiteral("centralwidget"));
         gridLayout_2 = new QGridLayout(centralwidget);
@@ -282,6 +285,7 @@ public:
         menubar->addAction(menuFile->menuAction());
         menubar->addAction(menuCommands->menuAction());
         menuFile->addAction(actionOpen_file);
+        menuFile->addAction(actionNew_file);
         menuFile->addSeparator();
         menuFile->addAction(actionPrint);
         menuCommands->addAction(actionShow_last_command_send);
@@ -302,6 +306,10 @@ public:
         actionShow_last_command_send->setText(QApplication::translate("MainWindow", "Last command send", nullptr));
         actionLast_data_recieved->setText(QApplication::translate("MainWindow", "Last data recieved", nullptr));
         actionPrint->setText(QApplication::translate("MainWindow", "Print", nullptr));
+        actionNew_file->setText(QApplication::translate("MainWindow", "New file", nullptr));
+#ifndef QT_NO_TOOLTIP
+        actionNew_file->setToolTip(QApplication::translate("MainWindow", "Create a new file", nullptr));
+#endif // QT_NO_TOOLTIP
         connectButton->setText(QApplication::translate("MainWindow", "Connect", nullptr));
         startButton->setText(QApplication::translate("MainWindow", "Start", nullptr));
         stopButton->setText(QApplication::translate("MainWindow", "Stop", nullptr));

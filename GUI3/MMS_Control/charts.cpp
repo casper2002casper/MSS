@@ -5,6 +5,7 @@
 #include <QtCharts>
 #include <QtWidgets>
 #include <QtCore>
+#include <QDateTime>
 
 
 ChartsMaker::ChartsMaker():
@@ -39,37 +40,85 @@ DataTable ChartsMaker::generateRandomData(int listCount, int valueMax, int value
     return dataTable;
 }
 
-QChart *ChartsMaker::createRHChart() const
+void ChartsMaker::updateCSV(QString location)
+{
+    //location = "/home/casper/BaseStationMeasurementData.csv";
+    //QList<QString> labels({"PosX", "PosY","PosZ","SpeedX","SpeedY","SpeedZ","Temperature","Humidity","Lux","Par","CO2"});
+    //qDebug("Opening " + location.toLatin1());
+    data.clear();
+    qint64 mintime = 0;
+    QFile file(location);
+    if (!file.open(QIODevice::ReadOnly)) {
+            qDebug() << file.errorString();
+    }
+    while (!file.atEnd()) {
+       QByteArray line = file.readLine();
+       QList<QByteArray> splitline = line.split(';');
+       QList<float> row;
+       //9-3-2018;9:35:16
+       //13-3-2018;14:10:2
+       QString date = splitline[0] + splitline[1];
+       QDateTime dateTime = QDateTime::fromString(date,"d-M-yyyyh:m:s");
+       if(mintime == 0) mintime = dateTime.toSecsSinceEpoch();
+       row.append(dateTime.toSecsSinceEpoch() - mintime);
+       for (int i = 2; i < splitline.size(); ++i) {
+           row.append(QString(splitline[i]).toFloat());
+           //qDebug(labels[i].toLatin1() + "%f",QString(splitline[i]).toFloat());
+       }
+       data.append(row);
+    }
+    file.close();
+//    qDebug("updatedone ");
+//    for (int i = 0; i < data[5].size(); ++i) {
+//         qDebug("%f",data[5][i]);
+//    }
+
+}
+
+QLineSeries *ChartsMaker::CreateSeries(int Xindex, int Yindex){
+    //qDebug("create ");
+    //qDebug("%f",data[0][7]);
+    QLineSeries *series = new QLineSeries();
+    QList<QPointF> list;
+    for (int i = 0; i < data.size(); i++) {
+        list.append(QPointF(data[i][Xindex], data[i][Yindex]));
+    }
+    series->append(list);
+//    qDebug("createdone ");
+    return series;
+}
+
+float ChartsMaker::getMin(int index){
+    float min = std::numeric_limits<float>::max();
+    for (int i = 0; i < data.size(); i++) {
+        if(data[i][index] < min) min = data[i][index];
+    }
+    //qDebug("min %f",min);
+    return min;
+}
+
+float ChartsMaker::getMax(int index){
+    float max = std::numeric_limits<float>::min();
+    for (int i = 0; i < data.size(); i++) {
+        if(data[i][index] > max) max = data[i][index];
+    }
+    //qDebug("max %f",max);
+    return max;
+}
+
+
+
+QChart *ChartsMaker::createChart(QString Title,int XSeries,int YSeries)
 {
     QChart *chart = new QChart();
-    chart->setTitle("RH chart");
+    chart->setTitle(Title);
 
-    // The lower series initialized to zero values
-    QLineSeries *lowerSeries = 0;
-    QString name("Series ");
-    int nameIndex = 0;
-    for (int i(0); i < m_dataTable.count(); i++) {
-        QLineSeries *upperSeries = new QLineSeries(chart);
-        for (int j(0); j < m_dataTable[i].count(); j++) {
-            Data data = m_dataTable[i].at(j);
-            if (lowerSeries) {
-                const QVector<QPointF>& points = lowerSeries->pointsVector();
-                upperSeries->append(QPointF(j, points[i].y() + data.first.y()));
-            } else {
-                upperSeries->append(QPointF(j, data.first.y()));
-            }
-        }
-        QAreaSeries *area = new QAreaSeries(upperSeries, lowerSeries);
-        area->setName(name + QString::number(nameIndex));
-        nameIndex++;
-        chart->addSeries(area);
-        lowerSeries = upperSeries;
-    }
-
+    chart->addSeries(CreateSeries(XSeries,YSeries));
     chart->createDefaultAxes();
-    chart->axisX()->setRange(0, 24 - 1);
-    chart->axisY()->setRange(0, 30);
-
+    chart->axisX()->setRange(getMin(XSeries),getMax(XSeries));
+//    qDebug("min %f",getMin(XSeries));
+//    qDebug("max %f",getMax(XSeries));
+    chart->axisY()->setRange(getMin(YSeries) * 0.99,getMax(YSeries) * 1.01);
     chart->layout()->setContentsMargins(0, 0, 0, 0);
     chart->setBackgroundRoundness(0);
 

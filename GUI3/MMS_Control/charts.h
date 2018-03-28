@@ -4,6 +4,7 @@
 #include <QMainWindow>
 #include <QtWidgets/QWidget>
 #include <QtCharts/QChartGlobal>
+#include <QtCharts/QLineSeries>
 
 QT_BEGIN_NAMESPACE
 class QComboBox;
@@ -30,10 +31,11 @@ class ChartsMaker : public QWidget
 public:
     ChartsMaker();
 
-    QChart *createRHChart() const;
+    QChart *createChart(QString Title,int XSeries,int YSeries);
+    void updateCSV(QString location);
 
 private slots:
-    DataTable generateRandomData(int listCount, int valueMax, int valueCount) const;
+    DataTable generateRandomData(int listCount, int valueMax, int valueCount)const;
 
 
 private:
@@ -41,6 +43,10 @@ private:
     int m_valueMax;
     int m_valueCount;
     DataTable m_dataTable;
+    QList<QList<float>> data;
+    QLineSeries *CreateSeries(int Xindex, int Yindex);
+    float getMax(int index);
+    float getMin(int index);
 };
 
 #endif // CHARTS_H

@@ -6,7 +6,9 @@
 #include <QtCharts/QChartGlobal>
 #include <QWidget>
 
-#include <basestationserver.h>
+#include "basestationserver.h"
+//#include "basestationthread.h"
+#include "charts.h"
 
 QT_BEGIN_NAMESPACE
 class QComboBox;
@@ -57,9 +59,22 @@ private slots:
 
     void on_connectButton_clicked();
 
+    void on_actionOpen_file_triggered();
+
+    void on_actionNew_file_triggered();
+
+    void connected();
+    void disconnected();
+
 private:
     Ui::MainWindow *ui;
+    ChartsMaker ch;
     basestationServer bs;
+
+    void updateCharts();
+
+    enum type {Time, PosX, PosY, PosZ, SpeedX, SpeedY, SpeedZ, Temperature, Humidity, Lux, Par, CO2};
+    QString filepath;
 
 };
 
