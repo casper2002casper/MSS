@@ -39,18 +39,9 @@ public:
     QAction *actionLast_data_recieved;
     QAction *actionPrint;
     QAction *actionNew_file;
+    QAction *actionAdvanced;
     QWidget *centralwidget;
     QGridLayout *gridLayout_2;
-    QVBoxLayout *verticalLayout;
-    QSpacerItem *verticalSpacer_2;
-    QPushButton *connectButton;
-    QSpacerItem *verticalSpacer_4;
-    QPushButton *startButton;
-    QPushButton *stopButton;
-    QSpacerItem *verticalSpacer;
-    QPushButton *pauseButton;
-    QPushButton *resumeButton;
-    QSpacerItem *verticalSpacer_3;
     QVBoxLayout *verticalLayout_2;
     QListWidget *lastCommandSendList;
     QListWidget *lastDataRecievedList;
@@ -74,6 +65,18 @@ public:
     QHBoxLayout *projectScout;
     QFrame *line;
     QLabel *label;
+    QVBoxLayout *verticalLayout;
+    QSpacerItem *verticalSpacer_2;
+    QPushButton *connectButton;
+    QSpacerItem *verticalSpacer_4;
+    QPushButton *startButton;
+    QPushButton *stopButton;
+    QPushButton *pauseButton;
+    QPushButton *resumeButton;
+    QSpacerItem *verticalSpacer_3;
+    QPushButton *driveButton;
+    QPushButton *measureButton;
+    QSpacerItem *verticalSpacer_5;
     QMenuBar *menubar;
     QMenu *menuFile;
     QMenu *menuCommands;
@@ -89,6 +92,7 @@ public:
         actionShow_last_command_send = new QAction(MainWindow);
         actionShow_last_command_send->setObjectName(QStringLiteral("actionShow_last_command_send"));
         actionShow_last_command_send->setCheckable(true);
+        actionShow_last_command_send->setChecked(false);
         actionLast_data_recieved = new QAction(MainWindow);
         actionLast_data_recieved->setObjectName(QStringLiteral("actionLast_data_recieved"));
         actionLast_data_recieved->setCheckable(true);
@@ -96,71 +100,13 @@ public:
         actionPrint->setObjectName(QStringLiteral("actionPrint"));
         actionNew_file = new QAction(MainWindow);
         actionNew_file->setObjectName(QStringLiteral("actionNew_file"));
+        actionAdvanced = new QAction(MainWindow);
+        actionAdvanced->setObjectName(QStringLiteral("actionAdvanced"));
+        actionAdvanced->setCheckable(true);
         centralwidget = new QWidget(MainWindow);
         centralwidget->setObjectName(QStringLiteral("centralwidget"));
         gridLayout_2 = new QGridLayout(centralwidget);
         gridLayout_2->setObjectName(QStringLiteral("gridLayout_2"));
-        verticalLayout = new QVBoxLayout();
-        verticalLayout->setObjectName(QStringLiteral("verticalLayout"));
-        verticalLayout->setSizeConstraint(QLayout::SetDefaultConstraint);
-        verticalSpacer_2 = new QSpacerItem(20, 13, QSizePolicy::Minimum, QSizePolicy::Fixed);
-
-        verticalLayout->addItem(verticalSpacer_2);
-
-        connectButton = new QPushButton(centralwidget);
-        connectButton->setObjectName(QStringLiteral("connectButton"));
-        QSizePolicy sizePolicy(QSizePolicy::Maximum, QSizePolicy::Fixed);
-        sizePolicy.setHorizontalStretch(0);
-        sizePolicy.setVerticalStretch(0);
-        sizePolicy.setHeightForWidth(connectButton->sizePolicy().hasHeightForWidth());
-        connectButton->setSizePolicy(sizePolicy);
-
-        verticalLayout->addWidget(connectButton);
-
-        verticalSpacer_4 = new QSpacerItem(20, 20, QSizePolicy::Minimum, QSizePolicy::Fixed);
-
-        verticalLayout->addItem(verticalSpacer_4);
-
-        startButton = new QPushButton(centralwidget);
-        startButton->setObjectName(QStringLiteral("startButton"));
-        sizePolicy.setHeightForWidth(startButton->sizePolicy().hasHeightForWidth());
-        startButton->setSizePolicy(sizePolicy);
-
-        verticalLayout->addWidget(startButton);
-
-        stopButton = new QPushButton(centralwidget);
-        stopButton->setObjectName(QStringLiteral("stopButton"));
-        sizePolicy.setHeightForWidth(stopButton->sizePolicy().hasHeightForWidth());
-        stopButton->setSizePolicy(sizePolicy);
-
-        verticalLayout->addWidget(stopButton);
-
-        verticalSpacer = new QSpacerItem(20, 40, QSizePolicy::Minimum, QSizePolicy::Fixed);
-
-        verticalLayout->addItem(verticalSpacer);
-
-        pauseButton = new QPushButton(centralwidget);
-        pauseButton->setObjectName(QStringLiteral("pauseButton"));
-        sizePolicy.setHeightForWidth(pauseButton->sizePolicy().hasHeightForWidth());
-        pauseButton->setSizePolicy(sizePolicy);
-
-        verticalLayout->addWidget(pauseButton);
-
-        resumeButton = new QPushButton(centralwidget);
-        resumeButton->setObjectName(QStringLiteral("resumeButton"));
-        sizePolicy.setHeightForWidth(resumeButton->sizePolicy().hasHeightForWidth());
-        resumeButton->setSizePolicy(sizePolicy);
-        resumeButton->setFlat(false);
-
-        verticalLayout->addWidget(resumeButton);
-
-        verticalSpacer_3 = new QSpacerItem(20, 40, QSizePolicy::Minimum, QSizePolicy::Expanding);
-
-        verticalLayout->addItem(verticalSpacer_3);
-
-
-        gridLayout_2->addLayout(verticalLayout, 0, 0, 1, 1);
-
         verticalLayout_2 = new QVBoxLayout();
         verticalLayout_2->setObjectName(QStringLiteral("verticalLayout_2"));
         verticalLayout_2->setSizeConstraint(QLayout::SetDefaultConstraint);
@@ -240,20 +186,20 @@ public:
 
         projectScout_2 = new QWidget(centralwidget);
         projectScout_2->setObjectName(QStringLiteral("projectScout_2"));
-        QSizePolicy sizePolicy1(QSizePolicy::Expanding, QSizePolicy::Preferred);
-        sizePolicy1.setHorizontalStretch(1);
-        sizePolicy1.setVerticalStretch(0);
-        sizePolicy1.setHeightForWidth(projectScout_2->sizePolicy().hasHeightForWidth());
-        projectScout_2->setSizePolicy(sizePolicy1);
+        QSizePolicy sizePolicy(QSizePolicy::Expanding, QSizePolicy::Preferred);
+        sizePolicy.setHorizontalStretch(1);
+        sizePolicy.setVerticalStretch(0);
+        sizePolicy.setHeightForWidth(projectScout_2->sizePolicy().hasHeightForWidth());
+        projectScout_2->setSizePolicy(sizePolicy);
         projectScout = new QHBoxLayout(projectScout_2);
         projectScout->setObjectName(QStringLiteral("projectScout"));
         line = new QFrame(projectScout_2);
         line->setObjectName(QStringLiteral("line"));
-        QSizePolicy sizePolicy2(QSizePolicy::Expanding, QSizePolicy::Minimum);
-        sizePolicy2.setHorizontalStretch(0);
-        sizePolicy2.setVerticalStretch(0);
-        sizePolicy2.setHeightForWidth(line->sizePolicy().hasHeightForWidth());
-        line->setSizePolicy(sizePolicy2);
+        QSizePolicy sizePolicy1(QSizePolicy::Expanding, QSizePolicy::Minimum);
+        sizePolicy1.setHorizontalStretch(0);
+        sizePolicy1.setVerticalStretch(0);
+        sizePolicy1.setHeightForWidth(line->sizePolicy().hasHeightForWidth());
+        line->setSizePolicy(sizePolicy1);
         line->setLineWidth(1);
         line->setMidLineWidth(2);
         line->setFrameShape(QFrame::HLine);
@@ -269,10 +215,85 @@ public:
 
         gridLayout_2->addWidget(projectScout_2, 1, 0, 1, 1);
 
+        verticalLayout = new QVBoxLayout();
+        verticalLayout->setObjectName(QStringLiteral("verticalLayout"));
+        verticalLayout->setSizeConstraint(QLayout::SetDefaultConstraint);
+        verticalSpacer_2 = new QSpacerItem(20, 13, QSizePolicy::Minimum, QSizePolicy::Fixed);
+
+        verticalLayout->addItem(verticalSpacer_2);
+
+        connectButton = new QPushButton(centralwidget);
+        connectButton->setObjectName(QStringLiteral("connectButton"));
+        QSizePolicy sizePolicy2(QSizePolicy::Maximum, QSizePolicy::Fixed);
+        sizePolicy2.setHorizontalStretch(0);
+        sizePolicy2.setVerticalStretch(0);
+        sizePolicy2.setHeightForWidth(connectButton->sizePolicy().hasHeightForWidth());
+        connectButton->setSizePolicy(sizePolicy2);
+
+        verticalLayout->addWidget(connectButton);
+
+        verticalSpacer_4 = new QSpacerItem(20, 20, QSizePolicy::Minimum, QSizePolicy::Fixed);
+
+        verticalLayout->addItem(verticalSpacer_4);
+
+        startButton = new QPushButton(centralwidget);
+        startButton->setObjectName(QStringLiteral("startButton"));
+        sizePolicy2.setHeightForWidth(startButton->sizePolicy().hasHeightForWidth());
+        startButton->setSizePolicy(sizePolicy2);
+
+        verticalLayout->addWidget(startButton);
+
+        stopButton = new QPushButton(centralwidget);
+        stopButton->setObjectName(QStringLiteral("stopButton"));
+        sizePolicy2.setHeightForWidth(stopButton->sizePolicy().hasHeightForWidth());
+        stopButton->setSizePolicy(sizePolicy2);
+
+        verticalLayout->addWidget(stopButton);
+
+        pauseButton = new QPushButton(centralwidget);
+        pauseButton->setObjectName(QStringLiteral("pauseButton"));
+        sizePolicy2.setHeightForWidth(pauseButton->sizePolicy().hasHeightForWidth());
+        pauseButton->setSizePolicy(sizePolicy2);
+
+        verticalLayout->addWidget(pauseButton);
+
+        resumeButton = new QPushButton(centralwidget);
+        resumeButton->setObjectName(QStringLiteral("resumeButton"));
+        sizePolicy2.setHeightForWidth(resumeButton->sizePolicy().hasHeightForWidth());
+        resumeButton->setSizePolicy(sizePolicy2);
+        resumeButton->setFlat(false);
+
+        verticalLayout->addWidget(resumeButton);
+
+        verticalSpacer_3 = new QSpacerItem(20, 20, QSizePolicy::Minimum, QSizePolicy::Fixed);
+
+        verticalLayout->addItem(verticalSpacer_3);
+
+        driveButton = new QPushButton(centralwidget);
+        driveButton->setObjectName(QStringLiteral("driveButton"));
+        sizePolicy2.setHeightForWidth(driveButton->sizePolicy().hasHeightForWidth());
+        driveButton->setSizePolicy(sizePolicy2);
+
+        verticalLayout->addWidget(driveButton);
+
+        measureButton = new QPushButton(centralwidget);
+        measureButton->setObjectName(QStringLiteral("measureButton"));
+        sizePolicy2.setHeightForWidth(measureButton->sizePolicy().hasHeightForWidth());
+        measureButton->setSizePolicy(sizePolicy2);
+
+        verticalLayout->addWidget(measureButton);
+
+        verticalSpacer_5 = new QSpacerItem(20, 40, QSizePolicy::Minimum, QSizePolicy::Expanding);
+
+        verticalLayout->addItem(verticalSpacer_5);
+
+
+        gridLayout_2->addLayout(verticalLayout, 0, 0, 1, 1);
+
         MainWindow->setCentralWidget(centralwidget);
         menubar = new QMenuBar(MainWindow);
         menubar->setObjectName(QStringLiteral("menubar"));
-        menubar->setGeometry(QRect(0, 0, 962, 22));
+        menubar->setGeometry(QRect(0, 0, 962, 26));
         menuFile = new QMenu(menubar);
         menuFile->setObjectName(QStringLiteral("menuFile"));
         menuCommands = new QMenu(menubar);
@@ -290,6 +311,8 @@ public:
         menuFile->addAction(actionPrint);
         menuCommands->addAction(actionShow_last_command_send);
         menuCommands->addAction(actionLast_data_recieved);
+        menuCommands->addSeparator();
+        menuCommands->addAction(actionAdvanced);
 
         retranslateUi(MainWindow);
 
@@ -310,11 +333,10 @@ public:
 #ifndef QT_NO_TOOLTIP
         actionNew_file->setToolTip(QApplication::translate("MainWindow", "Create a new file", nullptr));
 #endif // QT_NO_TOOLTIP
-        connectButton->setText(QApplication::translate("MainWindow", "Connect", nullptr));
-        startButton->setText(QApplication::translate("MainWindow", "Start", nullptr));
-        stopButton->setText(QApplication::translate("MainWindow", "Stop", nullptr));
-        pauseButton->setText(QApplication::translate("MainWindow", "Pause", nullptr));
-        resumeButton->setText(QApplication::translate("MainWindow", "Resume", nullptr));
+        actionAdvanced->setText(QApplication::translate("MainWindow", "Advanced", nullptr));
+#ifndef QT_NO_TOOLTIP
+        actionAdvanced->setToolTip(QApplication::translate("MainWindow", "Activate advanced options", nullptr));
+#endif // QT_NO_TOOLTIP
         chartTabs->setTabText(chartTabs->indexOf(temperatureTab), QApplication::translate("MainWindow", "Temperature", nullptr));
         chartTabs->setTabToolTip(chartTabs->indexOf(temperatureTab), QApplication::translate("MainWindow", "Temperature chart", nullptr));
         chartTabs->setTabText(chartTabs->indexOf(rhTab), QApplication::translate("MainWindow", "RH", nullptr));
@@ -326,6 +348,13 @@ public:
         chartTabs->setTabText(chartTabs->indexOf(luxTab), QApplication::translate("MainWindow", "Lux", nullptr));
         chartTabs->setTabToolTip(chartTabs->indexOf(luxTab), QApplication::translate("MainWindow", "Illuminance chart", nullptr));
         label->setText(QApplication::translate("MainWindow", "Project SCOUT - 2018", nullptr));
+        connectButton->setText(QApplication::translate("MainWindow", "Connect", nullptr));
+        startButton->setText(QApplication::translate("MainWindow", "Start", nullptr));
+        stopButton->setText(QApplication::translate("MainWindow", "Stop", nullptr));
+        pauseButton->setText(QApplication::translate("MainWindow", "Pause", nullptr));
+        resumeButton->setText(QApplication::translate("MainWindow", "Resume", nullptr));
+        driveButton->setText(QApplication::translate("MainWindow", "Drive", nullptr));
+        measureButton->setText(QApplication::translate("MainWindow", "Measure", nullptr));
         menuFile->setTitle(QApplication::translate("MainWindow", "File", nullptr));
         menuCommands->setTitle(QApplication::translate("MainWindow", "Commands", nullptr));
     } // retranslateUi

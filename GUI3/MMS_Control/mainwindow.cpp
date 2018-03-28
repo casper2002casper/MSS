@@ -2,47 +2,61 @@
 
 #include "basestationserver.h"
 #include "ui_mainwindow.h"
+#include "ui_drivedialog.h"
+#include "ui_measuredialog.h"
+#include "ui_pausedialog.h"
+#include "ui_startdialog.h"
 
 #include <QDialog>
 #include <QtCharts>
 #include <QtWidgets>
 #include <QtCore>
 #include <QtNetwork>
+#include <QtQuick/QQuickItem>
 
 #include <QPrinter>
 #include <QPrintDialog>
 #include <QPrintPreviewDialog>
 
 MainWindow::MainWindow(QWidget *parent) :
-
     QMainWindow(parent),
-
-    ui(new Ui::MainWindow)
+    ui(new Ui::MainWindow),
+    D_drive(new Ui::DriveDialog),
+    D_measure(new Ui::MeasureDialog),
+    D_pause(new Ui::PauseDialog),
+    D_start(new Ui::StartDialog)
 {
     connect(&bs, SIGNAL(newMessage(QString)),this, SLOT(inputData(QString)));
     connect(&bs, SIGNAL(connected()),this, SLOT(connected()));
     connect(&bs, SIGNAL(disconnecting()),this, SLOT(disconnected()));
+
+    connect(&D_pause->buttonBox, SIGNAL(accept()), this, SLOT(pauseCommand()));
+
     ui->setupUi(this);
- //   ui->lastCommandSendList->hide();
+    D_drive->setupUi(driveUi);
+    D_measure->setupUi(measureUi);
+    D_pause->setupUi(pauseUi);
+    D_start->setupUi(startUi);
+
+    ui->lastCommandSendList->hide();
     ui->lastDataRecievedList->hide();
     ui->connectButton->setEnabled(true);
-
-
     ui->statusbar->addPermanentWidget(ui->projectScout_2);
 
-
-
+    /*
+    ui->startButton->setEnabled(false);
+    ui->stopButton->setEnabled(false);
+    ui->pauseButton->setEnabled(false);
+    ui->resumeButton->setEnabled(false);
+    ui->driveButton->setEnabled(false);
+    ui->measureButton->setEnabled(false); */
 }
 
 MainWindow::~MainWindow()
 {    delete ui;}
 
 void MainWindow::enableConnectButton(bool on)
-{
-    ui->connectButton->setEnabled(on);
-
-
-}
+{ui->connectButton->setEnabled(on);}
 
 void MainWindow::on_actionShow_last_command_send_triggered(bool checked)
 {    checked ? ui->lastCommandSendList->show() : ui->lastCommandSendList->hide();}
@@ -51,24 +65,22 @@ void MainWindow::on_actionLast_data_recieved_triggered(bool checked)
 {    checked ? ui->lastDataRecievedList->show() : ui->lastDataRecievedList->hide();}
 
 void MainWindow::on_startButton_clicked()
-{
-    bs.makeCommand("2::010::0::1;0;");
-}
+{(ui->actionAdvanced->isChecked()) ? startUi->show(): qDebug("test");/*bs.makeCommand("2::010::0::1;0;");*/}
 
 void MainWindow::on_stopButton_clicked()
-{
-    bs.makeCommand("2::010::1::5::2.1;5;3;4;2.5;2;2;2;");
-}
+{ bs.makeCommand("2::010::1::5::2.1;5;3;4;2.5;2;2;2;");}
 
 void MainWindow::on_pauseButton_clicked()
-{
-    bs.makeCommand("2::010::0::5::2.1;5;3;4;2.5;2;2;2;");
-}
+{(ui->actionAdvanced->isChecked()) ? pauseUi->show(): qDebug("test");/*bs.makeCommand("2::010::0::1;0;");*/}
 
 void MainWindow::on_resumeButton_clicked()
-{
-    bs.makeCommand("2::010::0::5::2.1;5;3;4;2.5;2;2;2;");
-}
+{bs.makeCommand("2::010::0::5::2.1;5;3;4;2.5;2;2;2;");}
+
+void MainWindow::on_driveButton_clicked()
+{(ui->actionAdvanced->isChecked()) ? driveUi->show(): qDebug("test");/*bs.makeCommand("2::010::0::1;0;");*/}
+
+void MainWindow::on_measureButton_clicked()
+{(ui->actionAdvanced->isChecked()) ? measureUi->show(): qDebug("test");/*bs.makeCommand("2::010::0::1;0;");*/}
 
 void MainWindow::on_actionPrint_triggered()
 {
@@ -142,11 +154,24 @@ void MainWindow::disconnected()
     ui->connectButton->setText("Connect");
     bs.close();
     qDebug("closing");
+
+    ui->startButton->setEnabled(false);
+    ui->stopButton->setEnabled(false);
+    ui->pauseButton->setEnabled(false);
+    ui->resumeButton->setEnabled(false);
+    ui->driveButton->setEnabled(false);
+    ui->measureButton->setEnabled(false);
 }
 
 void MainWindow::connected()
 {
-    ui->connectButton->setText("Connected");
+    ui->connectButton->setText("Disconnect");
+    ui->startButton->setEnabled(true);
+    ui->stopButton->setEnabled(true);
+    ui->pauseButton->setEnabled(true);
+    ui->resumeButton->setEnabled(true);
+    ui->driveButton->setEnabled(true);
+    ui->measureButton->setEnabled(true);
 }
 
 void MainWindow::updateCharts(){
@@ -177,4 +202,9 @@ void MainWindow::updateCharts(){
     if(child) delete(child->widget());
     QChartView *COOchartView = new QChartView(ch.createChart("CO2",Time,CO2));
     ui->co2TabLayout->addWidget(COOchartView);
+}
+
+void MainWindow::pauseCommand(){
+    qDebug("teth");
+    P_autoresume = D_pause->autoResume->value();
 }

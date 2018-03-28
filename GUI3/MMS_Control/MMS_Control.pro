@@ -39,7 +39,11 @@ HEADERS += \
     basestationserver.h \
     basestationthread.h
 FORMS += \
-    mainwindow.ui
+    mainwindow.ui \
+    startdialog.ui \
+    pausedialog.ui \
+    measuredialog.ui \
+    drivedialog.ui
 
 SUBDIRS += \
     MMS_Control.pro
