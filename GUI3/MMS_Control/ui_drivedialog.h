@@ -28,25 +28,25 @@ class Ui_DriveDialog
 {
 public:
     QFormLayout *formLayout;
-    QCheckBox *checkBox;
+    QCheckBox *doMeasurement;
     QHBoxLayout *horizontalLayout;
-    QDoubleSpinBox *doubleSpinBox;
+    QDoubleSpinBox *distance;
     QLabel *label;
     QHBoxLayout *horizontalLayout_4;
-    QDoubleSpinBox *doubleSpinBox_4;
+    QDoubleSpinBox *measurementTime;
     QLabel *label_4;
     QHBoxLayout *horizontalLayout_2;
-    QDoubleSpinBox *doubleSpinBox_2;
+    QDoubleSpinBox *driveSpeed;
     QLabel *label_2;
     QHBoxLayout *horizontalLayout_5;
-    QDoubleSpinBox *doubleSpinBox_5;
+    QDoubleSpinBox *deacceleration;
     QLabel *label_6;
     QHBoxLayout *horizontalLayout_3;
-    QDoubleSpinBox *doubleSpinBox_3;
+    QDoubleSpinBox *measurementSpeed;
     QLabel *label_3;
     QDialogButtonBox *buttonBox;
     QHBoxLayout *horizontalLayout_6;
-    QDoubleSpinBox *doubleSpinBox_6;
+    QDoubleSpinBox *acceleration;
     QLabel *label_5;
 
     void setupUi(QDialog *DriveDialog)
@@ -56,17 +56,17 @@ public:
         DriveDialog->resize(566, 180);
         formLayout = new QFormLayout(DriveDialog);
         formLayout->setObjectName(QStringLiteral("formLayout"));
-        checkBox = new QCheckBox(DriveDialog);
-        checkBox->setObjectName(QStringLiteral("checkBox"));
+        doMeasurement = new QCheckBox(DriveDialog);
+        doMeasurement->setObjectName(QStringLiteral("doMeasurement"));
 
-        formLayout->setWidget(0, QFormLayout::SpanningRole, checkBox);
+        formLayout->setWidget(0, QFormLayout::SpanningRole, doMeasurement);
 
         horizontalLayout = new QHBoxLayout();
         horizontalLayout->setObjectName(QStringLiteral("horizontalLayout"));
-        doubleSpinBox = new QDoubleSpinBox(DriveDialog);
-        doubleSpinBox->setObjectName(QStringLiteral("doubleSpinBox"));
+        distance = new QDoubleSpinBox(DriveDialog);
+        distance->setObjectName(QStringLiteral("distance"));
 
-        horizontalLayout->addWidget(doubleSpinBox);
+        horizontalLayout->addWidget(distance);
 
         label = new QLabel(DriveDialog);
         label->setObjectName(QStringLiteral("label"));
@@ -78,10 +78,10 @@ public:
 
         horizontalLayout_4 = new QHBoxLayout();
         horizontalLayout_4->setObjectName(QStringLiteral("horizontalLayout_4"));
-        doubleSpinBox_4 = new QDoubleSpinBox(DriveDialog);
-        doubleSpinBox_4->setObjectName(QStringLiteral("doubleSpinBox_4"));
+        measurementTime = new QDoubleSpinBox(DriveDialog);
+        measurementTime->setObjectName(QStringLiteral("measurementTime"));
 
-        horizontalLayout_4->addWidget(doubleSpinBox_4);
+        horizontalLayout_4->addWidget(measurementTime);
 
         label_4 = new QLabel(DriveDialog);
         label_4->setObjectName(QStringLiteral("label_4"));
@@ -93,10 +93,10 @@ public:
 
         horizontalLayout_2 = new QHBoxLayout();
         horizontalLayout_2->setObjectName(QStringLiteral("horizontalLayout_2"));
-        doubleSpinBox_2 = new QDoubleSpinBox(DriveDialog);
-        doubleSpinBox_2->setObjectName(QStringLiteral("doubleSpinBox_2"));
+        driveSpeed = new QDoubleSpinBox(DriveDialog);
+        driveSpeed->setObjectName(QStringLiteral("driveSpeed"));
 
-        horizontalLayout_2->addWidget(doubleSpinBox_2);
+        horizontalLayout_2->addWidget(driveSpeed);
 
         label_2 = new QLabel(DriveDialog);
         label_2->setObjectName(QStringLiteral("label_2"));
@@ -108,10 +108,10 @@ public:
 
         horizontalLayout_5 = new QHBoxLayout();
         horizontalLayout_5->setObjectName(QStringLiteral("horizontalLayout_5"));
-        doubleSpinBox_5 = new QDoubleSpinBox(DriveDialog);
-        doubleSpinBox_5->setObjectName(QStringLiteral("doubleSpinBox_5"));
+        deacceleration = new QDoubleSpinBox(DriveDialog);
+        deacceleration->setObjectName(QStringLiteral("deacceleration"));
 
-        horizontalLayout_5->addWidget(doubleSpinBox_5);
+        horizontalLayout_5->addWidget(deacceleration);
 
         label_6 = new QLabel(DriveDialog);
         label_6->setObjectName(QStringLiteral("label_6"));
@@ -123,10 +123,10 @@ public:
 
         horizontalLayout_3 = new QHBoxLayout();
         horizontalLayout_3->setObjectName(QStringLiteral("horizontalLayout_3"));
-        doubleSpinBox_3 = new QDoubleSpinBox(DriveDialog);
-        doubleSpinBox_3->setObjectName(QStringLiteral("doubleSpinBox_3"));
+        measurementSpeed = new QDoubleSpinBox(DriveDialog);
+        measurementSpeed->setObjectName(QStringLiteral("measurementSpeed"));
 
-        horizontalLayout_3->addWidget(doubleSpinBox_3);
+        horizontalLayout_3->addWidget(measurementSpeed);
 
         label_3 = new QLabel(DriveDialog);
         label_3->setObjectName(QStringLiteral("label_3"));
@@ -145,10 +145,10 @@ public:
 
         horizontalLayout_6 = new QHBoxLayout();
         horizontalLayout_6->setObjectName(QStringLiteral("horizontalLayout_6"));
-        doubleSpinBox_6 = new QDoubleSpinBox(DriveDialog);
-        doubleSpinBox_6->setObjectName(QStringLiteral("doubleSpinBox_6"));
+        acceleration = new QDoubleSpinBox(DriveDialog);
+        acceleration->setObjectName(QStringLiteral("acceleration"));
 
-        horizontalLayout_6->addWidget(doubleSpinBox_6);
+        horizontalLayout_6->addWidget(acceleration);
 
         label_5 = new QLabel(DriveDialog);
         label_5->setObjectName(QStringLiteral("label_5"));
@@ -169,7 +169,7 @@ public:
     void retranslateUi(QDialog *DriveDialog)
     {
         DriveDialog->setWindowTitle(QApplication::translate("DriveDialog", "Dialog", nullptr));
-        checkBox->setText(QApplication::translate("DriveDialog", "do-measurement", nullptr));
+        doMeasurement->setText(QApplication::translate("DriveDialog", "do-measurement", nullptr));
         label->setText(QApplication::translate("DriveDialog", "Distance", nullptr));
         label_4->setText(QApplication::translate("DriveDialog", "Measurement time", nullptr));
         label_2->setText(QApplication::translate("DriveDialog", "Drive speed", nullptr));

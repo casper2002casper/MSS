@@ -3439,6 +3439,20 @@ debug\mainwindow.obj: mainwindow.cpp mainwindow.h \
 		C:\Qt\5.10.1\msvc2015\include\QtNetwork\qsslkey.h \
 		C:\Qt\5.10.1\msvc2015\include\QtNetwork\qudpsocket.h \
 		C:\Qt\5.10.1\msvc2015\include\QtNetwork\qtnetworkversion.h \
+		C:\Qt\5.10.1\msvc2015\include\QtQuick\QQuickItem \
+		C:\Qt\5.10.1\msvc2015\include\QtQuick\qquickitem.h \
+		C:\Qt\5.10.1\msvc2015\include\QtQuick\qtquickglobal.h \
+		C:\Qt\5.10.1\msvc2015\include\QtQml\qtqmlglobal.h \
+		C:\Qt\5.10.1\msvc2015\include\QtQml\qtqml-config.h \
+		C:\Qt\5.10.1\msvc2015\include\QtQuick\qtquick-config.h \
+		C:\Qt\5.10.1\msvc2015\include\QtQml\qqml.h \
+		C:\Qt\5.10.1\msvc2015\include\QtQml\qqmlprivate.h \
+		C:\Qt\5.10.1\msvc2015\include\QtQml\qqmlparserstatus.h \
+		C:\Qt\5.10.1\msvc2015\include\QtQml\qqmlpropertyvaluesource.h \
+		C:\Qt\5.10.1\msvc2015\include\QtQml\qqmllist.h \
+		C:\Qt\5.10.1\msvc2015\include\QtQml\qqmlcomponent.h \
+		C:\Qt\5.10.1\msvc2015\include\QtQml\qqmlerror.h \
+		C:\Qt\5.10.1\msvc2015\include\QtQml\qjsvalue.h \
 		C:\Qt\5.10.1\msvc2015\include\QtPrintSupport\QPrinter \
 		C:\Qt\5.10.1\msvc2015\include\QtPrintSupport\qprinter.h \
 		C:\Qt\5.10.1\msvc2015\include\QtPrintSupport\qtprintsupportglobal.h \

@@ -6,6 +6,7 @@
 #include <QtCharts/QChartGlobal>
 #include <QWidget>
 #include <QDialog>
+
 #include "ui_drivedialog.h"
 #include "ui_measuredialog.h"
 #include "ui_pausedialog.h"
@@ -14,23 +15,6 @@
 #include "basestationserver.h"
 //#include "basestationthread.h"
 #include "charts.h"
-
-QT_BEGIN_NAMESPACE
-class QComboBox;
-class QCheckBox;
-class QTabWidget;
-QT_END_NAMESPACE
-
-QT_CHARTS_BEGIN_NAMESPACE
-class QChartView;
-class QChart;
-QT_CHARTS_END_NAMESPACE
-
-typedef QPair<QPointF, QString> Data;
-typedef QList<Data> DataList;
-typedef QList<DataList> DataTable;
-
-QT_CHARTS_USE_NAMESPACE
 
 namespace Ui {
 class MainWindow;
@@ -72,7 +56,10 @@ private slots:
 
     void connected();
     void disconnected();
+    void driveCommand();
+    void measureCommand();
     void pauseCommand();
+    void startCommand();
 
 private:
     Ui::MainWindow *ui;
@@ -95,7 +82,7 @@ private:
     QString filepath;
     int advancedTriggerd = 0;
     double R_distance, R_drivespeed, R_measurespeed, R_measuretime, R_acceleration, R_deacceleration, S_warmuptime, P_autoresume, M_measuretime;
-
+    bool R_domeasurement;
 };
 
 

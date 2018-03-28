@@ -43,6 +43,8 @@ public:
         horizontalLayout->setObjectName(QStringLiteral("horizontalLayout"));
         autoResume = new QDoubleSpinBox(PauseDialog);
         autoResume->setObjectName(QStringLiteral("autoResume"));
+        autoResume->setReadOnly(false);
+        autoResume->setAccelerated(true);
 
         horizontalLayout->addWidget(autoResume);
 

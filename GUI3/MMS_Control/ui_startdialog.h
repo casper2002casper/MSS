@@ -28,7 +28,7 @@ class Ui_StartDialog
 public:
     QFormLayout *formLayout;
     QHBoxLayout *horizontalLayout;
-    QDoubleSpinBox *doubleSpinBox;
+    QDoubleSpinBox *warmupTime;
     QLabel *label;
     QDialogButtonBox *buttonBox;
 
@@ -41,10 +41,10 @@ public:
         formLayout->setObjectName(QStringLiteral("formLayout"));
         horizontalLayout = new QHBoxLayout();
         horizontalLayout->setObjectName(QStringLiteral("horizontalLayout"));
-        doubleSpinBox = new QDoubleSpinBox(StartDialog);
-        doubleSpinBox->setObjectName(QStringLiteral("doubleSpinBox"));
+        warmupTime = new QDoubleSpinBox(StartDialog);
+        warmupTime->setObjectName(QStringLiteral("warmupTime"));
 
-        horizontalLayout->addWidget(doubleSpinBox);
+        horizontalLayout->addWidget(warmupTime);
 
         label = new QLabel(StartDialog);
         label->setObjectName(QStringLiteral("label"));

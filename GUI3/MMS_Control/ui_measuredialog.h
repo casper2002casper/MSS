@@ -28,7 +28,7 @@ class Ui_MeasureDialog
 public:
     QFormLayout *formLayout;
     QHBoxLayout *horizontalLayout;
-    QDoubleSpinBox *doubleSpinBox;
+    QDoubleSpinBox *measureTime;
     QLabel *label;
     QDialogButtonBox *buttonBox;
 
@@ -41,10 +41,10 @@ public:
         formLayout->setObjectName(QStringLiteral("formLayout"));
         horizontalLayout = new QHBoxLayout();
         horizontalLayout->setObjectName(QStringLiteral("horizontalLayout"));
-        doubleSpinBox = new QDoubleSpinBox(MeasureDialog);
-        doubleSpinBox->setObjectName(QStringLiteral("doubleSpinBox"));
+        measureTime = new QDoubleSpinBox(MeasureDialog);
+        measureTime->setObjectName(QStringLiteral("measureTime"));
 
-        horizontalLayout->addWidget(doubleSpinBox);
+        horizontalLayout->addWidget(measureTime);
 
         label = new QLabel(MeasureDialog);
         label->setObjectName(QStringLiteral("label"));

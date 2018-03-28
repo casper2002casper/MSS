@@ -71,6 +71,7 @@ public:
     QSpacerItem *verticalSpacer_4;
     QPushButton *startButton;
     QPushButton *stopButton;
+    QSpacerItem *verticalSpacer;
     QPushButton *pauseButton;
     QPushButton *resumeButton;
     QSpacerItem *verticalSpacer_3;
@@ -249,6 +250,10 @@ public:
         stopButton->setSizePolicy(sizePolicy2);
 
         verticalLayout->addWidget(stopButton);
+
+        verticalSpacer = new QSpacerItem(20, 2, QSizePolicy::Minimum, QSizePolicy::Maximum);
+
+        verticalLayout->addItem(verticalSpacer);
 
         pauseButton = new QPushButton(centralwidget);
         pauseButton->setObjectName(QStringLiteral("pauseButton"));

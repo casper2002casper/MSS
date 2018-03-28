@@ -1,6 +1,6 @@
 #include "mainwindow.h"
-
 #include "basestationserver.h"
+
 #include "ui_mainwindow.h"
 #include "ui_drivedialog.h"
 #include "ui_measuredialog.h"
@@ -30,7 +30,10 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(&bs, SIGNAL(connected()),this, SLOT(connected()));
     connect(&bs, SIGNAL(disconnecting()),this, SLOT(disconnected()));
 
-    connect(&D_pause->buttonBox, SIGNAL(accept()), this, SLOT(pauseCommand()));
+    connect(driveUi, &QDialog::accepted, this, &MainWindow::driveCommand);
+    connect(measureUi, &QDialog::accepted, this, &MainWindow::measureCommand);
+    connect(pauseUi, &QDialog::accepted, this, &MainWindow::pauseCommand);
+    connect(startUi, &QDialog::accepted, this, &MainWindow::startCommand);
 
     ui->setupUi(this);
     D_drive->setupUi(driveUi);
@@ -204,7 +207,25 @@ void MainWindow::updateCharts(){
     ui->co2TabLayout->addWidget(COOchartView);
 }
 
+void MainWindow::driveCommand(){
+    R_distance = D_drive->distance->value();
+    R_drivespeed = D_drive->driveSpeed->value();
+    R_measurespeed = D_drive->measurementSpeed->value();
+    R_measuretime = D_drive->measurementTime->value();
+    R_acceleration = D_drive->acceleration->value();
+    R_deacceleration = D_drive->deacceleration->value();
+    R_domeasurement = D_drive->doMeasurement->isChecked();
+    //bs.makeCommand("2::010::0::5::2.1;5;3;4;2.5;2;2;2;");
+}
+void MainWindow::measureCommand(){
+    M_measuretime = D_measure->measureTime->value();
+    //bs.makeCommand("2::010::0::5::2.1;5;3;4;2.5;2;2;2;");
+}
 void MainWindow::pauseCommand(){
-    qDebug("teth");
     P_autoresume = D_pause->autoResume->value();
+    //bs.makeCommand("2::010::0::5::2.1;5;3;4;2.5;2;2;2;");
+}
+void MainWindow::startCommand(){
+    S_warmuptime = D_start->warmupTime->value();
+    //bs.makeCommand("2::010::0::5::2.1;5;3;4;2.5;2;2;2;");
 }
