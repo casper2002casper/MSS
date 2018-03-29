@@ -43,7 +43,8 @@ FORMS += \
     startdialog.ui \
     pausedialog.ui \
     measuredialog.ui \
-    drivedialog.ui
+    drivedialog.ui \
+    automaticmode.ui
 
 SUBDIRS += \
     MMS_Control.pro

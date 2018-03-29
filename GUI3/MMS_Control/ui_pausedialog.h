@@ -37,8 +37,10 @@ public:
         if (PauseDialog->objectName().isEmpty())
             PauseDialog->setObjectName(QStringLiteral("PauseDialog"));
         PauseDialog->resize(222, 81);
+        PauseDialog->setContextMenuPolicy(Qt::PreventContextMenu);
         formLayout = new QFormLayout(PauseDialog);
         formLayout->setObjectName(QStringLiteral("formLayout"));
+        formLayout->setSizeConstraint(QLayout::SetFixedSize);
         horizontalLayout = new QHBoxLayout();
         horizontalLayout->setObjectName(QStringLiteral("horizontalLayout"));
         autoResume = new QDoubleSpinBox(PauseDialog);
@@ -74,7 +76,7 @@ public:
 
     void retranslateUi(QDialog *PauseDialog)
     {
-        PauseDialog->setWindowTitle(QApplication::translate("PauseDialog", "Dialog", nullptr));
+        PauseDialog->setWindowTitle(QApplication::translate("PauseDialog", "Advanced pause comand", nullptr));
         label->setText(QApplication::translate("PauseDialog", "Auto resume", nullptr));
     } // retranslateUi
 

@@ -11,6 +11,7 @@
 #include "ui_measuredialog.h"
 #include "ui_pausedialog.h"
 #include "ui_startdialog.h"
+#include "ui_automaticmode.h"
 
 #include "basestationserver.h"
 //#include "basestationthread.h"
@@ -22,6 +23,7 @@ class DriveDialog;
 class MeasureDialog;
 class PauseDialog;
 class StartDialog;
+class AutomaticMode;
 }
 
 class MainWindow : public QMainWindow
@@ -60,6 +62,7 @@ private slots:
     void measureCommand();
     void pauseCommand();
     void startCommand();
+    void on_actionCreate_command_sequence_triggered();
 
 private:
     Ui::MainWindow *ui;
@@ -72,6 +75,7 @@ private:
     QDialog *measureUi = new QDialog(0,0);
     QDialog *pauseUi = new QDialog(0,0);
     QDialog *startUi = new QDialog(0,0);
+    QDialog *autoUi = new QDialog(0,0);
 
     ChartsMaker ch;
     basestationServer bs;
@@ -81,8 +85,9 @@ private:
     enum type {Time, PosX, PosY, PosZ, SpeedX, SpeedY, SpeedZ, Temperature, Humidity, Lux, Par, CO2};
     QString filepath;
     int advancedTriggerd = 0;
-    double R_distance, R_drivespeed, R_measurespeed, R_measuretime, R_acceleration, R_deacceleration, S_warmuptime, P_autoresume, M_measuretime;
-    bool R_domeasurement;
+    double R_distance, R_drivespeed, R_measurespeed, R_measuretime, R_acceleration, R_deacceleration, S_warmuptime, P_autoresume, M_measurementtime;
+    double A_distance, A_drivespeed, A_measurespeed, A_measuretime, A_acceleration, A_deacceleration, A_measurementinterval;
+    bool R_domeasurement, A_domeasurement;
 };
 
 

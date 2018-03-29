@@ -28,7 +28,7 @@ class Ui_MeasureDialog
 public:
     QFormLayout *formLayout;
     QHBoxLayout *horizontalLayout;
-    QDoubleSpinBox *measureTime;
+    QDoubleSpinBox *measurementTime;
     QLabel *label;
     QDialogButtonBox *buttonBox;
 
@@ -39,12 +39,13 @@ public:
         MeasureDialog->resize(222, 85);
         formLayout = new QFormLayout(MeasureDialog);
         formLayout->setObjectName(QStringLiteral("formLayout"));
+        formLayout->setSizeConstraint(QLayout::SetFixedSize);
         horizontalLayout = new QHBoxLayout();
         horizontalLayout->setObjectName(QStringLiteral("horizontalLayout"));
-        measureTime = new QDoubleSpinBox(MeasureDialog);
-        measureTime->setObjectName(QStringLiteral("measureTime"));
+        measurementTime = new QDoubleSpinBox(MeasureDialog);
+        measurementTime->setObjectName(QStringLiteral("measurementTime"));
 
-        horizontalLayout->addWidget(measureTime);
+        horizontalLayout->addWidget(measurementTime);
 
         label = new QLabel(MeasureDialog);
         label->setObjectName(QStringLiteral("label"));
@@ -71,8 +72,8 @@ public:
 
     void retranslateUi(QDialog *MeasureDialog)
     {
-        MeasureDialog->setWindowTitle(QApplication::translate("MeasureDialog", "Dialog", nullptr));
-        label->setText(QApplication::translate("MeasureDialog", "Measure time", nullptr));
+        MeasureDialog->setWindowTitle(QApplication::translate("MeasureDialog", "Advanced measurement command", nullptr));
+        label->setText(QApplication::translate("MeasureDialog", "Measurement time", nullptr));
     } // retranslateUi
 
 };

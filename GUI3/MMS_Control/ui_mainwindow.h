@@ -40,6 +40,7 @@ public:
     QAction *actionPrint;
     QAction *actionNew_file;
     QAction *actionAdvanced;
+    QAction *actionCreate_command_sequence;
     QWidget *centralwidget;
     QGridLayout *gridLayout_2;
     QVBoxLayout *verticalLayout_2;
@@ -104,6 +105,8 @@ public:
         actionAdvanced = new QAction(MainWindow);
         actionAdvanced->setObjectName(QStringLiteral("actionAdvanced"));
         actionAdvanced->setCheckable(true);
+        actionCreate_command_sequence = new QAction(MainWindow);
+        actionCreate_command_sequence->setObjectName(QStringLiteral("actionCreate_command_sequence"));
         centralwidget = new QWidget(MainWindow);
         centralwidget->setObjectName(QStringLiteral("centralwidget"));
         gridLayout_2 = new QGridLayout(centralwidget);
@@ -318,6 +321,7 @@ public:
         menuCommands->addAction(actionLast_data_recieved);
         menuCommands->addSeparator();
         menuCommands->addAction(actionAdvanced);
+        menuCommands->addAction(actionCreate_command_sequence);
 
         retranslateUi(MainWindow);
 
@@ -342,6 +346,7 @@ public:
 #ifndef QT_NO_TOOLTIP
         actionAdvanced->setToolTip(QApplication::translate("MainWindow", "Activate advanced options", nullptr));
 #endif // QT_NO_TOOLTIP
+        actionCreate_command_sequence->setText(QApplication::translate("MainWindow", "Create command sequence", nullptr));
         chartTabs->setTabText(chartTabs->indexOf(temperatureTab), QApplication::translate("MainWindow", "Temperature", nullptr));
         chartTabs->setTabToolTip(chartTabs->indexOf(temperatureTab), QApplication::translate("MainWindow", "Temperature chart", nullptr));
         chartTabs->setTabText(chartTabs->indexOf(rhTab), QApplication::translate("MainWindow", "RH", nullptr));

@@ -6,6 +6,7 @@
 #include "ui_measuredialog.h"
 #include "ui_pausedialog.h"
 #include "ui_startdialog.h"
+#include "ui_automaticmode.h"
 
 #include <QDialog>
 #include <QtCharts>
@@ -26,6 +27,12 @@ MainWindow::MainWindow(QWidget *parent) :
     D_pause(new Ui::PauseDialog),
     D_start(new Ui::StartDialog)
 {
+    ui->setupUi(this);
+    D_drive->setupUi(driveUi);
+    D_measure->setupUi(measureUi);
+    D_pause->setupUi(pauseUi);
+    D_start->setupUi(startUi);
+
     connect(&bs, SIGNAL(newMessage(QString)),this, SLOT(inputData(QString)));
     connect(&bs, SIGNAL(connected()),this, SLOT(connected()));
     connect(&bs, SIGNAL(disconnecting()),this, SLOT(disconnected()));
@@ -34,12 +41,6 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(measureUi, &QDialog::accepted, this, &MainWindow::measureCommand);
     connect(pauseUi, &QDialog::accepted, this, &MainWindow::pauseCommand);
     connect(startUi, &QDialog::accepted, this, &MainWindow::startCommand);
-
-    ui->setupUi(this);
-    D_drive->setupUi(driveUi);
-    D_measure->setupUi(measureUi);
-    D_pause->setupUi(pauseUi);
-    D_start->setupUi(startUi);
 
     ui->lastCommandSendList->hide();
     ui->lastDataRecievedList->hide();
@@ -218,7 +219,7 @@ void MainWindow::driveCommand(){
     //bs.makeCommand("2::010::0::5::2.1;5;3;4;2.5;2;2;2;");
 }
 void MainWindow::measureCommand(){
-    M_measuretime = D_measure->measureTime->value();
+    M_measurementtime = D_measure->measurementTime->value();
     //bs.makeCommand("2::010::0::5::2.1;5;3;4;2.5;2;2;2;");
 }
 void MainWindow::pauseCommand(){
@@ -228,4 +229,10 @@ void MainWindow::pauseCommand(){
 void MainWindow::startCommand(){
     S_warmuptime = D_start->warmupTime->value();
     //bs.makeCommand("2::010::0::5::2.1;5;3;4;2.5;2;2;2;");
+}
+
+void MainWindow::on_actionCreate_command_sequence_triggered()
+{
+    qDebug("werkt niet");
+    autoUi->show();
 }

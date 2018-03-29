@@ -371,6 +371,7 @@
     <addaction name="actionLast_data_recieved"/>
     <addaction name="separator"/>
     <addaction name="actionAdvanced"/>
+    <addaction name="actionCreate_command_sequence"/>
    </widget>
    <addaction name="menuFile"/>
    <addaction name="menuCommands"/>
@@ -422,6 +423,11 @@
    </property>
    <property name="toolTip">
     <string>Activate advanced options</string>
+   </property>
+  </action>
+  <action name="actionCreate_command_sequence">
+   <property name="text">
+    <string>Create command sequence</string>
    </property>
   </action>
  </widget>

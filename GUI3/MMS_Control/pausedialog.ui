@@ -10,10 +10,16 @@
     <height>81</height>
    </rect>
   </property>
+  <property name="contextMenuPolicy">
+   <enum>Qt::PreventContextMenu</enum>
+  </property>
   <property name="windowTitle">
-   <string>Dialog</string>
+   <string>Advanced pause comand</string>
   </property>
   <layout class="QFormLayout" name="formLayout">
+   <property name="sizeConstraint">
+    <enum>QLayout::SetFixedSize</enum>
+   </property>
    <item row="0" column="0">
     <layout class="QHBoxLayout" name="horizontalLayout">
      <item>

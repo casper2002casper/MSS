@@ -39,6 +39,7 @@ public:
         StartDialog->resize(224, 89);
         formLayout = new QFormLayout(StartDialog);
         formLayout->setObjectName(QStringLiteral("formLayout"));
+        formLayout->setSizeConstraint(QLayout::SetFixedSize);
         horizontalLayout = new QHBoxLayout();
         horizontalLayout->setObjectName(QStringLiteral("horizontalLayout"));
         warmupTime = new QDoubleSpinBox(StartDialog);
@@ -71,7 +72,7 @@ public:
 
     void retranslateUi(QDialog *StartDialog)
     {
-        StartDialog->setWindowTitle(QApplication::translate("StartDialog", "Dialog", nullptr));
+        StartDialog->setWindowTitle(QApplication::translate("StartDialog", "Advanced start command", nullptr));
         label->setText(QApplication::translate("StartDialog", "Warm-up time", nullptr));
     } // retranslateUi
 
