@@ -41,6 +41,7 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(measureUi, &QDialog::accepted, this, &MainWindow::measureCommand);
     connect(pauseUi, &QDialog::accepted, this, &MainWindow::pauseCommand);
     connect(startUi, &QDialog::accepted, this, &MainWindow::startCommand);
+   // connect(autoUi, , this, &MainWindow::autoCommand);
 
     ui->lastCommandSendList->hide();
     ui->lastDataRecievedList->hide();
@@ -228,6 +229,18 @@ void MainWindow::pauseCommand(){
 }
 void MainWindow::startCommand(){
     S_warmuptime = D_start->warmupTime->value();
+    //bs.makeCommand("2::010::0::5::2.1;5;3;4;2.5;2;2;2;");
+}
+
+void MainWindow::autoCommand(){
+    A_distance = D_auto->distance->value();
+    A_drivespeed = D_auto->driveSpeed->value();
+    A_measurespeed = D_auto->measurementSpeed->value();
+    A_measuretime = D_auto->measurementTime->value();
+    A_acceleration = D_auto->acceleration->value();
+    A_deacceleration = D_auto->deacceleration->value();
+    A_measurementinterval = D_auto->deacceleration->value();
+    A_domeasurement = D_auto->doMeasurement->isChecked();
     //bs.makeCommand("2::010::0::5::2.1;5;3;4;2.5;2;2;2;");
 }
 

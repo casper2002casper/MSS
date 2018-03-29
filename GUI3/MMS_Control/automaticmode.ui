@@ -149,7 +149,7 @@
     </layout>
    </item>
    <item row="0" column="2">
-    <widget class="QPushButton" name="pushButton">
+    <widget class="QPushButton" name="createCommands">
      <property name="text">
       <string>Create commands</string>
      </property>

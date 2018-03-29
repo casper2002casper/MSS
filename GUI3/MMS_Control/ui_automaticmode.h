@@ -54,7 +54,7 @@ public:
     QHBoxLayout *horizontalLayout_7;
     QDoubleSpinBox *measurementInterval;
     QLabel *label_7;
-    QPushButton *pushButton;
+    QPushButton *createCommands;
     QProgressBar *sendingProgress;
 
     void setupUi(QDialog *Dialog)
@@ -193,10 +193,10 @@ public:
 
         gridLayout->addLayout(formLayout, 0, 1, 1, 1);
 
-        pushButton = new QPushButton(Dialog);
-        pushButton->setObjectName(QStringLiteral("pushButton"));
+        createCommands = new QPushButton(Dialog);
+        createCommands->setObjectName(QStringLiteral("createCommands"));
 
-        gridLayout->addWidget(pushButton, 0, 2, 1, 1);
+        gridLayout->addWidget(createCommands, 0, 2, 1, 1);
 
         sendingProgress = new QProgressBar(Dialog);
         sendingProgress->setObjectName(QStringLiteral("sendingProgress"));
@@ -226,7 +226,7 @@ public:
         label_5->setText(QApplication::translate("Dialog", "Acceleration", nullptr));
         label_6->setText(QApplication::translate("Dialog", "Deacceleration", nullptr));
         label_7->setText(QApplication::translate("Dialog", "Measurement interval", nullptr));
-        pushButton->setText(QApplication::translate("Dialog", "Create commands", nullptr));
+        createCommands->setText(QApplication::translate("Dialog", "Create commands", nullptr));
         sendingProgress->setFormat(QApplication::translate("Dialog", "     %v / %m send", nullptr));
     } // retranslateUi
 
