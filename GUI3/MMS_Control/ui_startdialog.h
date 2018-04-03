@@ -13,6 +13,7 @@
 #include <QtWidgets/QAction>
 #include <QtWidgets/QApplication>
 #include <QtWidgets/QButtonGroup>
+#include <QtWidgets/QCheckBox>
 #include <QtWidgets/QDialog>
 #include <QtWidgets/QDialogButtonBox>
 #include <QtWidgets/QDoubleSpinBox>
@@ -31,12 +32,13 @@ public:
     QDoubleSpinBox *warmupTime;
     QLabel *label;
     QDialogButtonBox *buttonBox;
+    QCheckBox *Queue;
 
     void setupUi(QDialog *StartDialog)
     {
         if (StartDialog->objectName().isEmpty())
             StartDialog->setObjectName(QStringLiteral("StartDialog"));
-        StartDialog->resize(224, 89);
+        StartDialog->resize(364, 81);
         formLayout = new QFormLayout(StartDialog);
         formLayout->setObjectName(QStringLiteral("formLayout"));
         formLayout->setSizeConstraint(QLayout::SetFixedSize);
@@ -60,7 +62,12 @@ public:
         buttonBox->setOrientation(Qt::Horizontal);
         buttonBox->setStandardButtons(QDialogButtonBox::Cancel|QDialogButtonBox::Ok);
 
-        formLayout->setWidget(1, QFormLayout::LabelRole, buttonBox);
+        formLayout->setWidget(1, QFormLayout::FieldRole, buttonBox);
+
+        Queue = new QCheckBox(StartDialog);
+        Queue->setObjectName(QStringLiteral("Queue"));
+
+        formLayout->setWidget(1, QFormLayout::LabelRole, Queue);
 
 
         retranslateUi(StartDialog);
@@ -73,7 +80,8 @@ public:
     void retranslateUi(QDialog *StartDialog)
     {
         StartDialog->setWindowTitle(QApplication::translate("StartDialog", "Advanced start command", nullptr));
-        label->setText(QApplication::translate("StartDialog", "Warm-up time", nullptr));
+        label->setText(QApplication::translate("StartDialog", "Warm-up time (s)", nullptr));
+        Queue->setText(QApplication::translate("StartDialog", "Queue", nullptr));
     } // retranslateUi
 
 };

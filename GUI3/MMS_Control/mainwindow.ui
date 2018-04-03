@@ -49,7 +49,7 @@
          <enum>QTabWidget::Triangular</enum>
         </property>
         <property name="currentIndex">
-         <number>3</number>
+         <number>0</number>
         </property>
         <widget class="QWidget" name="temperatureTab">
          <property name="autoFillBackground">
@@ -351,7 +351,7 @@
      <x>0</x>
      <y>0</y>
      <width>962</width>
-     <height>26</height>
+     <height>22</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFile">

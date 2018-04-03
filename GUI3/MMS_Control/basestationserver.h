@@ -38,9 +38,10 @@ private:
     int lastRecievedDataPacketNum = -1,lastRecievedReplyPacketNum = -1,packet_nr =0,rotator = 0;
     char packet_nr_send[3];
 
+public slots:
+     void disconnected();
 
 private slots:
      void readData();
-     void disconnected();
 };
 #endif // BASESTATIONSERVER_H

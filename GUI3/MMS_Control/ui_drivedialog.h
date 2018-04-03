@@ -22,7 +22,6 @@
 #include <QtWidgets/QHBoxLayout>
 #include <QtWidgets/QHeaderView>
 #include <QtWidgets/QLabel>
-#include <QtWidgets/QSpacerItem>
 
 QT_BEGIN_NAMESPACE
 
@@ -51,14 +50,17 @@ public:
     QHBoxLayout *horizontalLayout_5;
     QDoubleSpinBox *deacceleration;
     QLabel *label_6;
-    QSpacerItem *verticalSpacer;
+    QHBoxLayout *horizontalLayout_7;
+    QDoubleSpinBox *marge;
+    QLabel *label_7;
     QDialogButtonBox *buttonBox;
+    QCheckBox *Queue;
 
     void setupUi(QDialog *DriveDialog)
     {
         if (DriveDialog->objectName().isEmpty())
             DriveDialog->setObjectName(QStringLiteral("DriveDialog"));
-        DriveDialog->resize(412, 183);
+        DriveDialog->resize(502, 191);
         gridLayout = new QGridLayout(DriveDialog);
         gridLayout->setObjectName(QStringLiteral("gridLayout"));
         formLayout = new QFormLayout();
@@ -136,7 +138,7 @@ public:
         horizontalLayout_4->addWidget(label_4);
 
 
-        formLayout_2->setLayout(1, QFormLayout::LabelRole, horizontalLayout_4);
+        formLayout_2->setLayout(0, QFormLayout::LabelRole, horizontalLayout_4);
 
         horizontalLayout_6 = new QHBoxLayout();
         horizontalLayout_6->setObjectName(QStringLiteral("horizontalLayout_6"));
@@ -153,7 +155,7 @@ public:
         horizontalLayout_6->addWidget(label_5);
 
 
-        formLayout_2->setLayout(2, QFormLayout::LabelRole, horizontalLayout_6);
+        formLayout_2->setLayout(1, QFormLayout::LabelRole, horizontalLayout_6);
 
         horizontalLayout_5 = new QHBoxLayout();
         horizontalLayout_5->setObjectName(QStringLiteral("horizontalLayout_5"));
@@ -170,11 +172,24 @@ public:
         horizontalLayout_5->addWidget(label_6);
 
 
-        formLayout_2->setLayout(3, QFormLayout::LabelRole, horizontalLayout_5);
+        formLayout_2->setLayout(2, QFormLayout::LabelRole, horizontalLayout_5);
 
-        verticalSpacer = new QSpacerItem(20, 18, QSizePolicy::Minimum, QSizePolicy::Fixed);
+        horizontalLayout_7 = new QHBoxLayout();
+        horizontalLayout_7->setObjectName(QStringLiteral("horizontalLayout_7"));
+        marge = new QDoubleSpinBox(DriveDialog);
+        marge->setObjectName(QStringLiteral("marge"));
+        sizePolicy.setHeightForWidth(marge->sizePolicy().hasHeightForWidth());
+        marge->setSizePolicy(sizePolicy);
 
-        formLayout_2->setItem(0, QFormLayout::LabelRole, verticalSpacer);
+        horizontalLayout_7->addWidget(marge);
+
+        label_7 = new QLabel(DriveDialog);
+        label_7->setObjectName(QStringLiteral("label_7"));
+
+        horizontalLayout_7->addWidget(label_7);
+
+
+        formLayout_2->setLayout(3, QFormLayout::LabelRole, horizontalLayout_7);
 
 
         gridLayout->addLayout(formLayout_2, 0, 1, 1, 1);
@@ -184,7 +199,12 @@ public:
         buttonBox->setOrientation(Qt::Horizontal);
         buttonBox->setStandardButtons(QDialogButtonBox::Cancel|QDialogButtonBox::Ok);
 
-        gridLayout->addWidget(buttonBox, 1, 0, 1, 2);
+        gridLayout->addWidget(buttonBox, 2, 1, 1, 1);
+
+        Queue = new QCheckBox(DriveDialog);
+        Queue->setObjectName(QStringLiteral("Queue"));
+
+        gridLayout->addWidget(Queue, 2, 0, 1, 1);
 
 
         retranslateUi(DriveDialog);
@@ -197,13 +217,15 @@ public:
     void retranslateUi(QDialog *DriveDialog)
     {
         DriveDialog->setWindowTitle(QApplication::translate("DriveDialog", "Advanced drive command", nullptr));
-        doMeasurement->setText(QApplication::translate("DriveDialog", "do-measurement", nullptr));
-        label->setText(QApplication::translate("DriveDialog", "Distance", nullptr));
-        label_2->setText(QApplication::translate("DriveDialog", "Driving speed", nullptr));
-        label_3->setText(QApplication::translate("DriveDialog", "Measurement speed", nullptr));
-        label_4->setText(QApplication::translate("DriveDialog", "Measurement time", nullptr));
-        label_5->setText(QApplication::translate("DriveDialog", "Acceleration", nullptr));
-        label_6->setText(QApplication::translate("DriveDialog", "Deacceleration", nullptr));
+        doMeasurement->setText(QApplication::translate("DriveDialog", "Measure", nullptr));
+        label->setText(QApplication::translate("DriveDialog", "Distance (m)", nullptr));
+        label_2->setText(QApplication::translate("DriveDialog", "Driving speed (m/s)", nullptr));
+        label_3->setText(QApplication::translate("DriveDialog", "Measurement speed (m/s)", nullptr));
+        label_4->setText(QApplication::translate("DriveDialog", "Measurement time (s)", nullptr));
+        label_5->setText(QApplication::translate("DriveDialog", "Acceleration (m/s/s)", nullptr));
+        label_6->setText(QApplication::translate("DriveDialog", "Deacceleration (m/s/s)", nullptr));
+        label_7->setText(QApplication::translate("DriveDialog", "Marge (s)", nullptr));
+        Queue->setText(QApplication::translate("DriveDialog", "Queue", nullptr));
     } // retranslateUi
 
 };

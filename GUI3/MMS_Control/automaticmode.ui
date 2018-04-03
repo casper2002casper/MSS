@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>Dialog</class>
- <widget class="QDialog" name="Dialog">
+ <class>AutomaticMode</class>
+ <widget class="QDialog" name="AutomaticMode">
   <property name="geometry">
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>557</width>
-    <height>188</height>
+    <width>650</width>
+    <height>238</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -26,9 +26,6 @@
    <string>Automatic Mode</string>
   </property>
   <layout class="QGridLayout" name="gridLayout">
-   <property name="sizeConstraint">
-    <enum>QLayout::SetFixedSize</enum>
-   </property>
    <item row="0" column="0">
     <layout class="QFormLayout" name="formLayout_2">
      <property name="verticalSpacing">
@@ -49,13 +46,27 @@
        <item>
         <widget class="QLabel" name="label">
          <property name="text">
-          <string>Distance</string>
+          <string>Total distance (m)</string>
          </property>
         </widget>
        </item>
       </layout>
      </item>
      <item row="2" column="0">
+      <layout class="QHBoxLayout" name="horizontalLayout_7">
+       <item>
+        <widget class="QDoubleSpinBox" name="measurementInterval"/>
+       </item>
+       <item>
+        <widget class="QLabel" name="label_7">
+         <property name="text">
+          <string>Measurement distance (m)</string>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </item>
+     <item row="3" column="0">
       <layout class="QHBoxLayout" name="horizontalLayout_2">
        <item>
         <widget class="QDoubleSpinBox" name="drivingSpeed"/>
@@ -63,21 +74,21 @@
        <item>
         <widget class="QLabel" name="label_2">
          <property name="text">
-          <string>Driving speed</string>
+          <string>Driving speed (m/s)</string>
          </property>
         </widget>
        </item>
       </layout>
      </item>
-     <item row="3" column="0">
+     <item row="4" column="0">
       <layout class="QHBoxLayout" name="horizontalLayout_3">
        <item>
-        <widget class="QDoubleSpinBox" name="measurmentSpeed"/>
+        <widget class="QDoubleSpinBox" name="measurementSpeed"/>
        </item>
        <item>
         <widget class="QLabel" name="label_3">
          <property name="text">
-          <string>Measurement speed</string>
+          <string>Measurement speed (m/s)</string>
          </property>
         </widget>
        </item>
@@ -91,20 +102,36 @@
       <number>10</number>
      </property>
      <item row="0" column="0">
-      <layout class="QHBoxLayout" name="horizontalLayout_4">
+      <spacer name="verticalSpacer">
+       <property name="orientation">
+        <enum>Qt::Vertical</enum>
+       </property>
+       <property name="sizeType">
+        <enum>QSizePolicy::Fixed</enum>
+       </property>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>15</width>
+         <height>22</height>
+        </size>
+       </property>
+      </spacer>
+     </item>
+     <item row="1" column="0">
+      <layout class="QHBoxLayout" name="horizontalLayout_9">
        <item>
         <widget class="QDoubleSpinBox" name="measurementTime"/>
        </item>
        <item>
         <widget class="QLabel" name="label_4">
          <property name="text">
-          <string>Measurement time</string>
+          <string>Measurement time (s)</string>
          </property>
         </widget>
        </item>
       </layout>
      </item>
-     <item row="1" column="0">
+     <item row="2" column="0">
       <layout class="QHBoxLayout" name="horizontalLayout_5">
        <item>
         <widget class="QDoubleSpinBox" name="acceleration"/>
@@ -112,13 +139,13 @@
        <item>
         <widget class="QLabel" name="label_5">
          <property name="text">
-          <string>Acceleration</string>
+          <string>Acceleratio0n (m/s/s)</string>
          </property>
         </widget>
        </item>
       </layout>
      </item>
-     <item row="2" column="0">
+     <item row="3" column="0">
       <layout class="QHBoxLayout" name="horizontalLayout_6">
        <item>
         <widget class="QDoubleSpinBox" name="deacceleration"/>
@@ -126,21 +153,21 @@
        <item>
         <widget class="QLabel" name="label_6">
          <property name="text">
-          <string>Deacceleration</string>
+          <string>Deacceleration (m/s/s)</string>
          </property>
         </widget>
        </item>
       </layout>
      </item>
-     <item row="3" column="0">
-      <layout class="QHBoxLayout" name="horizontalLayout_7">
+     <item row="4" column="0">
+      <layout class="QHBoxLayout" name="horizontalLayout_8">
        <item>
-        <widget class="QDoubleSpinBox" name="measurementInterval"/>
+        <widget class="QDoubleSpinBox" name="Marge"/>
        </item>
        <item>
-        <widget class="QLabel" name="label_7">
+        <widget class="QLabel" name="label_8">
          <property name="text">
-          <string>Measurement interval</string>
+          <string>Marge (s)</string>
          </property>
         </widget>
        </item>
@@ -149,9 +176,15 @@
     </layout>
    </item>
    <item row="0" column="2">
-    <widget class="QPushButton" name="createCommands">
-     <property name="text">
-      <string>Create commands</string>
+    <widget class="QDialogButtonBox" name="buttonBox">
+     <property name="orientation">
+      <enum>Qt::Vertical</enum>
+     </property>
+     <property name="standardButtons">
+      <set>QDialogButtonBox::Cancel|QDialogButtonBox::Save</set>
+     </property>
+     <property name="centerButtons">
+      <bool>true</bool>
      </property>
     </widget>
    </item>
@@ -165,7 +198,7 @@
      </property>
      <property name="minimumSize">
       <size>
-       <width>520</width>
+       <width>550</width>
        <height>0</height>
       </size>
      </property>

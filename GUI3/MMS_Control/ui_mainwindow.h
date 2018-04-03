@@ -301,7 +301,7 @@ public:
         MainWindow->setCentralWidget(centralwidget);
         menubar = new QMenuBar(MainWindow);
         menubar->setObjectName(QStringLiteral("menubar"));
-        menubar->setGeometry(QRect(0, 0, 962, 26));
+        menubar->setGeometry(QRect(0, 0, 962, 22));
         menuFile = new QMenu(menubar);
         menuFile->setObjectName(QStringLiteral("menuFile"));
         menuCommands = new QMenu(menubar);
@@ -325,7 +325,7 @@ public:
 
         retranslateUi(MainWindow);
 
-        chartTabs->setCurrentIndex(3);
+        chartTabs->setCurrentIndex(0);
 
 
         QMetaObject::connectSlotsByName(MainWindow);

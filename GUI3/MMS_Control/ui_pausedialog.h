@@ -13,6 +13,7 @@
 #include <QtWidgets/QAction>
 #include <QtWidgets/QApplication>
 #include <QtWidgets/QButtonGroup>
+#include <QtWidgets/QCheckBox>
 #include <QtWidgets/QDialog>
 #include <QtWidgets/QDialogButtonBox>
 #include <QtWidgets/QDoubleSpinBox>
@@ -31,12 +32,13 @@ public:
     QDoubleSpinBox *autoResume;
     QLabel *label;
     QDialogButtonBox *buttonBox;
+    QCheckBox *Queue;
 
     void setupUi(QDialog *PauseDialog)
     {
         if (PauseDialog->objectName().isEmpty())
             PauseDialog->setObjectName(QStringLiteral("PauseDialog"));
-        PauseDialog->resize(222, 81);
+        PauseDialog->resize(355, 89);
         PauseDialog->setContextMenuPolicy(Qt::PreventContextMenu);
         formLayout = new QFormLayout(PauseDialog);
         formLayout->setObjectName(QStringLiteral("formLayout"));
@@ -64,7 +66,12 @@ public:
         buttonBox->setStandardButtons(QDialogButtonBox::Cancel|QDialogButtonBox::Ok);
         buttonBox->setCenterButtons(false);
 
-        formLayout->setWidget(1, QFormLayout::LabelRole, buttonBox);
+        formLayout->setWidget(1, QFormLayout::FieldRole, buttonBox);
+
+        Queue = new QCheckBox(PauseDialog);
+        Queue->setObjectName(QStringLiteral("Queue"));
+
+        formLayout->setWidget(1, QFormLayout::LabelRole, Queue);
 
 
         retranslateUi(PauseDialog);
@@ -77,7 +84,8 @@ public:
     void retranslateUi(QDialog *PauseDialog)
     {
         PauseDialog->setWindowTitle(QApplication::translate("PauseDialog", "Advanced pause comand", nullptr));
-        label->setText(QApplication::translate("PauseDialog", "Auto resume", nullptr));
+        label->setText(QApplication::translate("PauseDialog", "Auto resume (s)", nullptr));
+        Queue->setText(QApplication::translate("PauseDialog", "CheckBox", nullptr));
     } // retranslateUi
 
 };

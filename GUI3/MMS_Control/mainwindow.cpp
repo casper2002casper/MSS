@@ -2,11 +2,6 @@
 #include "basestationserver.h"
 
 #include "ui_mainwindow.h"
-#include "ui_drivedialog.h"
-#include "ui_measuredialog.h"
-#include "ui_pausedialog.h"
-#include "ui_startdialog.h"
-#include "ui_automaticmode.h"
 
 #include <QDialog>
 #include <QtCharts>
@@ -25,13 +20,15 @@ MainWindow::MainWindow(QWidget *parent) :
     D_drive(new Ui::DriveDialog),
     D_measure(new Ui::MeasureDialog),
     D_pause(new Ui::PauseDialog),
-    D_start(new Ui::StartDialog)
+    D_start(new Ui::StartDialog),
+    D_auto(new Ui::AutomaticMode)
 {
     ui->setupUi(this);
     D_drive->setupUi(driveUi);
     D_measure->setupUi(measureUi);
     D_pause->setupUi(pauseUi);
     D_start->setupUi(startUi);
+    D_auto->setupUi(autoUi);
 
     connect(&bs, SIGNAL(newMessage(QString)),this, SLOT(inputData(QString)));
     connect(&bs, SIGNAL(connected()),this, SLOT(connected()));
@@ -41,27 +38,27 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(measureUi, &QDialog::accepted, this, &MainWindow::measureCommand);
     connect(pauseUi, &QDialog::accepted, this, &MainWindow::pauseCommand);
     connect(startUi, &QDialog::accepted, this, &MainWindow::startCommand);
-   // connect(autoUi, , this, &MainWindow::autoCommand);
+    connect(D_auto->buttonBox, SIGNAL(accepted()), this, SLOT(autoCommandSave()));
 
     ui->lastCommandSendList->hide();
     ui->lastDataRecievedList->hide();
-    ui->connectButton->setEnabled(true);
     ui->statusbar->addPermanentWidget(ui->projectScout_2);
 
-    /*
+
     ui->startButton->setEnabled(false);
     ui->stopButton->setEnabled(false);
     ui->pauseButton->setEnabled(false);
     ui->resumeButton->setEnabled(false);
     ui->driveButton->setEnabled(false);
-    ui->measureButton->setEnabled(false); */
+    ui->measureButton->setEnabled(false);
+    ui->connectButton->setEnabled(false);
+    ui->actionCreate_command_sequence->setEnabled(false);
 }
 
 MainWindow::~MainWindow()
 {    delete ui;}
 
-void MainWindow::enableConnectButton(bool on)
-{ui->connectButton->setEnabled(on);}
+
 
 void MainWindow::on_actionShow_last_command_send_triggered(bool checked)
 {    checked ? ui->lastCommandSendList->show() : ui->lastCommandSendList->hide();}
@@ -70,22 +67,34 @@ void MainWindow::on_actionLast_data_recieved_triggered(bool checked)
 {    checked ? ui->lastDataRecievedList->show() : ui->lastDataRecievedList->hide();}
 
 void MainWindow::on_startButton_clicked()
-{(ui->actionAdvanced->isChecked()) ? startUi->show(): qDebug("test");/*bs.makeCommand("2::010::0::1;0;");*/}
+{
+    (ui->actionAdvanced->isChecked()) ? startUi->show(): sendCommand("2::000::0::1::0;");
+}
 
 void MainWindow::on_stopButton_clicked()
-{ bs.makeCommand("2::010::1::5::2.1;5;3;4;2.5;2;2;2;");}
+{
+    sendCommand("2::000::0::2");
+}
 
 void MainWindow::on_pauseButton_clicked()
-{(ui->actionAdvanced->isChecked()) ? pauseUi->show(): qDebug("test");/*bs.makeCommand("2::010::0::1;0;");*/}
+{
+    (ui->actionAdvanced->isChecked()) ? pauseUi->show(): sendCommand("2::000::0::3::0;");
+}
 
 void MainWindow::on_resumeButton_clicked()
-{bs.makeCommand("2::010::0::5::2.1;5;3;4;2.5;2;2;2;");}
+{
+    sendCommand("2::000::0::4");
+}
 
 void MainWindow::on_driveButton_clicked()
-{(ui->actionAdvanced->isChecked()) ? driveUi->show(): qDebug("test");/*bs.makeCommand("2::010::0::1;0;");*/}
+{
+    (ui->actionAdvanced->isChecked()) ? driveUi->show(): sendCommand("2::000::0::0::1;1;0.5;0.5;0.25;0.25;0.1;");
+}
 
 void MainWindow::on_measureButton_clicked()
-{(ui->actionAdvanced->isChecked()) ? measureUi->show(): qDebug("test");/*bs.makeCommand("2::010::0::1;0;");*/}
+{
+    (ui->actionAdvanced->isChecked()) ? measureUi->show(): sendCommand("2::000::0::5::2;0;0;");
+}
 
 void MainWindow::on_actionPrint_triggered()
 {
@@ -97,13 +106,29 @@ void MainWindow::on_actionPrint_triggered()
     if(dialog.exec() == QDialog::Rejected) return;
 }
 
+void MainWindow::sendCommand(QString command, bool blocking){
+
+    commandPending = true;
+    QListWidgetItem *newItem = new QListWidgetItem;
+    newItem->setText(command);
+    ui->lastCommandSendList->addItem(newItem);
+    ui->lastCommandSendList->scrollToBottom();
+    bs.makeCommand(command);
+    if(blocking){
+        while(commandPending){
+            QCoreApplication::processEvents(QEventLoop::AllEvents, 100);
+        }
+    }
+}
 
 void MainWindow::inputData(QString message){
     //qDebug("link: " + message.toLatin1());
     QListWidgetItem *newItem = new QListWidgetItem;
     newItem->setText(message);
-    ui->lastCommandSendList->addItem(newItem);
+    ui->lastDataRecievedList->addItem(newItem);
+    ui->lastDataRecievedList->scrollToBottom();
     if(message[0] == '0') updateCharts();
+    if(message[0] == '1') commandPending = false;
 }
 
 void MainWindow::on_connectButton_clicked()
@@ -126,6 +151,7 @@ void MainWindow::on_connectButton_clicked()
     }
     else{
         ui->connectButton->setText("Connect");
+        bs.disconnected();
         bs.close();
         qDebug("closing");
     }
@@ -142,6 +168,7 @@ void MainWindow::on_actionOpen_file_triggered()
                 "CSV (*.csv*)");
     bs.setDirectory(filepath);
     updateCharts();
+    ui->connectButton->setEnabled(true);
 }
 
 void MainWindow::on_actionNew_file_triggered()
@@ -150,15 +177,19 @@ void MainWindow::on_actionNew_file_triggered()
     filepath=QFileDialog::getSaveFileName(this, tr("Save File"),
                                 homePath,
                                 "CSV (*.csv*)");
-    bs.setDirectory(filepath);
-    updateCharts();
+    if(!filepath.isNull()){
+            if(!filepath.endsWith(".csv"))filepath.append(".csv");
+            bs.setDirectory(filepath);
+            updateCharts();
+            ui->connectButton->setEnabled(true);
+    }
 }
 
 void MainWindow::disconnected()
 {
     ui->connectButton->setText("Connect");
     bs.close();
-    qDebug("closing");
+    //qDebug("closing");
 
     ui->startButton->setEnabled(false);
     ui->stopButton->setEnabled(false);
@@ -166,6 +197,7 @@ void MainWindow::disconnected()
     ui->resumeButton->setEnabled(false);
     ui->driveButton->setEnabled(false);
     ui->measureButton->setEnabled(false);
+    ui->actionCreate_command_sequence->setEnabled(false);
 }
 
 void MainWindow::connected()
@@ -177,6 +209,7 @@ void MainWindow::connected()
     ui->resumeButton->setEnabled(true);
     ui->driveButton->setEnabled(true);
     ui->measureButton->setEnabled(true);
+    ui->actionCreate_command_sequence->setEnabled(true);
 }
 
 void MainWindow::updateCharts(){
@@ -185,12 +218,12 @@ void MainWindow::updateCharts(){
 
     QLayoutItem *child= ui->tempChartLayout->takeAt(0);
     if(child) delete(child->widget());
-    QChartView *TchartView = new QChartView(ch.createChart("Temperature",Time,Temperature));
+    QChartView *TchartView = new QChartView(ch.createChart("Temperature",Time,Temperature1));
     ui->tempChartLayout->addWidget(TchartView);
 
     child= ui->rhTabLayout->takeAt(0);
     if(child) delete(child->widget());
-    QChartView *RHchartView = new QChartView(ch.createChart("Relative Humidity",Time,Humidity));
+    QChartView *RHchartView = new QChartView(ch.createChart("Relative Humidity",Time,Humidity1));
     ui->rhTabLayout->addWidget(RHchartView);
 
     child= ui->luxTabLayout->takeAt(0);
@@ -210,42 +243,90 @@ void MainWindow::updateCharts(){
 }
 
 void MainWindow::driveCommand(){
-    R_distance = D_drive->distance->value();
-    R_drivespeed = D_drive->driveSpeed->value();
-    R_measurespeed = D_drive->measurementSpeed->value();
-    R_measuretime = D_drive->measurementTime->value();
-    R_acceleration = D_drive->acceleration->value();
-    R_deacceleration = D_drive->deacceleration->value();
-    R_domeasurement = D_drive->doMeasurement->isChecked();
-    //bs.makeCommand("2::010::0::5::2.1;5;3;4;2.5;2;2;2;");
+    QString command = "2::000::0::0::";
+    command.append(QString::number(D_drive->doMeasurement->isChecked()));
+    command.append(";");
+    command.append(QString::number(D_drive->distance->value()));
+    command.append(";");
+    command.append(QString::number(D_drive->driveSpeed->value()));
+    command.append(";");
+    command.append(QString::number(D_drive->measurementSpeed->value()));
+    command.append(";");
+    command.append(QString::number(D_drive->measurementTime->value()));
+    command.append(";");
+    command.append(QString::number( D_drive->acceleration->value()));
+    command.append(";");
+    command.append(QString::number(D_drive->deacceleration->value()));
+    command.append(";");
+    command.append(QString::number(D_drive->marge->value()));
+    command.append(";");
+    //qDebug(command.toLatin1());
+    sendCommand(command);//bs.makeCommand("2::010::0::5::2.1;5;3;4;2.5;2;2;2;");
 }
 void MainWindow::measureCommand(){
-    M_measurementtime = D_measure->measurementTime->value();
-    //bs.makeCommand("2::010::0::5::2.1;5;3;4;2.5;2;2;2;");
+    QString command = "2::000::0::5::";
+    command.append(QString::number(D_measure->Maxmeasure->value()));
+    command.append(";");
+    command.append(QString::number(D_measure->Minmeasure->value()));
+    command.append(";");
+    command.append(QString::number(D_measure->continues->isChecked()));
+    command.append(";");
+    sendCommand(command); //bs.makeCommand("2::010::0::5::2.1;5;3;4;2.5;2;2;2;");
 }
 void MainWindow::pauseCommand(){
-    P_autoresume = D_pause->autoResume->value();
-    //bs.makeCommand("2::010::0::5::2.1;5;3;4;2.5;2;2;2;");
+    QString command = "2::000::0::3::";
+    command.append(QString::number(D_pause->autoResume->value()));
+    command.append(";");
+    sendCommand(command);//bs.makeCommand("2::010::0::5::2.1;5;3;4;2.5;2;2;2;");
 }
 void MainWindow::startCommand(){
-    S_warmuptime = D_start->warmupTime->value();
-    //bs.makeCommand("2::010::0::5::2.1;5;3;4;2.5;2;2;2;");
+    QString command = "2::000::0::1::";
+    command.append(QString::number(D_start->warmupTime->value()));
+    command.append(";");
+    sendCommand(command);//bs.makeCommand("2::010::0::5::2.1;5;3;4;2.5;2;2;2;");
 }
 
-void MainWindow::autoCommand(){
-    A_distance = D_auto->distance->value();
-    A_drivespeed = D_auto->driveSpeed->value();
-    A_measurespeed = D_auto->measurementSpeed->value();
-    A_measuretime = D_auto->measurementTime->value();
-    A_acceleration = D_auto->acceleration->value();
-    A_deacceleration = D_auto->deacceleration->value();
-    A_measurementinterval = D_auto->deacceleration->value();
-    A_domeasurement = D_auto->doMeasurement->isChecked();
-    //bs.makeCommand("2::010::0::5::2.1;5;3;4;2.5;2;2;2;");
-}
 
 void MainWindow::on_actionCreate_command_sequence_triggered()
 {
-    qDebug("werkt niet");
     autoUi->show();
+    qDebug("show");
 }
+
+
+void MainWindow::autoCommandSave()
+{
+
+    D_auto->sendingProgress->setMaximum(qCeil(D_auto->distance->value() / D_auto->measurementInterval->value()));
+    float distance = 0;
+    int progress = 0;
+    D_auto->sendingProgress->setValue(progress);
+    while(distance<D_auto->distance->value()){
+        QString command = "2::000::1::0::";
+        command.append(QString::number(D_auto->doMeasurement->isChecked()));
+        command.append(";");
+        if(D_auto->measurementInterval->value()<(D_auto->distance->value() - distance)) command.append(QString::number(D_auto->measurementInterval->value()));
+        else command.append(QString::number(D_auto->distance->value() - distance));
+        command.append(";");
+        command.append(QString::number(D_auto->drivingSpeed->value()));
+        command.append(";");
+        command.append(QString::number(D_auto->measurementSpeed->value()));
+        command.append(";");
+        command.append(QString::number(D_auto->measurementTime->value()));
+        command.append(";");
+        command.append(QString::number( D_auto->acceleration->value()));
+        command.append(";");
+        command.append(QString::number(D_auto->deacceleration->value()));
+        command.append(";");
+        command.append(QString::number(D_auto->Marge->value()));
+        command.append(";");
+        qDebug("Sending " + command.toLatin1());
+        sendCommand(command,true);//bs.makeCommand("2::010::0::5::2.1;5;3;4;2.5;2;2;2;");
+        progress++;
+        D_auto->sendingProgress->setValue(progress);
+        distance += D_auto->measurementInterval->value();
+    }
+
+}
+
+

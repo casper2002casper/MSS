@@ -26,7 +26,7 @@ void basestationServer::incomingConnection(qintptr socketDescriptor) //Gets call
 }
 
 void basestationServer::disconnected(){ //Gets called when the socket disconnects
-    qDebug("Disconnecting\n");
+    //qDebug("Disconnecting\n");
     socket.disconnectFromHost();
     socket.waitForDisconnected();
     emit disconnecting();

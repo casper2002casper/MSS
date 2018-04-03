@@ -14,7 +14,7 @@
 #include "ui_automaticmode.h"
 
 #include "basestationserver.h"
-//#include "basestationthread.h"
+
 #include "charts.h"
 
 namespace Ui {
@@ -31,8 +31,6 @@ class MainWindow : public QMainWindow
     Q_OBJECT
 
 public:
-
-    void enableConnectButton(bool on);
 
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
@@ -64,12 +62,16 @@ private slots:
     void startCommand();
     void on_actionCreate_command_sequence_triggered();
 
+    void autoCommandSave();
+
+
 private:
     Ui::MainWindow *ui;
     Ui::DriveDialog *D_drive;
     Ui::MeasureDialog *D_measure;
     Ui::PauseDialog *D_pause;
     Ui::StartDialog *D_start;
+    Ui::AutomaticMode *D_auto;
 
     QDialog *driveUi = new QDialog(0,0);
     QDialog *measureUi = new QDialog(0,0);
@@ -81,13 +83,13 @@ private:
     basestationServer bs;
 
     void updateCharts();
+    void sendCommand(QString command, bool blocking = false);
 
-    enum type {Time, PosX, PosY, PosZ, SpeedX, SpeedY, SpeedZ, Temperature, Humidity, Lux, Par, CO2};
+    enum Parametertype {Time, PosX, PosY, PosZ, SpeedX, SpeedY, SpeedZ, Temperature1,Temperature2,Temperature3,Temperature4, Humidity1,Humidity2,Humidity3,Humidity4, Lux, Par, CO2};
+    enum commandType {Instant,Queue};
+    enum commanddataType {Action, Start, Stop, Pause, Resume, Measure};
     QString filepath;
-    int advancedTriggerd = 0;
-    double R_distance, R_drivespeed, R_measurespeed, R_measuretime, R_acceleration, R_deacceleration, S_warmuptime, P_autoresume, M_measurementtime;
-    double A_distance, A_drivespeed, A_measurespeed, A_measuretime, A_acceleration, A_deacceleration, A_measurementinterval;
-    bool R_domeasurement, A_domeasurement;
+    bool commandPending;
 };
 
 

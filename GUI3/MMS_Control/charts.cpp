@@ -62,15 +62,21 @@ void ChartsMaker::updateCSV(QString location)
        if(mintime == 0) mintime = dateTime.toSecsSinceEpoch();
        row.append(dateTime.toSecsSinceEpoch() - mintime);
        for (int i = 2; i < splitline.size(); ++i) {
-           row.append(QString(splitline[i]).toFloat());
+           if(QString(splitline[i]).contains("+")){
+               QList<QByteArray> heightline = splitline[i].split('+');
+               for (int y = 0; y < heightline.size(); ++y) {
+                   row.append(QString(heightline[y]).toFloat());
+               }
+           }
+           else row.append(QString(splitline[i]).toFloat());
            //qDebug(labels[i].toLatin1() + "%f",QString(splitline[i]).toFloat());
        }
        data.append(row);
     }
     file.close();
 //    qDebug("updatedone ");
-//    for (int i = 0; i < data[5].size(); ++i) {
-//         qDebug("%f",data[5][i]);
+//    for (int i = 0; i < data[1].size(); ++i) {
+//         qDebug("%f",data[1][i]);
 //    }
 
 }
@@ -105,7 +111,6 @@ float ChartsMaker::getMax(int index){
     //qDebug("max %f",max);
     return max;
 }
-
 
 
 QChart *ChartsMaker::createChart(QString Title,int XSeries,int YSeries)

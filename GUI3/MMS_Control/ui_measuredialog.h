@@ -13,10 +13,11 @@
 #include <QtWidgets/QAction>
 #include <QtWidgets/QApplication>
 #include <QtWidgets/QButtonGroup>
+#include <QtWidgets/QCheckBox>
 #include <QtWidgets/QDialog>
 #include <QtWidgets/QDialogButtonBox>
 #include <QtWidgets/QDoubleSpinBox>
-#include <QtWidgets/QFormLayout>
+#include <QtWidgets/QGridLayout>
 #include <QtWidgets/QHBoxLayout>
 #include <QtWidgets/QHeaderView>
 #include <QtWidgets/QLabel>
@@ -26,26 +27,31 @@ QT_BEGIN_NAMESPACE
 class Ui_MeasureDialog
 {
 public:
-    QFormLayout *formLayout;
+    QGridLayout *gridLayout;
     QHBoxLayout *horizontalLayout;
-    QDoubleSpinBox *measurementTime;
+    QDoubleSpinBox *Maxmeasure;
     QLabel *label;
+    QHBoxLayout *horizontalLayout_2;
+    QDoubleSpinBox *Minmeasure;
+    QLabel *label_2;
+    QHBoxLayout *horizontalLayout_3;
+    QCheckBox *continues;
     QDialogButtonBox *buttonBox;
+    QCheckBox *Queue;
 
     void setupUi(QDialog *MeasureDialog)
     {
         if (MeasureDialog->objectName().isEmpty())
             MeasureDialog->setObjectName(QStringLiteral("MeasureDialog"));
-        MeasureDialog->resize(222, 85);
-        formLayout = new QFormLayout(MeasureDialog);
-        formLayout->setObjectName(QStringLiteral("formLayout"));
-        formLayout->setSizeConstraint(QLayout::SetFixedSize);
+        MeasureDialog->resize(513, 248);
+        gridLayout = new QGridLayout(MeasureDialog);
+        gridLayout->setObjectName(QStringLiteral("gridLayout"));
         horizontalLayout = new QHBoxLayout();
         horizontalLayout->setObjectName(QStringLiteral("horizontalLayout"));
-        measurementTime = new QDoubleSpinBox(MeasureDialog);
-        measurementTime->setObjectName(QStringLiteral("measurementTime"));
+        Maxmeasure = new QDoubleSpinBox(MeasureDialog);
+        Maxmeasure->setObjectName(QStringLiteral("Maxmeasure"));
 
-        horizontalLayout->addWidget(measurementTime);
+        horizontalLayout->addWidget(Maxmeasure);
 
         label = new QLabel(MeasureDialog);
         label->setObjectName(QStringLiteral("label"));
@@ -53,14 +59,45 @@ public:
         horizontalLayout->addWidget(label);
 
 
-        formLayout->setLayout(0, QFormLayout::LabelRole, horizontalLayout);
+        gridLayout->addLayout(horizontalLayout, 0, 0, 1, 1);
+
+        horizontalLayout_2 = new QHBoxLayout();
+        horizontalLayout_2->setObjectName(QStringLiteral("horizontalLayout_2"));
+        Minmeasure = new QDoubleSpinBox(MeasureDialog);
+        Minmeasure->setObjectName(QStringLiteral("Minmeasure"));
+
+        horizontalLayout_2->addWidget(Minmeasure);
+
+        label_2 = new QLabel(MeasureDialog);
+        label_2->setObjectName(QStringLiteral("label_2"));
+
+        horizontalLayout_2->addWidget(label_2);
+
+
+        gridLayout->addLayout(horizontalLayout_2, 1, 0, 1, 1);
+
+        horizontalLayout_3 = new QHBoxLayout();
+        horizontalLayout_3->setObjectName(QStringLiteral("horizontalLayout_3"));
+        continues = new QCheckBox(MeasureDialog);
+        continues->setObjectName(QStringLiteral("continues"));
+
+        horizontalLayout_3->addWidget(continues);
+
+
+        gridLayout->addLayout(horizontalLayout_3, 2, 0, 1, 1);
 
         buttonBox = new QDialogButtonBox(MeasureDialog);
         buttonBox->setObjectName(QStringLiteral("buttonBox"));
         buttonBox->setOrientation(Qt::Horizontal);
         buttonBox->setStandardButtons(QDialogButtonBox::Cancel|QDialogButtonBox::Ok);
 
-        formLayout->setWidget(1, QFormLayout::LabelRole, buttonBox);
+        gridLayout->addWidget(buttonBox, 4, 0, 1, 1, Qt::AlignRight);
+
+        Queue = new QCheckBox(MeasureDialog);
+        Queue->setObjectName(QStringLiteral("Queue"));
+        Queue->setMinimumSize(QSize(495, 0));
+
+        gridLayout->addWidget(Queue, 5, 0, 1, 1);
 
 
         retranslateUi(MeasureDialog);
@@ -73,7 +110,10 @@ public:
     void retranslateUi(QDialog *MeasureDialog)
     {
         MeasureDialog->setWindowTitle(QApplication::translate("MeasureDialog", "Advanced measurement command", nullptr));
-        label->setText(QApplication::translate("MeasureDialog", "Measurement time", nullptr));
+        label->setText(QApplication::translate("MeasureDialog", "Max measure time (s)", nullptr));
+        label_2->setText(QApplication::translate("MeasureDialog", "Min measure time (s)", nullptr));
+        continues->setText(QApplication::translate("MeasureDialog", "Continues measurement", nullptr));
+        Queue->setText(QApplication::translate("MeasureDialog", "Queue", nullptr));
     } // retranslateUi
 
 };
