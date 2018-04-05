@@ -23,6 +23,7 @@
 #include <QtWidgets/QMenu>
 #include <QtWidgets/QMenuBar>
 #include <QtWidgets/QPushButton>
+#include <QtWidgets/QRadioButton>
 #include <QtWidgets/QSpacerItem>
 #include <QtWidgets/QStatusBar>
 #include <QtWidgets/QTabWidget>
@@ -70,6 +71,7 @@ public:
     QSpacerItem *verticalSpacer_2;
     QPushButton *connectButton;
     QSpacerItem *verticalSpacer_4;
+    QRadioButton *sendInstant;
     QPushButton *startButton;
     QPushButton *stopButton;
     QSpacerItem *verticalSpacer;
@@ -240,6 +242,11 @@ public:
 
         verticalLayout->addItem(verticalSpacer_4);
 
+        sendInstant = new QRadioButton(centralwidget);
+        sendInstant->setObjectName(QStringLiteral("sendInstant"));
+
+        verticalLayout->addWidget(sendInstant);
+
         startButton = new QPushButton(centralwidget);
         startButton->setObjectName(QStringLiteral("startButton"));
         sizePolicy2.setHeightForWidth(startButton->sizePolicy().hasHeightForWidth());
@@ -301,7 +308,7 @@ public:
         MainWindow->setCentralWidget(centralwidget);
         menubar = new QMenuBar(MainWindow);
         menubar->setObjectName(QStringLiteral("menubar"));
-        menubar->setGeometry(QRect(0, 0, 962, 22));
+        menubar->setGeometry(QRect(0, 0, 962, 26));
         menuFile = new QMenu(menubar);
         menuFile->setObjectName(QStringLiteral("menuFile"));
         menuCommands = new QMenu(menubar);
@@ -359,6 +366,7 @@ public:
         chartTabs->setTabToolTip(chartTabs->indexOf(luxTab), QApplication::translate("MainWindow", "Illuminance chart", nullptr));
         label->setText(QApplication::translate("MainWindow", "Project SCOUT - 2018", nullptr));
         connectButton->setText(QApplication::translate("MainWindow", "Connect", nullptr));
+        sendInstant->setText(QApplication::translate("MainWindow", "Send instant", nullptr));
         startButton->setText(QApplication::translate("MainWindow", "Start", nullptr));
         stopButton->setText(QApplication::translate("MainWindow", "Stop", nullptr));
         pauseButton->setText(QApplication::translate("MainWindow", "Pause", nullptr));

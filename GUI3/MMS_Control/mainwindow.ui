@@ -216,6 +216,13 @@
        </spacer>
       </item>
       <item>
+       <widget class="QRadioButton" name="sendInstant">
+        <property name="text">
+         <string>Send instant</string>
+        </property>
+       </widget>
+      </item>
+      <item>
        <widget class="QPushButton" name="startButton">
         <property name="sizePolicy">
          <sizepolicy hsizetype="Maximum" vsizetype="Fixed">
@@ -351,7 +358,7 @@
      <x>0</x>
      <y>0</y>
      <width>962</width>
-     <height>22</height>
+     <height>26</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFile">

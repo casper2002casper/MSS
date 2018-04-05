@@ -43,13 +43,18 @@ public:
     {
         if (MeasureDialog->objectName().isEmpty())
             MeasureDialog->setObjectName(QStringLiteral("MeasureDialog"));
-        MeasureDialog->resize(513, 248);
+        MeasureDialog->resize(517, 168);
         gridLayout = new QGridLayout(MeasureDialog);
         gridLayout->setObjectName(QStringLiteral("gridLayout"));
         horizontalLayout = new QHBoxLayout();
         horizontalLayout->setObjectName(QStringLiteral("horizontalLayout"));
         Maxmeasure = new QDoubleSpinBox(MeasureDialog);
         Maxmeasure->setObjectName(QStringLiteral("Maxmeasure"));
+        QSizePolicy sizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
+        sizePolicy.setHorizontalStretch(0);
+        sizePolicy.setVerticalStretch(0);
+        sizePolicy.setHeightForWidth(Maxmeasure->sizePolicy().hasHeightForWidth());
+        Maxmeasure->setSizePolicy(sizePolicy);
 
         horizontalLayout->addWidget(Maxmeasure);
 
@@ -65,11 +70,18 @@ public:
         horizontalLayout_2->setObjectName(QStringLiteral("horizontalLayout_2"));
         Minmeasure = new QDoubleSpinBox(MeasureDialog);
         Minmeasure->setObjectName(QStringLiteral("Minmeasure"));
+        sizePolicy.setHeightForWidth(Minmeasure->sizePolicy().hasHeightForWidth());
+        Minmeasure->setSizePolicy(sizePolicy);
 
         horizontalLayout_2->addWidget(Minmeasure);
 
         label_2 = new QLabel(MeasureDialog);
         label_2->setObjectName(QStringLiteral("label_2"));
+        QSizePolicy sizePolicy1(QSizePolicy::Preferred, QSizePolicy::Preferred);
+        sizePolicy1.setHorizontalStretch(0);
+        sizePolicy1.setVerticalStretch(0);
+        sizePolicy1.setHeightForWidth(label_2->sizePolicy().hasHeightForWidth());
+        label_2->setSizePolicy(sizePolicy1);
 
         horizontalLayout_2->addWidget(label_2);
 

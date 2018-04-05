@@ -126,6 +126,13 @@ QChart *ChartsMaker::createChart(QString Title,int XSeries,int YSeries)
     chart->axisY()->setRange(getMin(YSeries) * 0.99,getMax(YSeries) * 1.01);
     chart->layout()->setContentsMargins(0, 0, 0, 0);
     chart->setBackgroundRoundness(0);
+    chart->axisX()->setTitleText("Time");
+    (Title == "Temperature") ? chart->axisY()->setTitleText("°C"): nullptr;
+    (Title == "Relative Humidity") ? chart->axisY()->setTitleText("% RH"): nullptr;
+    (Title == "Lux") ? chart->axisY()->setTitleText("Lux"): nullptr;
+    (Title == "PAR") ? chart->axisY()->setTitleText("µmol/(m²s)"): nullptr;
+    (Title == "CO2") ? chart->axisY()->setTitleText("PPM"): nullptr;
+
 
     // Add space to label to add space between labels and axis
     static_cast<QValueAxis *>(chart->axisY())->setLabelFormat("%.1f  ");

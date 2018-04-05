@@ -23,6 +23,9 @@ MainWindow::MainWindow(QWidget *parent) :
     D_start(new Ui::StartDialog),
     D_auto(new Ui::AutomaticMode)
 {
+    setWindowIcon(QIcon(":/icons/tomato.png"));
+    setWindowIconText("MMS Control");
+
     ui->setupUi(this);
     D_drive->setupUi(driveUi);
     D_measure->setupUi(measureUi);
@@ -39,9 +42,11 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(pauseUi, &QDialog::accepted, this, &MainWindow::pauseCommand);
     connect(startUi, &QDialog::accepted, this, &MainWindow::startCommand);
     connect(D_auto->buttonBox, SIGNAL(accepted()), this, SLOT(autoCommandSave()));
+    connect(ui->actionAdvanced, SIGNAL(changed()), this, SLOT(sendInstant()));
 
     ui->lastCommandSendList->hide();
     ui->lastDataRecievedList->hide();
+    ui->sendInstant->hide();
     ui->statusbar->addPermanentWidget(ui->projectScout_2);
 
 
@@ -329,4 +334,5 @@ void MainWindow::autoCommandSave()
 
 }
 
-
+void MainWindow::sendInstant()
+{ (ui->actionAdvanced->isChecked()) ? ui->sendInstant->show(): ui->sendInstant->hide();}

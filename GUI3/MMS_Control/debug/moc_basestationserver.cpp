@@ -39,13 +39,13 @@ QT_MOC_LITERAL(4, 38, 11), // "messageSend"
 QT_MOC_LITERAL(5, 50, 9), // "packet_nr"
 QT_MOC_LITERAL(6, 60, 9), // "connected"
 QT_MOC_LITERAL(7, 70, 13), // "disconnecting"
-QT_MOC_LITERAL(8, 84, 8), // "readData"
-QT_MOC_LITERAL(9, 93, 12) // "disconnected"
+QT_MOC_LITERAL(8, 84, 12), // "disconnected"
+QT_MOC_LITERAL(9, 97, 8) // "readData"
 
     },
     "basestationServer\0newMessage\0\0message\0"
     "messageSend\0packet_nr\0connected\0"
-    "disconnecting\0readData\0disconnected"
+    "disconnecting\0disconnected\0readData"
 };
 #undef QT_MOC_LITERAL
 
@@ -69,7 +69,7 @@ static const uint qt_meta_data_basestationServer[] = {
        7,    0,   51,    2, 0x06 /* Public */,
 
  // slots: name, argc, parameters, tag, flags
-       8,    0,   52,    2, 0x08 /* Private */,
+       8,    0,   52,    2, 0x0a /* Public */,
        9,    0,   53,    2, 0x08 /* Private */,
 
  // signals: parameters
@@ -95,8 +95,8 @@ void basestationServer::qt_static_metacall(QObject *_o, QMetaObject::Call _c, in
         case 1: _t->messageSend((*reinterpret_cast< int(*)>(_a[1]))); break;
         case 2: _t->connected(); break;
         case 3: _t->disconnecting(); break;
-        case 4: _t->readData(); break;
-        case 5: _t->disconnected(); break;
+        case 4: _t->disconnected(); break;
+        case 5: _t->readData(); break;
         default: ;
         }
     } else if (_c == QMetaObject::IndexOfMethod) {

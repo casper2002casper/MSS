@@ -63,7 +63,7 @@ private slots:
     void on_actionCreate_command_sequence_triggered();
 
     void autoCommandSave();
-
+    void sendInstant();
 
 private:
     Ui::MainWindow *ui;
