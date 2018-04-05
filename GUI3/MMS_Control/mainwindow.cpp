@@ -58,6 +58,7 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->measureButton->setEnabled(false);
     ui->connectButton->setEnabled(false);
     ui->actionCreate_command_sequence->setEnabled(false);
+    ui->sendInstant->setEnabled(false);
 }
 
 MainWindow::~MainWindow()
@@ -203,6 +204,7 @@ void MainWindow::disconnected()
     ui->driveButton->setEnabled(false);
     ui->measureButton->setEnabled(false);
     ui->actionCreate_command_sequence->setEnabled(false);
+    ui->sendInstant->setEnabled(false);
 }
 
 void MainWindow::connected()
@@ -215,6 +217,7 @@ void MainWindow::connected()
     ui->driveButton->setEnabled(true);
     ui->measureButton->setEnabled(true);
     ui->actionCreate_command_sequence->setEnabled(true);
+    ui->sendInstant->setEnabled(true);
 }
 
 void MainWindow::updateCharts(){
