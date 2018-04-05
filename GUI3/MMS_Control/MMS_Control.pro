@@ -9,7 +9,7 @@ QT       += core gui\
             charts\
             network
 
-greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
+greaterThan(QT_MAJOR_VERSION, 4): QT += widgets printsupport
 
 TARGET = MMS_Control
 TEMPLATE = app
@@ -21,13 +21,16 @@ SOURCES += \
     main.cpp \
     mainwindow.cpp \
     basestationserver.cpp \
-    basestationthread.cpp
+    basestationthread.cpp \
+    qcustomplot.cpp
 
 HEADERS += \
     mainwindow.h \
     charts.h \
     basestationserver.h \
-    basestationthread.h
+    basestationthread.h \
+    qcustomplot.h
+
 FORMS += \
     mainwindow.ui \
     startdialog.ui \
