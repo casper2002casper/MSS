@@ -29,6 +29,7 @@
 #include <QtWidgets/QTabWidget>
 #include <QtWidgets/QVBoxLayout>
 #include <QtWidgets/QWidget>
+#include "qcustomplot.h"
 
 QT_BEGIN_NAMESPACE
 
@@ -51,6 +52,7 @@ public:
     QWidget *temperatureTab;
     QGridLayout *gridLayout;
     QGridLayout *tempChartLayout;
+    QCustomPlot *plotTest;
     QWidget *rhTab;
     QGridLayout *gridLayout_3;
     QGridLayout *rhTabLayout;
@@ -142,6 +144,11 @@ public:
         tempChartLayout->setSizeConstraint(QLayout::SetDefaultConstraint);
 
         gridLayout->addLayout(tempChartLayout, 0, 0, 1, 1);
+
+        plotTest = new QCustomPlot(temperatureTab);
+        plotTest->setObjectName(QStringLiteral("plotTest"));
+
+        gridLayout->addWidget(plotTest, 1, 0, 1, 1);
 
         chartTabs->addTab(temperatureTab, QString());
         rhTab = new QWidget();

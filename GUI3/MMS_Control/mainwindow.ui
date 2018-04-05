@@ -69,6 +69,9 @@
             </property>
            </layout>
           </item>
+          <item row="1" column="0">
+           <widget class="QCustomPlot" name="plotTest" native="true"/>
+          </item>
          </layout>
         </widget>
         <widget class="QWidget" name="rhTab">
@@ -441,6 +444,14 @@
    </property>
   </action>
  </widget>
+ <customwidgets>
+  <customwidget>
+   <class>QCustomPlot</class>
+   <extends>QWidget</extends>
+   <header>qcustomplot.h</header>
+   <container>1</container>
+  </customwidget>
+ </customwidgets>
  <resources/>
  <connections/>
 </ui>

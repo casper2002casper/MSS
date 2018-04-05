@@ -65,6 +65,7 @@ private slots:
     void autoCommandSave();
     void sendInstant();
 
+    void testPlot();
 private:
     Ui::MainWindow *ui;
     Ui::DriveDialog *D_drive;

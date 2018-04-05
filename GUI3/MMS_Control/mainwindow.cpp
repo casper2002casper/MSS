@@ -59,6 +59,8 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->connectButton->setEnabled(false);
     ui->actionCreate_command_sequence->setEnabled(false);
     ui->sendInstant->setEnabled(false);
+
+    testPlot();
 }
 
 MainWindow::~MainWindow()
@@ -339,3 +341,24 @@ void MainWindow::autoCommandSave()
 
 void MainWindow::sendInstant()
 { (ui->actionAdvanced->isChecked()) ? ui->sendInstant->show(): ui->sendInstant->hide();}
+
+void MainWindow::testPlot()
+{
+    // generate some data:
+    QVector<double> x(101), y(101); // initialize with entries 0..100
+    for (int i=0; i<101; ++i)
+    {
+      x[i] = i/50.0 - 1; // x goes from -1 to 1
+      y[i] = x[i]*x[i]; // let's plot a quadratic function
+    }
+    // create graph and assign data to it:
+    ui->plotTest->addGraph();
+    ui->plotTest->graph(0)->setData(x, y);
+    // give the axes some labels:
+    ui->plotTest->xAxis->setLabel("x");
+    ui->plotTest->yAxis->setLabel("y");
+    // set axes ranges, so we see all data:
+    ui->plotTest->xAxis->setRange(-1, 1);
+    ui->plotTest->yAxis->setRange(0, 1);
+    ui->plotTest->replot();
+}
