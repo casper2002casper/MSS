@@ -59,8 +59,7 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->connectButton->setEnabled(false);
     ui->actionCreate_command_sequence->setEnabled(false);
     ui->sendInstant->setEnabled(false);
-
-    testPlot();
+    ui->plotTest->setEnabled(false);
 }
 
 MainWindow::~MainWindow()
@@ -225,6 +224,7 @@ void MainWindow::connected()
 void MainWindow::updateCharts(){
     ch.updateCSV(filepath);
     //ui->tempChartLayout->addWidget(QChartView *TchartView);
+    //testPlot("Temperature",Time,Temperature1);
 
     QLayoutItem *child= ui->tempChartLayout->takeAt(0);
     if(child) delete(child->widget());
@@ -251,7 +251,6 @@ void MainWindow::updateCharts(){
     QChartView *COOchartView = new QChartView(ch.createChart("CO2",Time,CO2));
     ui->co2TabLayout->addWidget(COOchartView);
 }
-
 void MainWindow::driveCommand(){
     QString command = "2::000::0::0::";
     command.append(QString::number(D_drive->doMeasurement->isChecked()));
@@ -295,15 +294,11 @@ void MainWindow::startCommand(){
     command.append(";");
     sendCommand(command);//bs.makeCommand("2::010::0::5::2.1;5;3;4;2.5;2;2;2;");
 }
-
-
 void MainWindow::on_actionCreate_command_sequence_triggered()
 {
     autoUi->show();
     qDebug("show");
 }
-
-
 void MainWindow::autoCommandSave()
 {
 
@@ -342,23 +337,17 @@ void MainWindow::autoCommandSave()
 void MainWindow::sendInstant()
 { (ui->actionAdvanced->isChecked()) ? ui->sendInstant->show(): ui->sendInstant->hide();}
 
-void MainWindow::testPlot()
+void MainWindow::testPlot(QString Title,int XSeries,int YSeries)
 {
-    // generate some data:
-    QVector<double> x(101), y(101); // initialize with entries 0..100
-    for (int i=0; i<101; ++i)
-    {
-      x[i] = i/50.0 - 1; // x goes from -1 to 1
-      y[i] = x[i]*x[i]; // let's plot a quadratic function
-    }
-    // create graph and assign data to it:
-    ui->plotTest->addGraph();
-    ui->plotTest->graph(0)->setData(x, y);
-    // give the axes some labels:
-    ui->plotTest->xAxis->setLabel("x");
-    ui->plotTest->yAxis->setLabel("y");
-    // set axes ranges, so we see all data:
-    ui->plotTest->xAxis->setRange(-1, 1);
-    ui->plotTest->yAxis->setRange(0, 1);
-    ui->plotTest->replot();
+//    QCPColorMap *colorMap = new QCPColorMap(ui->plotTest->xAxis, ui->plotTest->yAxis);
+
+//    colorMap->setName(Title);
+//    colorMap->data()->setSize(XSeries, YSeries);
+//    for (int x=0; x<50; ++x)
+//        colorMap->data()->setData(XSeries, YSeries, 50);
+//    colorMap->setGradient(QCPColorGradient::gpSpectrum);
+//    colorMap->setInterpolate(false);
+//    colorMap->rescaleDataRange(true);
+//    ui->plotTest->rescaleAxes();
+//    ui->plotTest->replot();
 }

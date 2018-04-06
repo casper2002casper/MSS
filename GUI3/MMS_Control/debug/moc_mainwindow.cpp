@@ -21,8 +21,8 @@ QT_BEGIN_MOC_NAMESPACE
 QT_WARNING_PUSH
 QT_WARNING_DISABLE_DEPRECATED
 struct qt_meta_stringdata_MainWindow_t {
-    QByteArrayData data[27];
-    char stringdata0[522];
+    QByteArrayData data[30];
+    char stringdata0[544];
 };
 #define QT_MOC_LITERAL(idx, ofs, len) \
     Q_STATIC_BYTE_ARRAY_DATA_HEADER_INITIALIZER_WITH_OFFSET(len, \
@@ -57,7 +57,10 @@ QT_MOC_LITERAL(22, 429, 12), // "startCommand"
 QT_MOC_LITERAL(23, 442, 42), // "on_actionCreate_command_seque..."
 QT_MOC_LITERAL(24, 485, 15), // "autoCommandSave"
 QT_MOC_LITERAL(25, 501, 11), // "sendInstant"
-QT_MOC_LITERAL(26, 513, 8) // "testPlot"
+QT_MOC_LITERAL(26, 513, 8), // "testPlot"
+QT_MOC_LITERAL(27, 522, 5), // "Title"
+QT_MOC_LITERAL(28, 528, 7), // "XSeries"
+QT_MOC_LITERAL(29, 536, 7) // "YSeries"
 
     },
     "MainWindow\0inputData\0\0message\0"
@@ -73,7 +76,8 @@ QT_MOC_LITERAL(26, 513, 8) // "testPlot"
     "disconnected\0driveCommand\0measureCommand\0"
     "pauseCommand\0startCommand\0"
     "on_actionCreate_command_sequence_triggered\0"
-    "autoCommandSave\0sendInstant\0testPlot"
+    "autoCommandSave\0sendInstant\0testPlot\0"
+    "Title\0XSeries\0YSeries"
 };
 #undef QT_MOC_LITERAL
 
@@ -113,7 +117,7 @@ static const uint qt_meta_data_MainWindow[] = {
       23,    0,  154,    2, 0x08 /* Private */,
       24,    0,  155,    2, 0x08 /* Private */,
       25,    0,  156,    2, 0x08 /* Private */,
-      26,    0,  157,    2, 0x08 /* Private */,
+      26,    3,  157,    2, 0x08 /* Private */,
 
  // slots: parameters
     QMetaType::Void, QMetaType::QString,    3,
@@ -138,7 +142,7 @@ static const uint qt_meta_data_MainWindow[] = {
     QMetaType::Void,
     QMetaType::Void,
     QMetaType::Void,
-    QMetaType::Void,
+    QMetaType::Void, QMetaType::QString, QMetaType::Int, QMetaType::Int,   27,   28,   29,
 
        0        // eod
 };
@@ -171,7 +175,7 @@ void MainWindow::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, 
         case 19: _t->on_actionCreate_command_sequence_triggered(); break;
         case 20: _t->autoCommandSave(); break;
         case 21: _t->sendInstant(); break;
-        case 22: _t->testPlot(); break;
+        case 22: _t->testPlot((*reinterpret_cast< QString(*)>(_a[1])),(*reinterpret_cast< int(*)>(_a[2])),(*reinterpret_cast< int(*)>(_a[3]))); break;
         default: ;
         }
     }

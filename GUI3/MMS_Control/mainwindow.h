@@ -65,7 +65,7 @@ private slots:
     void autoCommandSave();
     void sendInstant();
 
-    void testPlot();
+    void testPlot(QString Title,int XSeries,int YSeries);
 private:
     Ui::MainWindow *ui;
     Ui::DriveDialog *D_drive;
