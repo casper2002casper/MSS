@@ -1,0 +1,8 @@
+<RCC>
+    <qresource prefix="/icons">
+        <file>tomato.png</file>
+    </qresource>
+    <qresource prefix="/audio">
+        <file>dj jan - tomatenplukkers.mp3</file>
+    </qresource>
+</RCC>
