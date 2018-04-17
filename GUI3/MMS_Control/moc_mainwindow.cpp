@@ -153,17 +153,16 @@ void MainWindow::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, 
         case 7: _t->on_driveButton_clicked(); break;
         case 8: _t->on_measureButton_clicked(); break;
         case 9: _t->on_connectButton_clicked(); break;
-        case 10: _t->on_actionPrint_triggered(); break;
-        case 11: _t->on_actionOpen_file_triggered(); break;
-        case 12: _t->on_actionNew_file_triggered(); break;
-        case 13: _t->connected(); break;
-        case 14: _t->disconnected(); break;
-        case 15: _t->driveCommand(); break;
-        case 16: _t->measureCommand(); break;
-        case 17: _t->pauseCommand(); break;
-        case 18: _t->startCommand(); break;
-        case 19: _t->on_actionCreate_command_sequence_triggered(); break;
-        case 20: _t->autoCommandSave(); break;
+        case 10: _t->on_actionOpen_file_triggered(); break;
+        case 11: _t->on_actionNew_file_triggered(); break;
+        case 12: _t->connected(); break;
+        case 13: _t->disconnected(); break;
+        case 14: _t->driveCommand(); break;
+        case 15: _t->measureCommand(); break;
+        case 16: _t->pauseCommand(); break;
+        case 17: _t->startCommand(); break;
+        case 18: _t->on_actionCreate_command_sequence_triggered(); break;
+        case 19: _t->autoCommandSave(); break;
         default: ;
         }
     }

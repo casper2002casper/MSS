@@ -62,6 +62,9 @@ void ChartsMaker::updateCSV(QString location)
        if(mintime == 0) mintime = dateTime.toSecsSinceEpoch();
        row.append(dateTime.toSecsSinceEpoch() - mintime);
        for (int i = 2; i < splitline.size(); ++i) {
+           if(QString(splitline[i]).contains(",")){
+               splitline[i].replace(',','.');
+           }
            if(QString(splitline[i]).contains("+")){
                QList<QByteArray> heightline = splitline[i].split('+');
                for (int y = 0; y < heightline.size(); ++y) {
@@ -69,6 +72,7 @@ void ChartsMaker::updateCSV(QString location)
                }
            }
            else row.append(QString(splitline[i]).toFloat());
+
            //qDebug(labels[i].toLatin1() + "%f",QString(splitline[i]).toFloat());
        }
        data.append(row);

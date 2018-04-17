@@ -262,6 +262,7 @@ Makefile: MMS_Control.pro C:\Qt\5.10.1\msvc2015\mkspecs\win32-msvc\qmake.conf C:
 		C:\Qt\5.10.1\msvc2015\lib\Qt5PrintSupport.prl \
 		C:\Qt\5.10.1\msvc2015\lib\Qt5Charts.prl \
 		C:\Qt\5.10.1\msvc2015\lib\Qt5Widgets.prl \
+		C:\Qt\5.10.1\msvc2015\lib\Qt5Multimedia.prl \
 		C:\Qt\5.10.1\msvc2015\lib\Qt5Gui.prl \
 		C:\Qt\5.10.1\msvc2015\lib\Qt5Network.prl \
 		C:\Qt\5.10.1\msvc2015\lib\Qt5Core.prl
@@ -453,6 +454,7 @@ C:\Qt\5.10.1\msvc2015\lib\qtmaind.prl:
 C:\Qt\5.10.1\msvc2015\lib\Qt5PrintSupport.prl:
 C:\Qt\5.10.1\msvc2015\lib\Qt5Charts.prl:
 C:\Qt\5.10.1\msvc2015\lib\Qt5Widgets.prl:
+C:\Qt\5.10.1\msvc2015\lib\Qt5Multimedia.prl:
 C:\Qt\5.10.1\msvc2015\lib\Qt5Gui.prl:
 C:\Qt\5.10.1\msvc2015\lib\Qt5Network.prl:
 C:\Qt\5.10.1\msvc2015\lib\Qt5Core.prl:

@@ -6,6 +6,7 @@
 #include <QtCharts/QChartGlobal>
 #include <QWidget>
 #include <QDialog>
+#include <QMediaPlayer>
 
 #include "ui_drivedialog.h"
 #include "ui_measuredialog.h"
@@ -50,7 +51,6 @@ private slots:
 
     void on_connectButton_clicked();
 
-    void on_actionPrint_triggered();
     void on_actionOpen_file_triggered();
     void on_actionNew_file_triggered();
 
@@ -64,8 +64,8 @@ private slots:
 
     void autoCommandSave();
     void sendInstant();
+    void music();
 
-    void testPlot(QString Title,int XSeries,int YSeries);
 private:
     Ui::MainWindow *ui;
     Ui::DriveDialog *D_drive;
@@ -91,6 +91,7 @@ private:
     enum commanddataType {Action, Start, Stop, Pause, Resume, Measure};
     QString filepath;
     bool commandPending;
+    int togglemusic = 0;
 };
 
 

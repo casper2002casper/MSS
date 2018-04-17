@@ -9,10 +9,7 @@
 #include <QtCore>
 #include <QtNetwork>
 #include <QtQuick/QQuickItem>
-
-#include <QPrinter>
-#include <QPrintDialog>
-#include <QPrintPreviewDialog>
+#include <QtMultimedia>
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -43,6 +40,7 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(startUi, &QDialog::accepted, this, &MainWindow::startCommand);
     connect(D_auto->buttonBox, SIGNAL(accepted()), this, SLOT(autoCommandSave()));
     connect(ui->actionAdvanced, SIGNAL(changed()), this, SLOT(sendInstant()));
+    connect(ui->music, SIGNAL(clicked()), this, SLOT(music()));
 
     ui->lastCommandSendList->hide();
     ui->lastDataRecievedList->hide();
@@ -59,7 +57,9 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->connectButton->setEnabled(false);
     ui->actionCreate_command_sequence->setEnabled(false);
     ui->sendInstant->setEnabled(false);
-    ui->plotTest->setEnabled(false);
+    QBrush tb(Qt::transparent);
+    ui->music->setPalette(QPalette(tb, tb, tb, tb, tb, tb, tb, tb, tb));
+    ui->music->setFlat(true);
 }
 
 MainWindow::~MainWindow()
@@ -101,16 +101,6 @@ void MainWindow::on_driveButton_clicked()
 void MainWindow::on_measureButton_clicked()
 {
     (ui->actionAdvanced->isChecked()) ? measureUi->show(): sendCommand("2::000::0::5::2;0;0;");
-}
-
-void MainWindow::on_actionPrint_triggered()
-{
-    QPrinter printer;
-    printer.setDocName("naam?");
-
-    QPrintPreviewDialog dialog2 (&printer,this);
-    QPrintDialog dialog (&printer,this);
-    if(dialog.exec() == QDialog::Rejected) return;
 }
 
 void MainWindow::sendCommand(QString command, bool blocking){
@@ -224,7 +214,6 @@ void MainWindow::connected()
 void MainWindow::updateCharts(){
     ch.updateCSV(filepath);
     //ui->tempChartLayout->addWidget(QChartView *TchartView);
-    //testPlot("Temperature",Time,Temperature1);
 
     QLayoutItem *child= ui->tempChartLayout->takeAt(0);
     if(child) delete(child->widget());
@@ -337,17 +326,16 @@ void MainWindow::autoCommandSave()
 void MainWindow::sendInstant()
 { (ui->actionAdvanced->isChecked()) ? ui->sendInstant->show(): ui->sendInstant->hide();}
 
-void MainWindow::testPlot(QString Title,int XSeries,int YSeries)
+void MainWindow::music()
 {
-//    QCPColorMap *colorMap = new QCPColorMap(ui->plotTest->xAxis, ui->plotTest->yAxis);
+    QMediaPlayer *player = new QMediaPlayer;
+    player->setMedia(QUrl("qrc:/audio/dj jan - tomatenplukkers.mp3"));
 
-//    colorMap->setName(Title);
-//    colorMap->data()->setSize(XSeries, YSeries);
-//    for (int x=0; x<50; ++x)
-//        colorMap->data()->setData(XSeries, YSeries, 50);
-//    colorMap->setGradient(QCPColorGradient::gpSpectrum);
-//    colorMap->setInterpolate(false);
-//    colorMap->rescaleDataRange(true);
-//    ui->plotTest->rescaleAxes();
-//    ui->plotTest->replot();
+    if (togglemusic == 0){
+        player->play();
+        togglemusic = 1;}
+
+    else if (togglemusic == 1){
+        player->pause();
+        togglemusic=0;}
 }

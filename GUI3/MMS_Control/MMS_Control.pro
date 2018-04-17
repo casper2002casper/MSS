@@ -7,7 +7,8 @@
 QT       += core gui\
             printsupport\
             charts\
-            network
+            network \
+            multimedia
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets printsupport
 
@@ -21,15 +22,13 @@ SOURCES += \
     main.cpp \
     mainwindow.cpp \
     basestationserver.cpp \
-    basestationthread.cpp \
-    qcustomplot.cpp
+    basestationthread.cpp
 
 HEADERS += \
     mainwindow.h \
     charts.h \
     basestationserver.h \
-    basestationthread.h \
-    qcustomplot.h
+    basestationthread.h
 
 FORMS += \
     mainwindow.ui \
