@@ -2,7 +2,7 @@
 import rospy
 from mobile_sensor_system.msg import currentTime
 import datetime
-RATE = 0.5
+RATE = 2
 def main():
     pub = rospy.Publisher('currentTime', currentTime, queue_size=10)
     rospy.init_node('talker', anonymous=True)

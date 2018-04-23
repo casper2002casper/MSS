@@ -25,7 +25,7 @@
 #include <RH_RF95.h>
 
 //TCP/IP defines:
-#define BASE_STATION_IP_ADDRESS "192.168.0.9" //LoRa Gateway: "192.168.2.80" //"192.168.0.22" //"127.0.0.1" //"192.168.0.102" 
+#define BASE_STATION_IP_ADDRESS "192.168.1.9" //LoRa Gateway: "192.168.2.80" //"192.168.0.22" //"127.0.0.1" //"192.168.0.102" 
 #define PORT 8080
 #define MESSAGE_LENGTH 1000
 #define SERVER_REPLY_LENGTH 2000
@@ -68,12 +68,12 @@ int main (int argc, const char* argv[] )
 {
 	int sock;
 	struct sockaddr_in server;
-	    char /*message[MESSAGE_LENGTH] ,*/ server_reply[SERVER_REPLY_LENGTH];    
-	    //Create socket
+    char /*message[MESSAGE_LENGTH] ,*/ server_reply[SERVER_REPLY_LENGTH];    
+    //Create socket
 	sock = socket(AF_INET , SOCK_STREAM , 0);
 	
 	if (sock == SOCKET_ERROR){
-		cout<<"Could not create socket"<<endl;
+		cout<<"Could not create socket at: "<<BASE_STATION_IP_ADDRESS<<":"<<PORT<<endl;
 	}
 	
 	cout<<"Socket created"<<endl;    
@@ -81,9 +81,9 @@ int main (int argc, const char* argv[] )
 	server.sin_family = AF_INET;
 	server.sin_port = htons(PORT);
 	    //Connect to remote server
-	while (connect(sock , (struct sockaddr *)&server , sizeof(server)) < 0){
-		perror("Connect failed. Trying to make connection.. Error");
-		sleep(10);
+	while (connect(sock , (struct sockaddr *)&server , sizeof(server)) < 0){//Try to connect to server
+		cout<<"Connect failed at: "<<BASE_STATION_IP_ADDRESS<<":"<<PORT<<endl;
+		sleep(1);
 	}    
 	puts("Connected\n");    
 
@@ -115,7 +115,7 @@ int main (int argc, const char* argv[] )
 
 	#ifdef RF_RST_PIN
 	printf( ", RST=GPIO%d", RF_RST_PIN );
-	  // Pulse a reset on module
+	// Pulse a reset on module
 	pinMode(RF_RST_PIN, OUTPUT);
 	digitalWrite(RF_RST_PIN, LOW );
 	bcm2835_delay(150);
@@ -202,7 +202,7 @@ int main (int argc, const char* argv[] )
 					uint8_t flags= rf95.headerFlags();;
 					int8_t rssi  = rf95.lastRssi();
 
-					if (rf95.recv(buf, &len)) {
+					if (rf95.recv(buf, &len)) {//If data is revied over LoRa
 						printf("LoRa:: ");
 						if(buf[0] == '0') printf("AGV Data: ");
 						if(buf[0] == '1') printf("AGV Reply: ");
@@ -210,16 +210,15 @@ int main (int argc, const char* argv[] )
 						printbuffer(buf, len);
 						if(from == RF_GATEWAY_ID){
 							bool message_valid = true;
-						//char message[sizeof(buf)];
-						//for(int x=0; x<sizeof(buf); x++){
 							char message[len]={0};
 							for(int x=0; x<len; x++){
 								message[x] = buf[x];
 								//check if the chars are valid:
 								if(message[x] <48 || message[x]>59){ //0123456789:;
-									if(!(message[x]==46 || message[x]==32 || message[x]==45)){ //. space -
+									if(!(message[x]==46 || message[x]==43 || message[x]==32 || message[x]==45)){ //. space -
 										//message error
-										cout<<"X: "<<x<<"Ascii value: "<<message[x]<<endl;
+										cout<<"\nX: "<<x<<" Ascii value: ";
+										printf("%d \n",message[x]);
 										message_valid = false;
 										break;
 									}
@@ -251,7 +250,8 @@ int main (int argc, const char* argv[] )
 			#ifdef RF_IRQ_PIN
 			}
 			#endif
-			if(recv(sock , server_reply , SERVER_REPLY_LENGTH , MSG_DONTWAIT) > 0){
+			int recieved = recv(sock , server_reply , SERVER_REPLY_LENGTH , MSG_DONTWAIT);//Non blocking get data from tcp
+			if(recieved > 0){
 				//Receive a reply from the base station server
 				printf("TCP:: ");
 				if(server_reply[0] == '2')cout<<"Basestation Data: "<<server_reply<<endl;
@@ -270,7 +270,16 @@ int main (int argc, const char* argv[] )
 					server_reply[i]=0;
 				}
 			}
-
+			else {
+				if(recieved == 0){//If connection closed
+					close(sock);//Create new connection
+					sock = socket(AF_INET , SOCK_STREAM , 0);
+					while (connect(sock , (struct sockaddr *)&server , sizeof(server)) < 0 && !force_exit){
+						cout<<"Reconnecting at: "<<BASE_STATION_IP_ADDRESS<<":"<<PORT<<endl;
+						sleep(1);
+					} 
+				}
+			}
 			#ifdef RF_LED_PIN
 		      // Led blink timer expiration ?
 			if (led_blink && millis()-led_blink>200) {

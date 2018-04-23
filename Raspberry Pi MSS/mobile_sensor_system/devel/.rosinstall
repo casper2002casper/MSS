@@ -1,0 +1,2 @@
+- setup-file:
+    local-name: /home/mss/catkin_ws/src/mobile_sensor_system/devel/setup.sh

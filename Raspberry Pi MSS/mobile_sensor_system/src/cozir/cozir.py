@@ -37,8 +37,8 @@ class Cozir(object):
         CO2: 1201.0 ppm
         '''
         self.ser = serial.Serial(port, timeout=1)
-        if verbosity >= 1:
-            print('connected to "{}"'.format(port))
+        # if verbosity >= 1:
+        #     print('connected to "{}"'.format(port))
         
         # Set operating mode to polling
         self.set_mode(OpModes.polling)
@@ -69,10 +69,11 @@ class Cozir(object):
         self.write(com)
         
         res = self.ser.readline().strip()
-        assert res.startswith(com + b' ')
-        res = float(res[2:])
-        
-        return res
+        if res.startswith(com + b' '):
+            res = float(res[2:])
+            return res
+        else:
+            return self.read_CO2()
 
     def read_temperature(self):
         '''temperature in degrees Celsius
@@ -81,9 +82,11 @@ class Cozir(object):
         '''
         self.write('T')
         res = self.ser.readline().strip()
-        assert res.startswith('T ')
-        res = (float(res[2:]) - 1000)/10.
-        return res
+        if res.startswith('T '):
+            res = (float(res[2:]) - 1000)/10.
+            return res
+        else:
+            return self.read_temperature()
     
     def read_humidity(self):
         '''relative humidity in %
@@ -92,16 +95,18 @@ class Cozir(object):
         '''
         self.write('H')
         res = self.ser.readline().strip()
-        assert res.startswith('H ')
-        res = float(res[2:])/10.
-        return res
+        if res.startswith('H '):
+            res = float(res[2:])/10.
+            return res
+        else:
+            return self.read_humidity()
     
     ### Operating mode functions
     def set_mode(self, mode):
         '''set operating mode: command, streaming or polling (using OpModes enum)'''
         assert isinstance(mode, OpModes)
-        if verbosity >= 1:
-            print('set operating mode to "{}"'.format(mode.name))
+        # if verbosity >= 1:
+        #     print('set operating mode to "{}"'.format(mode.name))
         self.write('K {:d}'.format(mode.value))
         
         # Read the response
@@ -184,8 +189,8 @@ class Cozir(object):
         val = int(val)
         assert 0 <= val <= (2**16-1)
         self.write('A {:d}'.format(val))
-        if verbosity >= 1:
-            print('set filter to {:d}'.format(val))
+        # if verbosity >= 1:
+        #     print('set filter to {:d}'.format(val))
         # Read the response
         res = self.ser.readline().strip()
         assert res.startswith('A ')

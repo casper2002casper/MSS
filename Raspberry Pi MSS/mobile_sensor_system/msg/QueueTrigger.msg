@@ -1,2 +1,1 @@
-bool clear_first
-
+bool dont_clear_first

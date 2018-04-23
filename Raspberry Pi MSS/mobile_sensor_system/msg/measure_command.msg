@@ -1,0 +1,3 @@
+float32 max_measure_time
+float32 min_measure_time
+bool continuous_measurement

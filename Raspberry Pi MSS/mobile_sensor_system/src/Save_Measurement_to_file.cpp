@@ -8,43 +8,52 @@
 
 #define SEPARATION_SYMBOL ";"
 #define SEP SEPARATION_SYMBOL
-#define FILENAME "/media/mss/MSS_USB/measurements/measurement.csv"
+#define EXTRA_SEPERATION_SYMBOL "+"
+#define ESEP EXTRA_SEPERATION_SYMBOL
+#define FILENAME "/media/mss/MSS_USB7/measurements/measurement.csv" //Sometimes the USB location changes when the system is turned of while ros is running
 #define BUFFERSIZE 20
 using namespace std;
 using namespace mobile_sensor_system;
+
 //string buffer[BUFFERSIZE];
 vector <string> buffer;
 int errorCnt=0;
 
-void measurementDataCallback(const mobile_sensor_system::measurementData::ConstPtr& msg)
+void measurementDataCallback(const mobile_sensor_system::measurementData::ConstPtr& msg)//Gets called when link_data transmits data
 {
   std::ostringstream oss;
   string tempString;  
-  /*double x,y,z,vx,vy,vz;
-  float temp, relativeHum, lightInt;
-  string dateTime = msg->dateTime;
-  x = msg->position[0];
-  y = msg->position[1];
-  z = msg->position[2];
-  vx = msg->velocity[0];
-  vy = msg->velocity[1];
-  vz = msg->velocity[2];
-  temp = msg->temp;
-  relativeHum = msg->relativeHum;
-  lightInt = msg->lightInt; oss<<dateTime<<SEP<<x<<SEP<<y<<SEP<<z<<SEP<<vx<<SEP<<vy<<SEP<<vz<<SEP<<temp<<SEP<<relativeHum<<SEP<<lightInt<<endl;*/
+  //Write all data to stringstream
+  oss<<msg->dateTime<<SEP<<\
+  (double)msg->position[0]<<SEP<<\
+  (double)msg->position[1]<<SEP<<\
+  (double)msg->position[2]<<SEP<<\
+  (double)msg->velocity[0]<<SEP<<\
+  (double)msg->velocity[1]<<SEP<<\
+  (double)msg->velocity[2]<<SEP<<
+  (float)msg->temp[0]<<ESEP<<\
+  (float)msg->temp[1]<<ESEP<<\
+  (float)msg->temp[2]<<ESEP<<\
+  (float)msg->temp[3]<<SEP<<\
+  (float)msg->relativeHum[0]<<ESEP<<\
+  (float)msg->relativeHum[1]<<ESEP<<\
+  (float)msg->relativeHum[2]<<ESEP<<\
+  (float)msg->relativeHum[3]<<SEP<<\
+  (float)msg->lightInt<<SEP<<\
+  (double)msg->par<<SEP<<\
+  (float)msg->CO2level<<SEP<<endl;
   
-oss<<msg->dateTime<<SEP<<(double)msg->position[0]<<SEP<<(double)msg->position[1]<<SEP<<(double)msg->position[2]<<SEP<<(double)msg->velocity[0]<<SEP<<(double)msg->velocity[1]<<SEP<<(double)msg->velocity[2]<<SEP<<(float)msg->temp<<SEP<<(float)msg->relativeHum<<SEP<<(float)msg->lightInt<<SEP<<(double)msg->par<<SEP<<(float)msg->CO2level<<endl;
-  tempString = oss.str();
+  tempString = oss.str();//Convert stringstream to string
   ofstream myfile (FILENAME, ios::out |ios::app );
   if (myfile.is_open())
   { 
     if(errorCnt > 0){
-	ROS_INFO("Saving data from buffer to csv");
+	    ROS_INFO("Saving data from buffer to csv");
     	for(int i=0;i<errorCnt;i++){
-    		myfile << buffer[i];		
-	}
-	buffer.clear();
-	errorCnt =0;
+      		myfile << buffer[i];		
+    	}
+  	  buffer.clear();
+    	errorCnt =0;
     }
     myfile << tempString;
     ROS_INFO("Saving data to csv");	
@@ -58,14 +67,15 @@ oss<<msg->dateTime<<SEP<<(double)msg->position[0]<<SEP<<(double)msg->position[1]
 	    buffer.push_back(tempString);
 	    ROS_INFO("Measurement added to buffer: %s", buffer[errorCnt].c_str());
 	    errorCnt++;
-    }else{
-	buffer.clear();
-	errorCnt=0;
+    }
+    else{
+	    buffer.clear();
+	    errorCnt=0;
     }
   }
 }
 
-int main(int argc, char **argv)
+int main(int argc, char **argv)//Doesn't repeat
 {
   ros::init(argc, argv, "Save_Measurement_To_File_Node");
   ros::NodeHandle n;

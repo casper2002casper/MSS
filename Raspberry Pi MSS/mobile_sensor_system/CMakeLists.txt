@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 2.8.3)
 project(mobile_sensor_system)
 
 ## Compile as C++11, supported in ROS Kinetic and newer
-# add_compile_options(-std=c++11)
+add_compile_options(-std=c++11)
 
 ## Find catkin macros and libraries
 ## if COMPONENTS list like find_package(catkin REQUIRED COMPONENTS xyz)
@@ -12,6 +12,7 @@ find_package(catkin REQUIRED COMPONENTS
   rospy
   std_msgs
   message_generation
+  ackermann_msgs
 )
 
 ## System dependencies are found with CMake's conventions
@@ -56,14 +57,23 @@ add_message_files(
    relativeHumidity.msg
    lightIntensity.msg 
    par.msg
+   QueueTrigger.msg
+   CO2.msg
+   action_command.msg
+   start_command.msg
+   stop_command.msg
+   pause_command.msg
+   resume_command.msg
+   measure_command.msg
  )
+ 
+
 
 ## Generate services in the 'srv' folder
-# add_service_files(
-#   FILES
-#   Service1.srv
-#   Service2.srv
-# )
+add_service_files(
+  FILES
+  AddTwoInts.srv
+)
 
 ## Generate actions in the 'action' folder
 # add_action_files(
@@ -76,6 +86,7 @@ add_message_files(
  generate_messages(
    DEPENDENCIES
    std_msgs
+   ackermann_msgs
  )
 
 ################################################
@@ -122,7 +133,7 @@ CATKIN_DEPENDS message_runtime
 ## Specify additional locations of header files
 ## Your package locations should be listed before other locations
 include_directories(
-# include
+  include
   ${catkin_INCLUDE_DIRS}
 )
 
@@ -131,15 +142,16 @@ include_directories(
 #   src/${PROJECT_NAME}/mobile_sensor_system.cpp
 # )
 
+
 ## Add cmake target dependencies of the library
 ## as an example, code may need to be generated before libraries
 ## either from message generation or dynamic reconfigure
-# add_dependencies(${PROJECT_NAME} ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
+#add_dependencies(${PROJECT_NAME} ${catkin_EXPORTED_TARGETS})
 
 ## Declare a C++ executable
 ## With catkin_make all packages are built within a single CMake context
 ## The recommended prefix ensures that target names across packages don't collide
-# add_executable(${PROJECT_NAME}_node src/mobile_sensor_system_node.cpp)
+#add_executable(${PROJECT_NAME}_node src/mobile_sensor_system_node.cpp)
 
 ## Rename C++ executable without prefix
 ## The above recommended prefix causes long target names, the following renames the
@@ -149,7 +161,7 @@ include_directories(
 
 ## Add cmake target dependencies of the executable
 ## same as for the library above
-# add_dependencies(${PROJECT_NAME}_node ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
+#add_dependencies(${PROJECT_NAME}_node mobile_sensor_system_generate_msgs_cpp)
 
 ## Specify libraries to link a library or executable target against
 # target_link_libraries(${PROJECT_NAME}_node
@@ -206,10 +218,22 @@ include_directories(
 
 add_executable(Control_AGV src/Control_AGV.cpp)
 target_link_libraries(Control_AGV ${catkin_LIBRARIES})
+add_dependencies(Control_AGV mobile_sensor_system_generate_messages_cpp)
 
 add_executable(Save_Measurement_to_file src/Save_Measurement_to_file.cpp)
 target_link_libraries(Save_Measurement_to_file ${catkin_LIBRARIES})
+add_dependencies(Save_Measurement_to_file mobile_sensor_system_generate_messages_cpp)
 
 add_executable(Link_Data src/Link_Data.cpp)
 target_link_libraries(Link_Data ${catkin_LIBRARIES})
+add_dependencies(Link_Data mobile_sensor_system_generate_messages_cpp)
+
+add_executable(Queue_List src/Queue_List.cpp)
+target_link_libraries(Queue_List ${catkin_LIBRARIES})
+add_dependencies(Queue_List mobile_sensor_system_generate_messages_cpp)
+
+add_executable(Read_instant_Command_Files src/Read_instant_Command_Files.cpp)
+target_link_libraries(Read_instant_Command_Files ${catkin_LIBRARIES})
+add_dependencies(Read_instant_Command_Files mobile_sensor_system_generate_messages_cpp)
+
 

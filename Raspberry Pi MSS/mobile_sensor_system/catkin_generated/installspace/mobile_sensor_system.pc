@@ -1,0 +1,8 @@
+prefix=/home/mss/catkin_ws/install
+
+Name: mobile_sensor_system
+Description: Description of mobile_sensor_system
+Version: 0.0.0
+Cflags: -I/home/mss/catkin_ws/install/include
+Libs: -L/home/mss/catkin_ws/install/lib 
+Requires: message_runtime

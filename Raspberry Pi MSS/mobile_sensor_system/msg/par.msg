@@ -1,1 +1,2 @@
 float64 par
+bool sensor_attached

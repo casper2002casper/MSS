@@ -6,14 +6,24 @@
   <node pkg="mobile_sensor_system" name="Measure_T_RH"  type="Measure_T_RH.py" output = "screen"/>
   <node pkg="mobile_sensor_system" name="Measure_Light_Intensity" type="Measure_Light_Intensity.py" output = "screen"/>
   <node pkg="mobile_sensor_system" name="Measure_Par" type="Measure_Par.py" output = "screen"/>  
-
+  <node pkg="mobile_sensor_system" name="Measure_CO2" type="Measure_CO2.py" output = "screen"/>
+  
   <!-- Run link data node -->
   <node pkg="mobile_sensor_system" name="Link_Data" type="Link_Data" output = "screen"/>
 
+  
+  <node pkg="mobile_sensor_system" name="Control_AGV" type="Control_AGV" output = "screen"/>
+  
   <!-- Run node save measurement data to csv file -->
   <node pkg="mobile_sensor_system" name="Save_Measurement_to_file" type="Save_Measurement_to_file" output = "screen"/>
-
-<!-- Run pi camera node -->
+  
+  <!-- Run pi camera node -->
   <!--<node pkg="mobile_sensor_system" name="Pi_Camera" type="Pi_Camera.py" output = "screen"/> -->
+  
+  <!-- Run Queuelist node -->
+  <node pkg="mobile_sensor_system" name="Queue_List" type="Queue_List" output = "screen" />
+  
+  <!-- Run InstanCommand node -->
+  <node pkg="mobile_sensor_system" name="Read_Command_files_Node" type="Read_instant_Command_Files" output = "screen" />
 
 </launch>

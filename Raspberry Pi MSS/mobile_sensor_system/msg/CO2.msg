@@ -1,3 +1,4 @@
 float32 CO2level
 float32 temperature
 float32 humidity
+bool sensor_attached

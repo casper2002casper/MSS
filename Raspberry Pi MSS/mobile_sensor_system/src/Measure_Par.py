@@ -34,7 +34,7 @@ import time
 import rospy
 from mobile_sensor_system.msg import par
 import time
-RATE = 0.5
+RATE = 2
 
 #------------------main----------------
 def main():
@@ -45,25 +45,29 @@ def main():
 	bus = smbus.SMBus(1)
 	time.sleep(0.5)
 	par_value = par()
-
+	sensor_attached = True
+	par_value.sensor_attached = sensor_attached;
 	while not rospy.is_shutdown():	
-		time.sleep(0.2)
-		data = bus.read_i2c_block_data(0x48, 0x9C, 2)
-		# Convert the data
-		raw_adc = data[0] * 256 + data[1]
-		if raw_adc > 32767 :
-			raw_adc -= 65536
-
-		value = (float(raw_adc) * 5  /(32768))
-		# Output data to screen
-		print "Digital Value of Analog Input : %d " %raw_adc
-		print "Data0 = " data[0]
-		print "Data1 = " data[1]
-		print "output in volts is: %.4f" %value
-		PAR = value *500
-		print "output in umol/m^2/s^2 = %.4f" %PAR
-
-		par_value.par = round(PAR,1)
+		try:
+			if(sensor_attached):
+				data = bus.read_i2c_block_data(0x48, 0x9C, 2)
+				# Convert the data
+				raw_adc = data[0] * 256 + data[1]
+				if raw_adc > 32767 :
+					raw_adc -= 65536
+		
+				value = (float(raw_adc) * 5  /(32768))
+				PAR = value *500
+				par_value.par = round(PAR,1)
+		
+		except:
+			if(sensor_attached):
+				rospy.loginfo("Par sensor not attached")
+				sensor_attached = False
+				par_value.sensor_attached = sensor_attached;
+				
+			par_value.par = 0
+			
 		par_pub.publish(par_value)
 		loop_rate.sleep()
 	

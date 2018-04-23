@@ -1,1 +1,2 @@
 float32 lightInt
+bool sensor_attached
