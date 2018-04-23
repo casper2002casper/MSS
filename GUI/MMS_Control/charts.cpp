@@ -22,7 +22,8 @@ ChartsMaker::ChartsMaker():
 
 }
 
-
+// Generate random data
+// Not needed anymore, however it is usefull for later
 DataTable ChartsMaker::generateRandomData(int listCount, int valueMax, int valueCount) const
 {
     DataTable dataTable;
@@ -44,6 +45,7 @@ DataTable ChartsMaker::generateRandomData(int listCount, int valueMax, int value
     return dataTable;
 }
 
+// Read the CSV file and input new data
 void ChartsMaker::updateCSV(QString location)
 {
     //location = "/home/casper/BaseStationMeasurementData.csv";
@@ -89,6 +91,7 @@ void ChartsMaker::updateCSV(QString location)
 
 }
 
+// Create chart data series
 QLineSeries *ChartsMaker::CreateSeries(int Xindex, int Yindex){
     //qDebug("create ");
     //qDebug("%f",data[0][7]);
@@ -120,7 +123,7 @@ float ChartsMaker::getMax(int index){
     return max;
 }
 
-
+// Create the charts that are shown in the GUI
 QChart *ChartsMaker::createChart(QString Title,int XSeries,int YSeries)
 {
     QChart *chart = new QChart();

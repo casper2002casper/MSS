@@ -25,9 +25,11 @@ MainWindow::MainWindow(QWidget *parent) :
     D_start(new Ui::StartDialog),
     D_auto(new Ui::AutomaticMode)
 {
+//  Declare window titel and icon
     setWindowIcon(QIcon(":/icons/tomato.png"));
     setWindowIconText("MMS Control");
 
+//  Declare the Ui windows
     ui->setupUi(this);
     D_drive->setupUi(driveUi);
     D_measure->setupUi(measureUi);
@@ -35,10 +37,13 @@ MainWindow::MainWindow(QWidget *parent) :
     D_start->setupUi(startUi);
     D_auto->setupUi(autoUi);
 
+//  Connect the signals from the program
+//  When connected/disconnected and new incoming message
     connect(&bs, SIGNAL(newMessage(QString)),this, SLOT(inputData(QString)));
     connect(&bs, SIGNAL(connected()),this, SLOT(connected()));
     connect(&bs, SIGNAL(disconnecting()),this, SLOT(disconnected()));
 
+//  Connect the GUI signals
     connect(driveUi, &QDialog::accepted, this, &MainWindow::driveCommand);
     connect(measureUi, &QDialog::accepted, this, &MainWindow::measureCommand);
     connect(pauseUi, &QDialog::accepted, this, &MainWindow::pauseCommand);
@@ -47,12 +52,15 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(ui->actionAdvanced, SIGNAL(changed()), this, SLOT(sendInstant()));
     connect(ui->music, SIGNAL(clicked()), this, SLOT(music()));
 
+//  Make certain windows hide by default
     ui->lastCommandSendList->hide();
     ui->lastDataRecievedList->hide();
     ui->sendInstant->hide();
+
+//  Add static statusbar
     ui->statusbar->addPermanentWidget(ui->projectScout_2);
 
-
+//  GUI buttons off by default untill connected
     ui->startButton->setEnabled(false);
     ui->stopButton->setEnabled(false);
     ui->pauseButton->setEnabled(false);
@@ -72,7 +80,7 @@ MainWindow::~MainWindow()
 {    delete ui;}
 
 
-
+//  Classes called by signals
 void MainWindow::on_actionShow_last_command_send_triggered(bool checked)
 {    checked ? ui->lastCommandSendList->show() : ui->lastCommandSendList->hide();}
 
